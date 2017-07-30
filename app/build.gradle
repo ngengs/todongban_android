@@ -1,0 +1,220 @@
+apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+
+/*==============================================================================
+ Copyright (c) 2017 Rizky Kharisma (@ngengs)
+
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ =============================================================================*/
+
+// Signing key definition
+def keystoreProperties = null
+def keystorePropertiesFile = rootProject.file("app/keystore.properties")
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties = new Properties()
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+} else {
+    println "Building without signing key"
+}
+
+// Versioning file definition
+def versionProperties
+def versionPropertiesFile = rootProject.file("app/version.properties")
+if (versionPropertiesFile.exists()) {
+    versionProperties = new Properties()
+    versionProperties.load(new FileInputStream(versionPropertiesFile))
+} else {
+    throw new Exception('Version properties file not Found')
+}
+// Versioning number definition
+int versionMajor = versionProperties['VERSION_MAJOR'] as int
+int versionMinor = versionProperties['VERSION_MINOR'] as int
+int versionPatch = versionProperties['VERSION_PATCH'] as int
+int versionBuild = versionProperties['VERSION_BUILD'] as int
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
+    defaultConfig {
+        applicationId "com.ngengs.skripsi.todongban"
+        minSdkVersion 16
+        targetSdkVersion 26
+        versionCode((versionMajor * 10000000) + (versionMinor * 100000) + (versionPatch * 100) + versionBuild)
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        release {
+            if (keystoreProperties != null) {
+                storeFile file(keystoreProperties['STORE_LOCATION_RELEASE'])
+                storePassword keystoreProperties['STORE_PASSWORD_RELEASE']
+                keyAlias keystoreProperties['KEY_ALIAS_RELEASE']
+                keyPassword keystoreProperties['KEY_PASSWORD_RELEASE']
+            }
+        }
+
+        debug {
+            if (keystoreProperties != null) {
+                storeFile file(keystoreProperties['STORE_LOCATION_DEBUG'])
+                storePassword keystoreProperties['STORE_PASSWORD_DEBUG']
+                keyAlias keystoreProperties['KEY_ALIAS_DEBUG']
+                keyPassword keystoreProperties['KEY_PASSWORD_DEBUG']
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            debuggable false
+            if (keystorePropertiesFile.exists()) {
+                signingConfig signingConfigs.release
+            }
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def newName = output.outputFile.name
+                    newName = newName.replace("app-", applicationId + "-")
+                    newName = newName.replace("-release", "-v" + versionName + "-build." + getBuildDate() + "-release")
+                    output.outputFile = new File(output.outputFile.parent, newName)
+                }
+            }
+        }
+
+        debug {
+            minifyEnabled false
+            versionNameSuffix "-debug"
+            debuggable true
+            if (keystorePropertiesFile.exists()) {
+                signingConfig signingConfigs.debug
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        warning 'InvalidPackage' // For retrofit
+    }
+}
+
+static def getBuildDate() {
+    def date = new Date().format('yyyyMMdd')
+    return date
+}
+
+task updateMajor {
+    doLast {
+        println "Bump Major version..."
+        println "Preparing data..."
+        println "From:\t${versionMajor}"
+        versionMajor = versionMajor + 1
+        versionMinor = 0
+        versionPatch = 0
+        versionBuild = versionBuild + 1
+        println "To:\t${versionMajor}"
+        println "Version target:\t${versionMajor}.${versionMinor}.${versionPatch}"
+        writeUpdateVersion(versionMajor, versionMinor, versionPatch, versionBuild)
+    }
+}
+
+task updateMinor {
+    doLast {
+        println "Bump Minor version..."
+        println "Preparing data..."
+        println "From:\t${versionMinor}"
+        versionMinor = versionMinor + 1
+        versionPatch = 0
+        versionBuild = versionBuild + 1
+        println "To:\t${versionMinor}"
+        println "Version target:\t${versionMajor}.${versionMinor}.${versionPatch}"
+        writeUpdateVersion(versionMajor, versionMinor, versionPatch, versionBuild)
+    }
+}
+
+task updatePatch {
+    doLast {
+        println "Bump Patch version..."
+        println "Preparing data..."
+        println "From:\t${versionPatch}"
+        versionPatch = versionPatch + 1
+        versionBuild = versionBuild + 1
+        println "To:\t${versionPatch}"
+        println "Version target:\t${versionMajor}.${versionMinor}.${versionPatch}"
+        writeUpdateVersion(versionMajor, versionMinor, versionPatch, versionBuild)
+    }
+}
+
+void writeUpdateVersion(int major, int minor, int patch, int build) {
+    println "Updating data..."
+    def file = rootProject.file("app/version.properties")
+    file.text = """################################################################################
+# Copyright (c) 2017 Rizky Kharisma (@ngengs)
+#
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+################################################################################
+
+# Use gradle task instead touch this file
+#
+# Available command:
+# updateMajor
+# updateMinor
+# updatePatch
+#
+# Version order in application will be MAJOR.MINOR.PATCH and BUILD is for counter only
+# Update time: ${new Date()}
+VERSION_MAJOR=${major}
+VERSION_MINOR=${minor}
+VERSION_PATCH=${patch}
+VERSION_BUILD=${build}
+"""
+}
+
+retrolambda {
+    javaVersion JavaVersion.VERSION_1_7
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:26.0.0'
+    compile 'com.android.support:animated-vector-drawable:26.0.0'
+    compile 'com.android.support:design:26.0.0'
+    compile 'com.android.support:support-v13:26.0.0'
+    compile 'com.android.support:recyclerview-v7:26.0.0'
+    compile 'com.google.code.gson:gson:2.8.1'
+    compile 'com.afollestad.material-dialogs:core:0.9.4.5'
+    compile 'com.jakewharton:butterknife:8.7.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    testCompile 'junit:junit:4.12'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
+}

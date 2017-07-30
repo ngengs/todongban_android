@@ -31,7 +31,7 @@
     </style>
 
     <style name="AppTheme.Splash" parent="AppTheme.NoActionBar">
-        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="android:windowBackground">@drawable/background_splash</item>
         <item name="android:textColor">@color/colorTextInDark</item>
     </style>
 

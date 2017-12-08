@@ -44,7 +44,7 @@
         android:layout_marginStart="@dimen/margin_padding_default"
         android:layout_marginTop="@dimen/margin_padding_default"
         android:scaleType="centerInside"
-        android:src="@drawable/image_icon_help_no_fuel"
+        app:srcCompat="@drawable/ic_help_no_fuel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -57,7 +57,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:scaleType="centerInside"
-        android:src="@drawable/image_icon_car"
+        app:srcCompat="@drawable/ic_vehicle_car"
         app:layout_constraintStart_toStartOf="@+id/image_help_type"
         app:layout_constraintTop_toTopOf="@+id/image_help_type"/>
 

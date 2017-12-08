@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<!-- Creator: CorelDRAW X7 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="300px" height="300px" version="1.0" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 244 244"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .fil0 {fill:#B71C1C}
+    .fil1 {fill:white}
+   ]]>
+  </style>
+ </defs>
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <g id="_1480133307024">
+   <circle class="fil0" cx="122" cy="122" r="122"/>
+   <path class="fil1" d="M82 102l0 0c3,2 5,5 4,9l-8 25c-1,4 -5,6 -8,5l0 0c-4,-1 -7,-4 -6,-9 -1,-9 3,-17 7,-24 2,-3 6,-7 11,-6z"/>
+   <rect class="fil1" transform="matrix(0.0462559 -0.114963 0.136369 0.0389951 63.3206 138.541)" width="94.6321" height="277.791" rx="961" ry="961"/>
+   <rect class="fil1" transform="matrix(-0.05757 -0.109735 0.118079 -0.0785773 72.7443 166.07)" width="94.6321" height="277.791" rx="961" ry="961"/>
+   <circle class="fil1" cx="92" cy="93" r="11"/>
+   <path class="fil1" d="M112 128l0 -6c-12,0 -22,-3 -28,-12l-2 9c7,8 17,11 30,9z"/>
+   <polygon class="fil1" points="107,119 109,116 110,116 116,105 117,105 118,107 112,117 113,118 111,120 107,120 "/>
+   <rect class="fil1" transform="matrix(-0.0162052 -0.122345 0.142753 -0.0189083 122.094 112.259)" width="242.177" height="35.6136" rx="3" ry="3"/>
+   <rect class="fil1" transform="matrix(0.0931823 0.0178719 -0.0271242 0.141422 123.303 105.528)" width="242.177" height="35.6136" rx="3" ry="3"/>
+   <rect class="fil1" transform="matrix(0.0710308 0.0144927 -0.0287878 0.141093 154.299 87.7755)" width="242.177" height="35.6136" rx="3" ry="3"/>
+   <rect class="fil1" transform="matrix(0.0710307 0.0144932 -0.0287889 0.141093 106.147 78.5333)" width="242.177" height="35.6136" rx="3" ry="3"/>
+   <rect class="fil1" transform="matrix(-0.0588275 0.108491 0.126588 0.0686403 154.505 87.6568)" width="242.177" height="35.6136" rx="3" ry="3"/>
+   <rect class="fil1" transform="matrix(0.0286886 -0.142256 0.141158 0.0284672 116.394 139.752)" width="242.177" height="35.6136" rx="3" ry="3"/>
+   <rect class="fil1" transform="matrix(0.0286886 -0.142256 0.141158 0.0284672 134.18 143.545)" width="242.177" height="35.6136" rx="3" ry="3"/>
+   <rect class="fil1" transform="matrix(0.0433325 0.00825572 -0.0134747 0.0707259 107.684 132.01)" width="242.177" height="35.6136" rx="3" ry="3"/>
+   <rect class="fil1" transform="matrix(0.0433325 0.00825572 -0.0134747 0.0707259 139.885 138.313)" width="242.177" height="35.6136" rx="3" ry="3"/>
+   <polygon class="fil1" points="155,163 140,142 139,144 154,164 "/>
+   <rect class="fil1" transform="matrix(0.155109 0.0273499 -0.0268788 0.152437 127.684 119.75)" width="52.9123" height="292.037" rx="961" ry="961"/>
+   <circle class="fil1" cx="137" cy="96" r="8"/>
+   <circle class="fil0" cx="137" cy="96" r="5"/>
+  </g>
+ </g>
+</svg>

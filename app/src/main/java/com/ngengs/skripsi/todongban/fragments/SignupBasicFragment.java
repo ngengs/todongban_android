@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Patterns;
@@ -24,6 +25,7 @@ import com.ngengs.skripsi.todongban.R;
 import com.ngengs.skripsi.todongban.SignupActivity;
 import com.ngengs.skripsi.todongban.data.local.User;
 import com.ngengs.skripsi.todongban.utils.ImageUtils;
+import com.ngengs.skripsi.todongban.utils.ResourceUtils;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.io.File;
@@ -344,6 +346,7 @@ public class SignupBasicFragment extends Fragment {
         mImageSignupIdentity.setOnClickListener(v -> onLayoutImageSignupIdentityClicked());
         mInputSignupBaseBirthDate.setOnClickListener(v -> onInputSignupBaseBirthDateClicked());
         mButtonSignupBasicNext.setOnClickListener(v -> onButtonNextClicked());
+        mImageSignupProfile.setImageBitmap(ResourceUtils.getBitmapFromVectorDrawable(mContext, R.drawable.ic_avatar));
     }
 
     @Override

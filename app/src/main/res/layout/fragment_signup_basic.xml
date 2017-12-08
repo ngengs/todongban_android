@@ -233,7 +233,6 @@
         android:focusable="true"
         android:foreground="@drawable/ripple"
         android:scaleType="centerCrop"
-        android:src="@drawable/image_avatar"
         app:civ_border_color="#FFF"
         app:civ_border_width="2dp"/>
 

@@ -40,6 +40,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
@@ -47,6 +48,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 import com.ngengs.skripsi.todongban.R;
+import com.ngengs.skripsi.todongban.utils.ResourceUtils;
 import com.ngengs.skripsi.todongban.utils.customviews.GoogleMapResponse;
 
 import java.io.IOException;
@@ -72,6 +74,10 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
 
     private static final String ARG_PADDING_VERTICAL = "padding_vertical";
     private static final String ARG_PADDING_HORIZONTAL = "padding_horizontal";
+    private static final String ARG_MARKER_ICON = "marker_icon";
+
+    public static final int MARKER_ICON_HELP = R.drawable.ic_marker_people_request_help;
+    public static final int MARKER_ICON_GARAGE = R.drawable.ic_marker_garage_location;
 
     private int mPaddingVertical;
     private int mPaddingHorizontal;
@@ -86,6 +92,8 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
     private Marker mMarker;
     private boolean mEditLocation;
     private boolean mProcessMovingCamera;
+    private int mMarkerIcon;
+    private BitmapDescriptor mMarkerDescriptor;
 
     private OnFragmentMinimalInteractionListener mMinimalListener;
     private OnFragmentCompleteInteractionListener mCompleteListener;
@@ -106,10 +114,29 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
      * @return A new instance of fragment MapFragment.
      */
     public static MapFragment newInstance(int paddingVertical, int paddingHorizontal) {
+        return newInstance(paddingVertical, paddingHorizontal, MARKER_ICON_HELP);
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param paddingVertical
+     *         Parameter 1.
+     * @param paddingHorizontal
+     *         Parameter 2.
+     * @param mapMarkerIcon
+     *         Parameter 3.
+     *
+     * @return A new instance of fragment MapFragment.
+     */
+    public static MapFragment newInstance(int paddingVertical, int paddingHorizontal,
+                                          int mapMarkerIcon) {
         MapFragment fragment = new MapFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PADDING_VERTICAL, paddingVertical);
         args.putInt(ARG_PADDING_HORIZONTAL, paddingHorizontal);
+        args.putInt(ARG_MARKER_ICON, mapMarkerIcon);
         fragment.setArguments(args);
         return fragment;
     }
@@ -149,9 +176,11 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
         if (getArguments() != null) {
             mPaddingVertical = getArguments().getInt(ARG_PADDING_VERTICAL, 0);
             mPaddingHorizontal = getArguments().getInt(ARG_PADDING_HORIZONTAL, 0);
+            mMarkerIcon = getArguments().getInt(ARG_MARKER_ICON, MARKER_ICON_HELP);
         } else {
             mPaddingVertical = 0;
             mPaddingHorizontal = 0;
+            mMarkerIcon = MARKER_ICON_HELP;
         }
     }
 
@@ -165,6 +194,8 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
         mProcessMovingCamera = false;
         mEditLocation = false;
 
+        mMarkerDescriptor = BitmapDescriptorFactory.fromBitmap(
+                ResourceUtils.getBitmapFromVectorDrawable(mContext, mMarkerIcon));
         return view;
     }
 
@@ -231,6 +262,7 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
         mMapMarkerChangerIndicator = view.findViewById(R.id.map_marker_changer_indicator);
         mMapMarkerChangerImage.setOnClickListener(v -> selectedMapMarker());
         mMapMarkerChangerIndicator.setOnClickListener(v -> selectedMapMarker());
+        mMapMarkerChangerImage.setImageResource(mMarkerIcon);
     }
 
     private void initPlayServices() {
@@ -302,8 +334,8 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
         if (mMarker != null) {
             mMarker.remove();
         }
-        mMarker = mGoogleMap.addMarker(new MarkerOptions().position(position).flat(true).icon(
-                BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_people_request_help)));
+        mMarker = mGoogleMap.addMarker(
+                new MarkerOptions().position(position).flat(true).icon(mMarkerDescriptor));
         mProcessMovingCamera = true;
         Timber.d("changeLocationOnMap: Location: %s", position);
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(position),

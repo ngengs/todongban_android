@@ -57,7 +57,7 @@
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:scaleType="centerInside"
-                android:src="@drawable/image_icon_motorcycle"/>
+                app:srcCompat="@drawable/ic_vehicle_motorcycle"/>
 
             <ImageView
                 android:id="@+id/selectable_type_car"
@@ -68,7 +68,7 @@
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:scaleType="centerInside"
-                android:src="@drawable/image_icon_car"/>
+                app:srcCompat="@drawable/ic_vehicle_car"/>
         </LinearLayout>
 
 

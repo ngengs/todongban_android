@@ -58,7 +58,7 @@ public class SelectLocationMapActivity extends AppCompatActivity
         if (getIntent().getExtras() != null) {
             mNeedAddress = getIntent().getBooleanExtra(PARAM_WITH_ADDRESS, false);
         }
-        mMap = MapFragment.newInstance();
+        mMap = MapFragment.newInstance(0, 0, MapFragment.MARKER_ICON_GARAGE);
         getSupportFragmentManager().beginTransaction()
                                    .add(R.id.fragment_map_wrapper, mMap)
                                    .commit();

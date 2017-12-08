@@ -1,0 +1,24 @@
+<!--============================================================================
+  Copyright (c) 2017 Rizky Kharisma (@ngengs)
+
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  ===========================================================================-->
+
+<vector android:height="128dp" android:viewportHeight="10990.0"
+    android:viewportWidth="10990.0" android:width="128dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#F4EDE3" android:pathData="M5495,5495m-5495,0a5495,5495 0,1 1,10990 0a5495,5495 0,1 1,-10990 0"/>
+    <path android:fillColor="#F0CFA4" android:pathData="M4067,7295c73,34 86,61 145,126 111,124 314,275 458,358 707,407 1381,280 1962,-246 73,-67 220,-256 283,-279 51,-52 48,-46 154,-273 37,-65 53,-125 89,-189 392,-707 797,-2956 489,-3747 -137,-353 -220,-461 -465,-718 -676,-711 -2699,-828 -3530,81 -448,490 -506,1093 -443,1916 58,764 324,2181 753,2789 28,39 91,173 105,182z"/>
+    <path android:fillColor="#F0CFA4" android:pathData="M3993,8166l-28,26c-85,87 -90,108 -213,173 -387,203 -1589,441 -2109,594 -198,58 -303,34 -304,136l324,340c685,712 1795,1263 2773,1455 164,32 480,38 614,95l800,0c197,-55 592,-41 1187,-217 370,-110 678,-231 1021,-414 447,-238 905,-553 1250,-897 62,-61 126,-122 180,-183 31,-35 131,-159 163,-179 -14,-54 49,-58 -154,-97l-2051,-538c-300,-107 -377,-188 -506,-424 -18,-87 12,-281 -26,-396l-2822,-79c19,106 10,227 10,337 -1,88 -1,175 -46,228 -3,4 -9,8 -12,12l-33,19c-2,-4 -11,7 -18,9z"/>
+    <path android:fillColor="#D4B08C" android:pathData="M4092,7561c13,47 180,251 231,306 259,277 718,563 1128,582 854,38 1380,-767 1463,-809 -12,-116 13,-259 1,-386 -63,23 -210,212 -283,279 -581,526 -1255,653 -1962,246 -144,-83 -347,-234 -458,-358 -59,-65 -72,-92 -145,-126l25,266z"/>
+</vector>

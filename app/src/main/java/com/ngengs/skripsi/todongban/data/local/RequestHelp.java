@@ -123,9 +123,9 @@ public class RequestHelp implements Parcelable {
     public static int getVehicleIconFromHelpType(String helpType) {
         switch (RequestHelp.getVehicleFromHelpType(helpType)) {
             case VEHICLE_TYPE_CAR:
-                return R.drawable.image_icon_car;
+                return R.drawable.ic_vehicle_car;
             case VEHICLE_TYPE_MOTORCYCLE:
-                return R.drawable.image_icon_motorcycle;
+                return R.drawable.ic_vehicle_motorcycle;
             default:
                 return 0;
         }
@@ -133,17 +133,17 @@ public class RequestHelp implements Parcelable {
 
     public static int getIconFromHelpType(String helpType) {
         if (helpType.equalsIgnoreCase(HELP_TYPE_CAR_BROKEN)) {
-            return R.drawable.image_icon_help_broken_car;
+            return R.drawable.ic_help_broken_car;
         } else if (helpType.equalsIgnoreCase(HELP_TYPE_CAR_FLAT_TIRE)) {
-            return R.drawable.image_icon_help_flat_tire;
+            return R.drawable.ic_help_flat_tire;
         } else if (helpType.equalsIgnoreCase(HELP_TYPE_CAR_NO_FUEL)) {
-            return R.drawable.image_icon_help_no_fuel;
+            return R.drawable.ic_help_no_fuel;
         } else if (helpType.equalsIgnoreCase(HELP_TYPE_MOTORCYCLE_BROKEN)) {
-            return R.drawable.image_icon_help_broken_motorcycle;
+            return R.drawable.ic_help_broken_motorcycle;
         } else if (helpType.equalsIgnoreCase(HELP_TYPE_MOTORCYCLE_FLAT_TIRE)) {
-            return R.drawable.image_icon_help_flat_tire;
+            return R.drawable.ic_help_flat_tire;
         } else if (helpType.equalsIgnoreCase(HELP_TYPE_MOTORCYCLE_NO_FUEL)) {
-            return R.drawable.image_icon_help_no_fuel;
+            return R.drawable.ic_help_no_fuel;
         }
         return 0;
     }

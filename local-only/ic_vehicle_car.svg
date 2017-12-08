@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<!-- Creator: CorelDRAW X7 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="500px" height="500px" version="1.0" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 122 122"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .fil6 {fill:#514B5A}
+    .fil5 {fill:#625D6B}
+    .fil0 {fill:#D32F2F}
+    .fil2 {fill:#D55453}
+    .fil7 {fill:#DCDBDE}
+    .fil4 {fill:#F53434}
+    .fil3 {fill:#FF6567}
+    .fil1 {fill:white}
+   ]]>
+  </style>
+ </defs>
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <g id="_1480133285168">
+   <g>
+    <circle class="fil0" cx="61" cy="61" r="61"/>
+    <circle class="fil1" cx="61" cy="61" r="55"/>
+   </g>
+   <g>
+    <path class="fil2" d="M14 57c1,-2 5,-3 12,-3l10 -10c2,-1 3,-2 5,-2l23 0c2,0 4,1 5,2l8 10 26 3c2,2 3,3 3,6l0 10 -77 0 -15 -4 0 -12z"/>
+    <rect class="fil3" x="36" y="70" width="71.7899" height="3.06436" rx="111" ry="97"/>
+    <rect class="fil3" transform="matrix(0.0520712 0.0119317 -0.074898 0.326863 13.5596 66.0081)" width="186.116" height="9.13823" rx="288" ry="288"/>
+    <rect class="fil3" x="43" y="63" width="36.6261" height="3.06436" rx="57" ry="97"/>
+    <rect class="fil3" x="103" y="63" width="4.75183" height="3.06436" rx="7" ry="97"/>
+    <path class="fil3" d="M26 52c5,0 10,2 14,2 31,-1 59,-1 63,3 5,4 0,3 -2,2 -12,-2 -44,-2 -87,-2 0,-3 5,-5 12,-5z"/>
+    <path class="fil1" d="M103 59l2 0c0,0 1,3 1,3l-3 0c-1,0 -2,-1 -2,-2l0 0c0,-1 1,-1 2,-1z"/>
+    <path class="fil4" d="M14 57l3 0c1,0 2,1 2,2l0 0c0,0 -1,1 -2,1l-3 0 0 -3z"/>
+    <path class="fil5" d="M44 44l16 0c1,0 1,0 2,1l6 7c0,1 0,2 -1,2l-26 0c-4,0 -6,-2 -4,-4l5 -5c1,-1 1,-1 2,-1z"/>
+    <path class="fil5" d="M66 44l3 0 8 10 -4 0c-1,0 -1,-1 -2,-2l-5 -6c-1,-1 -1,-2 0,-2z"/>
+    <g>
+     <circle class="fil6" cx="92" cy="70" r="10"/>
+     <circle class="fil1" cx="92" cy="70" r="6"/>
+     <circle class="fil7" cx="92" cy="70" r="3"/>
+    </g>
+    <g>
+     <circle class="fil6" cx="30" cy="70" r="10"/>
+     <circle class="fil1" cx="30" cy="70" r="6"/>
+     <circle class="fil7" cx="30" cy="70" r="3"/>
+    </g>
+   </g>
+  </g>
+ </g>
+</svg>

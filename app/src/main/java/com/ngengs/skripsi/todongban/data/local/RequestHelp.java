@@ -37,7 +37,17 @@ public class RequestHelp implements Parcelable {
 
     public static final int VEHICLE_TYPE_MOTORCYCLE = 1;
     public static final int VEHICLE_TYPE_CAR = 2;
+    public static final Creator<RequestHelp> CREATOR = new Creator<RequestHelp>() {
+        @Override
+        public RequestHelp createFromParcel(Parcel in) {
+            return new RequestHelp(in);
+        }
 
+        @Override
+        public RequestHelp[] newArray(int size) {
+            return new RequestHelp[size];
+        }
+    };
     private double locationLatitude;
     private double locationLongitude;
     private String selectedHelpType;
@@ -69,85 +79,13 @@ public class RequestHelp implements Parcelable {
         locationName = in.readString();
     }
 
-    public static final Creator<RequestHelp> CREATOR = new Creator<RequestHelp>() {
-        @Override
-        public RequestHelp createFromParcel(Parcel in) {
-            return new RequestHelp(in);
-        }
-
-        @Override
-        public RequestHelp[] newArray(int size) {
-            return new RequestHelp[size];
-        }
-    };
-
-    public double getLocationLatitude() {
-        return locationLatitude;
-    }
-
-    public void setLocationLatitude(double locationLatitude) {
-        this.locationLatitude = locationLatitude;
-    }
-
-    public double getLocationLongitude() {
-        return locationLongitude;
-    }
-
-    public void setLocationLongitude(double locationLongitude) {
-        this.locationLongitude = locationLongitude;
-    }
-
-    public String getSelectedHelpType() {
-        return selectedHelpType;
-    }
-
-    public void setSelectedHelpType(String selectedHelpType) {
-        this.selectedHelpType = selectedHelpType;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public String getLocationName() {
-        return locationName;
-    }
-
-    public void setLocationName(String locationName) {
-        this.locationName = locationName;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public int getVehicleType() {
-        return RequestHelp.getVehicleFromHelpType(selectedHelpType);
-    }
-
-    public int getVehicleName(){
-        return RequestHelp.getVehicleNameFromHelpType(selectedHelpType);
-    }
-
-    public int getVehicleIcon() {
-        return RequestHelp.getVehicleIconFromHelpType(selectedHelpType);
-    }
-
-    public int getHelpTypeIcon() {
-        return RequestHelp.getIconFromHelpType(selectedHelpType);
-    }
-
-    public int getHelpTypeName() {
-        return RequestHelp.getNameFromHelpType(selectedHelpType);
-    }
-
-    public static List<String> getHelpTypeList(int vehicle){
+    public static List<String> getHelpTypeList(int vehicle) {
         List<String> helpType = new ArrayList<>();
-        if(vehicle == VEHICLE_TYPE_CAR){
+        if (vehicle == VEHICLE_TYPE_CAR) {
             helpType.add(RequestHelp.HELP_TYPE_CAR_FLAT_TIRE);
             helpType.add(RequestHelp.HELP_TYPE_CAR_NO_FUEL);
             helpType.add(RequestHelp.HELP_TYPE_CAR_BROKEN);
-        } else if(vehicle == VEHICLE_TYPE_MOTORCYCLE){
+        } else if (vehicle == VEHICLE_TYPE_MOTORCYCLE) {
             helpType.add(RequestHelp.HELP_TYPE_MOTORCYCLE_FLAT_TIRE);
             helpType.add(RequestHelp.HELP_TYPE_MOTORCYCLE_NO_FUEL);
             helpType.add(RequestHelp.HELP_TYPE_MOTORCYCLE_BROKEN);
@@ -173,17 +111,23 @@ public class RequestHelp implements Parcelable {
 
     public static int getVehicleNameFromHelpType(String helpType) {
         switch (RequestHelp.getVehicleFromHelpType(helpType)) {
-            case VEHICLE_TYPE_CAR: return R.string.help_vehicle_car;
-            case VEHICLE_TYPE_MOTORCYCLE: return R.string.help_vehicle_motorcycle;
-            default: return 0;
+            case VEHICLE_TYPE_CAR:
+                return R.string.help_vehicle_car;
+            case VEHICLE_TYPE_MOTORCYCLE:
+                return R.string.help_vehicle_motorcycle;
+            default:
+                return 0;
         }
     }
 
     public static int getVehicleIconFromHelpType(String helpType) {
         switch (RequestHelp.getVehicleFromHelpType(helpType)) {
-            case VEHICLE_TYPE_CAR: return R.drawable.image_icon_car;
-            case VEHICLE_TYPE_MOTORCYCLE: return R.drawable.image_icon_motorcycle;
-            default: return 0;
+            case VEHICLE_TYPE_CAR:
+                return R.drawable.image_icon_car;
+            case VEHICLE_TYPE_MOTORCYCLE:
+                return R.drawable.image_icon_motorcycle;
+            default:
+                return 0;
         }
     }
 
@@ -219,6 +163,66 @@ public class RequestHelp implements Parcelable {
             return R.string.help_type_no_fuel;
         }
         return 0;
+    }
+
+    public double getLocationLatitude() {
+        return locationLatitude;
+    }
+
+    public void setLocationLatitude(double locationLatitude) {
+        this.locationLatitude = locationLatitude;
+    }
+
+    public double getLocationLongitude() {
+        return locationLongitude;
+    }
+
+    public void setLocationLongitude(double locationLongitude) {
+        this.locationLongitude = locationLongitude;
+    }
+
+    public String getSelectedHelpType() {
+        return selectedHelpType;
+    }
+
+    public void setSelectedHelpType(String selectedHelpType) {
+        this.selectedHelpType = selectedHelpType;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getLocationName() {
+        return locationName;
+    }
+
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
+    }
+
+    public int getVehicleType() {
+        return RequestHelp.getVehicleFromHelpType(selectedHelpType);
+    }
+
+    public int getVehicleName() {
+        return RequestHelp.getVehicleNameFromHelpType(selectedHelpType);
+    }
+
+    public int getVehicleIcon() {
+        return RequestHelp.getVehicleIconFromHelpType(selectedHelpType);
+    }
+
+    public int getHelpTypeIcon() {
+        return RequestHelp.getIconFromHelpType(selectedHelpType);
+    }
+
+    public int getHelpTypeName() {
+        return RequestHelp.getNameFromHelpType(selectedHelpType);
     }
 
     @Override

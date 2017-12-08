@@ -38,14 +38,14 @@ public class GoogleMapResponse implements GoogleMap.CancelableCallback {
 
     @Override
     public void onFinish() {
-        if(mFinishListener != null){
+        if (mFinishListener != null) {
             mFinishListener.onFinish();
         }
     }
 
     @Override
     public void onCancel() {
-        if(mCancelListener != null){
+        if (mCancelListener != null) {
             mCancelListener.onCancel();
         }
     }

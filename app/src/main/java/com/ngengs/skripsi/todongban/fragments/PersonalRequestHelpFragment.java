@@ -54,7 +54,7 @@ import com.ngengs.skripsi.todongban.utils.customviews.BottomSheetResponse;
  * create an instance of this fragment.
  */
 public class PersonalRequestHelpFragment extends Fragment
-        implements MapFragment.OnFragmentCompleteInteractionListener{
+        implements MapFragment.OnFragmentCompleteInteractionListener {
     private static final String TAG = "PersonalRequestHelp";
 
     //    private GoogleMap mGoogleMap;
@@ -289,7 +289,7 @@ public class PersonalRequestHelpFragment extends Fragment
 
     public void cancelEditLocation() {
         this.mEditLocation = false;
-        if(mMap != null){
+        if (mMap != null) {
             mMap.cancelEditLocation();
         }
     }
@@ -346,6 +346,12 @@ public class PersonalRequestHelpFragment extends Fragment
     }
 
     @Override
+    public void onMapFinishMove() {
+        Log.d(TAG, "onMapFinishMove() called");
+        showBottomSheet(true);
+    }
+
+    @Override
     public void onMyLocationReady() {
         Log.d(TAG, "onMyLocationReady() called");
         if (mMyLocationFab.getVisibility() == View.GONE) {
@@ -364,12 +370,6 @@ public class PersonalRequestHelpFragment extends Fragment
     public void onFinishEdit() {
         Log.d(TAG, "onFinishEdit() called");
         mEditLocation = false;
-        showBottomSheet(true);
-    }
-
-    @Override
-    public void onMapFinishMove() {
-        Log.d(TAG, "onMapFinishMove() called");
         showBottomSheet(true);
     }
 

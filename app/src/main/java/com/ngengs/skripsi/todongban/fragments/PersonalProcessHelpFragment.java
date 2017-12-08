@@ -93,6 +93,7 @@ public class PersonalProcessHelpFragment extends Fragment {
     private boolean mCancelProcess;
     private SharedPreferences mSharedPreferences;
     private Handler mHandler;
+    private OnFragmentInteractionListener mListener;
     private Runnable mRunnable = new Runnable() {
         @Override
         public void run() {
@@ -111,8 +112,6 @@ public class PersonalProcessHelpFragment extends Fragment {
             }
         }
     };
-
-    private OnFragmentInteractionListener mListener;
 
     public PersonalProcessHelpFragment() {
         // Required empty public constructor
@@ -192,7 +191,7 @@ public class PersonalProcessHelpFragment extends Fragment {
         });
 
         mSharedPreferences = mContext.getSharedPreferences(Values.SHARED_PREFERENCES_NAME,
-                                                               Context.MODE_PRIVATE);
+                                                           Context.MODE_PRIVATE);
 
         if (mHandler == null) {
             mHandler = new Handler();

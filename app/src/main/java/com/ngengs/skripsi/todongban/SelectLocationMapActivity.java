@@ -31,14 +31,11 @@ import com.ngengs.skripsi.todongban.fragments.MapFragment;
 
 public class SelectLocationMapActivity extends AppCompatActivity
         implements MapFragment.OnFragmentMinimalInteractionListener {
-    private final static String TAG = "SelectLocationMap";
-
     public final static String PARAM_WITH_ADDRESS = "need_address";
-
     public final static String RESULT_LATITUDE = "latitude";
     public final static String RESULT_LONGITUDE = "longitude";
     public final static String RESULT_ADDRESS = "address";
-
+    private final static String TAG = "SelectLocationMap";
     private FloatingActionButton mMapsSelectButton;
     private FloatingActionButton mMapsMyLocationButton;
 

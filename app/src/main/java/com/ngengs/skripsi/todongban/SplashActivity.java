@@ -231,6 +231,37 @@ public class SplashActivity extends AppCompatActivity implements PlayServicesAva
 
     }
 
+    private void checkPlayService() {
+        int playServicesAvailable = mGoogleApiAvailability.isGooglePlayServicesAvailable(this);
+        PlayServicesUtils.checkStatus(playServicesAvailable, this);
+    }
+
+    @Override
+    public void onSuccess() {
+        if (mUser != null) {
+            runPageWithStatusUser(mUser);
+        }
+    }
+
+    @Override
+    public void onError(int resultCode) {
+        Log.e(TAG, "onError: PlayService Error");
+        mTextProcess.setText("Gagal menggunakan Google Play Services");
+        if (mGoogleApiAvailability.isUserResolvableError(resultCode)) {
+            mGoogleApiAvailability.getErrorDialog(this, resultCode, REQUEST_CODE_PLAY_SERVICES)
+                                  .show();
+            ;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_PLAY_SERVICES && resultCode == RESULT_OK) {
+            checkPlayService();
+        }
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -252,36 +283,6 @@ public class SplashActivity extends AppCompatActivity implements PlayServicesAva
             checkAppPermission();
         } else {
             runApp(null, false);
-        }
-    }
-
-    private void checkPlayService() {
-        int playServicesAvailable = mGoogleApiAvailability.isGooglePlayServicesAvailable(this);
-        PlayServicesUtils.checkStatus(playServicesAvailable, this);
-    }
-
-    @Override
-    public void onSuccess() {
-        if (mUser != null) {
-            runPageWithStatusUser(mUser);
-        }
-    }
-
-    @Override
-    public void onError(int resultCode) {
-        Log.e(TAG, "onError: PlayService Error");
-        mTextProcess.setText("Gagal menggunakan Google Play Services");
-        if (mGoogleApiAvailability.isUserResolvableError(resultCode)) {
-            mGoogleApiAvailability.getErrorDialog(this, resultCode, REQUEST_CODE_PLAY_SERVICES)
-                                  .show(); ;
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_PLAY_SERVICES && resultCode == RESULT_OK) {
-            checkPlayService();
         }
     }
 

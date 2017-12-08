@@ -38,14 +38,14 @@ public class BottomSheetResponse extends BottomSheetBehavior.BottomSheetCallback
 
     @Override
     public void onStateChanged(@NonNull View bottomSheet, int newState) {
-        if(mStateListener != null) {
+        if (mStateListener != null) {
             mStateListener.onStateChanged(bottomSheet, newState);
         }
     }
 
     @Override
     public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-        if(mSlideListener != null){
+        if (mSlideListener != null) {
             mSlideListener.onSlide(bottomSheet, slideOffset);
         }
     }

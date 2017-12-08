@@ -36,7 +36,7 @@ public class ApiResponse<T> implements Callback<T> {
     }
 
     public ApiResponse(@NonNull SuccessResponse<T> successResponse,
-                @Nullable ErrorResponse errorResponse) {
+                       @Nullable ErrorResponse errorResponse) {
         this.successResponse = successResponse;
         if (errorResponse != null) {
             this.errorResponse = errorResponse;
@@ -45,7 +45,7 @@ public class ApiResponse<T> implements Callback<T> {
 
     @Override
     public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
-        if(successResponse != null) {
+        if (successResponse != null) {
             T responseBody = response.body();
             if (responseBody instanceof BaseData) {
                 BaseData responseData = (BaseData) responseBody;

@@ -20,7 +20,6 @@ package com.ngengs.skripsi.todongban.utils.networks;
 import com.ngengs.skripsi.todongban.data.remote.CheckStatus;
 import com.ngengs.skripsi.todongban.data.remote.Signup;
 import com.ngengs.skripsi.todongban.data.remote.SingleStringData;
-import com.ngengs.skripsi.todongban.utils.networks.interfaces.LambdaCall;
 
 import java.util.List;
 
@@ -58,8 +57,8 @@ public interface API {
     @FormUrlEncoded
     @POST("api/user/signin")
     Call<SingleStringData> signin(@Field("username") String username,
-                                        @Field("password") String password,
-                                        @Field("device_id") String deviceId);
+                                  @Field("password") String password,
+                                  @Field("device_id") String deviceId);
 //    @FormUrlEncoded
 //    @POST("api/user/signin")
 //    Call<SingleStringData> signin(@Field("username") String username,

@@ -72,6 +72,10 @@ public class HelpTypeAdapter extends RecyclerView.Adapter<HelpTypeAdapter.ViewHo
         mListener = clickListener;
     }
 
+    public interface OnClickListener {
+        void onClick(@NonNull String helpTypeId);
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
         ImageView mImageHelpType;
         ImageView mImageVehicleType;
@@ -88,9 +92,5 @@ public class HelpTypeAdapter extends RecyclerView.Adapter<HelpTypeAdapter.ViewHo
                 }
             });
         }
-    }
-
-    public interface OnClickListener {
-        void onClick(@NonNull String helpTypeId);
     }
 }

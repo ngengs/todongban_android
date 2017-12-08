@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 public class TestingActivity extends AppCompatActivity {
@@ -58,7 +57,7 @@ public class TestingActivity extends AppCompatActivity {
                 Log.d(TAG, "onActivityResult: latitude: " + latitude + ", longitude: " + longitude);
                 String address = data.getStringExtra(SelectLocationMapActivity.RESULT_ADDRESS);
                 if (address != null) {
-                    Log.d(TAG, "onActivityResult: address: "+address);
+                    Log.d(TAG, "onActivityResult: address: " + address);
                 } else {
                     Log.d(TAG, "onActivityResult: address empty");
                 }

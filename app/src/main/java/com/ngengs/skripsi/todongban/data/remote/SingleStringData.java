@@ -21,19 +21,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
-import com.ngengs.skripsi.todongban.data.local.User;
 
-public class SingleStringData extends BaseData implements Parcelable{
-    @SerializedName("data")
-    private String data;
-
-    public SingleStringData() {
-    }
-
-    protected SingleStringData(Parcel in) {
-        data = in.readString();
-    }
-
+public class SingleStringData extends BaseData implements Parcelable {
     public static final Creator<SingleStringData> CREATOR = new Creator<SingleStringData>() {
         @Override
         public SingleStringData createFromParcel(Parcel in) {
@@ -45,6 +34,15 @@ public class SingleStringData extends BaseData implements Parcelable{
             return new SingleStringData[size];
         }
     };
+    @SerializedName("data")
+    private String data;
+
+    public SingleStringData() {
+    }
+
+    protected SingleStringData(Parcel in) {
+        data = in.readString();
+    }
 
     public String getData() {
         return data;

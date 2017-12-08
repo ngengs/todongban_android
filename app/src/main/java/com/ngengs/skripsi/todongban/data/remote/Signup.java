@@ -23,18 +23,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 @SuppressWarnings("WeakerAccess")
-public class Signup extends BaseData implements Parcelable{
-    @SerializedName("data")
-    private SignupData data;
-
-    public Signup() {
-    }
-
-    protected Signup(Parcel in) {
-        super(in);
-        data = in.readParcelable(SignupData.class.getClassLoader());
-    }
-
+public class Signup extends BaseData implements Parcelable {
     public static final Creator<Signup> CREATOR = new Creator<Signup>() {
         @Override
         public Signup createFromParcel(Parcel in) {
@@ -46,6 +35,16 @@ public class Signup extends BaseData implements Parcelable{
             return new Signup[size];
         }
     };
+    @SerializedName("data")
+    private SignupData data;
+
+    public Signup() {
+    }
+
+    protected Signup(Parcel in) {
+        super(in);
+        data = in.readParcelable(SignupData.class.getClassLoader());
+    }
 
     public SignupData getData() {
         return data;

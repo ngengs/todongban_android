@@ -21,6 +21,17 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class PeopleHelp implements Parcelable {
+    public static final Creator<PeopleHelp> CREATOR = new Creator<PeopleHelp>() {
+        @Override
+        public PeopleHelp createFromParcel(Parcel in) {
+            return new PeopleHelp(in);
+        }
+
+        @Override
+        public PeopleHelp[] newArray(int size) {
+            return new PeopleHelp[size];
+        }
+    };
     private String id;
     private String name;
     private int badgeType;
@@ -42,18 +53,6 @@ public class PeopleHelp implements Parcelable {
         userType = in.readInt();
         distance = in.readDouble();
     }
-
-    public static final Creator<PeopleHelp> CREATOR = new Creator<PeopleHelp>() {
-        @Override
-        public PeopleHelp createFromParcel(Parcel in) {
-            return new PeopleHelp(in);
-        }
-
-        @Override
-        public PeopleHelp[] newArray(int size) {
-            return new PeopleHelp[size];
-        }
-    };
 
     public String getId() {
         return id;

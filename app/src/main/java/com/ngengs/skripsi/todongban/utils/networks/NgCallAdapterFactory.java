@@ -38,12 +38,12 @@ import retrofit2.Retrofit;
 
 public final class NgCallAdapterFactory<T> extends CallAdapter.Factory {
 
-    static NgCallAdapterFactory create() {
-        return new NgCallAdapterFactory();
-    }
-
     private NgCallAdapterFactory() {
 
+    }
+
+    static NgCallAdapterFactory create() {
+        return new NgCallAdapterFactory();
     }
 
     @Nullable
@@ -73,10 +73,12 @@ public final class NgCallAdapterFactory<T> extends CallAdapter.Factory {
                     public void enqueue() {
                         call.enqueue(new ApiResponse<>());
                     }
+
                     @Override
                     public void enqueue(@NonNull SuccessResponse<T> successResponse) {
                         call.enqueue(new ApiResponse<>(successResponse, null));
                     }
+
                     @Override
                     public void enqueue(@NonNull SuccessResponse<T> successResponse,
                                         ErrorResponse errorResponse) {
@@ -109,13 +111,13 @@ public final class NgCallAdapterFactory<T> extends CallAdapter.Factory {
                     }
 
                     @Override
-                    public Call<T> clone() {
-                        return call.clone();
+                    public Request request() {
+                        return call.request();
                     }
 
                     @Override
-                    public Request request() {
-                        return call.request();
+                    public Call<T> clone() {
+                        return call.clone();
                     }
                 };
             }

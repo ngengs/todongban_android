@@ -25,7 +25,7 @@ import com.google.android.gms.common.ConnectionResult;
 
 public final class PlayServicesUtils {
 
-    public static void checkStatus(int playServiceStatus, PlayServicesAvailableResponse callback){
+    public static void checkStatus(int playServiceStatus, PlayServicesAvailableResponse callback) {
         switch (playServiceStatus) {
             case ConnectionResult.API_UNAVAILABLE:
                 callback.onError(playServiceStatus);

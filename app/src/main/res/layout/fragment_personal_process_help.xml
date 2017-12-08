@@ -94,24 +94,24 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:visibility="gone"
-        app:srcCompat="@drawable/ic_cancel"
+        app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/process_waiting_text"
-        app:fabSize="mini"/>
+        app:srcCompat="@drawable/ic_cancel"/>
 
     <!--<ImageView-->
-        <!--android:id="@+id/process_waiting_cancel"-->
-        <!--android:layout_width="64dp"-->
-        <!--android:layout_height="64dp"-->
-        <!--android:tint="#FFF"-->
-        <!--android:visibility="gone"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/process_waiting_text"-->
-        <!--app:srcCompat="@drawable/ic_cancel"/>-->
+    <!--android:id="@+id/process_waiting_cancel"-->
+    <!--android:layout_width="64dp"-->
+    <!--android:layout_height="64dp"-->
+    <!--android:tint="#FFF"-->
+    <!--android:visibility="gone"-->
+    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/process_waiting_text"-->
+    <!--app:srcCompat="@drawable/ic_cancel"/>-->
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/people_help_data_layout"
@@ -134,25 +134,29 @@
                 android:id="@+id/toolbar_people_help"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:background="?colorPrimary"
                 app:title="Daftar Pemberi Bantuan"
-                app:titleTextColor="#FFF"
-                android:background="?colorPrimary"/>
+                app:titleTextColor="#FFF"/>
+
             <TextView
-                android:padding="@dimen/margin_padding_default"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#FFF"
-                android:text="Pengguna Biasa"/>
+                android:padding="@dimen/margin_padding_default"
+                android:text="Pengguna Biasa"
+                android:textColor="#FFF"/>
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_personal_helper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+
             <TextView
-                android:padding="@dimen/margin_padding_default"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#FFF"
-                android:text="Bengkel"/>
+                android:padding="@dimen/margin_padding_default"
+                android:text="Bengkel"
+                android:textColor="#FFF"/>
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_garage_helper"
                 android:layout_width="match_parent"
@@ -162,14 +166,14 @@
                 android:id="@+id/button_cancel_process"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_padding_default"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="4dp"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="4dp"
                 android:layout_marginStart="4dp"
-                android:theme="@style/AppTheme.ButtonAccent"
-                android:text="Batal"/>
+                android:layout_marginTop="@dimen/margin_padding_default"
+                android:text="Batal"
+                android:theme="@style/AppTheme.ButtonAccent"/>
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>

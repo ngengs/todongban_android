@@ -23,5 +23,6 @@ package com.ngengs.skripsi.todongban.utils.playservices;
 
 public interface PlayServicesAvailableResponse {
     void onSuccess();
+
     void onError(int resultCode);
 }

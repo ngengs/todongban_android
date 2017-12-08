@@ -55,8 +55,8 @@
         android:id="@+id/scrollSignUp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:behavior_overlapTop="45dp"
         android:fillViewport="true"
+        app:behavior_overlapTop="45dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <FrameLayout

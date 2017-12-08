@@ -48,7 +48,7 @@ public class PeopleHelpNotificationHandler {
         PeopleHelp peopleHelp = new PeopleHelp(helpId, name, badge, userType, distance);
         SharedPreferences sharedPreferences = context.getSharedPreferences(
                 Values.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-        if(PeopleHelpNotificationHandler.isCanRun(sharedPreferences)) {
+        if (PeopleHelpNotificationHandler.isCanRun(sharedPreferences)) {
             PeopleHelpNotificationHandler.saveData(sharedPreferences, peopleHelp);
             PeopleHelpNotificationHandler.sendNotification(context);
             PeopleHelpNotificationHandler.sendBroadcast(context, peopleHelp);

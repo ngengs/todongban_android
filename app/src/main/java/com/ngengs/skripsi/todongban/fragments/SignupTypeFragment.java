@@ -37,10 +37,8 @@ import com.ngengs.skripsi.todongban.data.local.User;
  * create an instance of this fragment.
  */
 public class SignupTypeFragment extends Fragment {
-    private static final String TAG = "SignupTypeFragment";
-
     public static final String ARG_USER = "user";
-
+    private static final String TAG = "SignupTypeFragment";
     private User mUser;
     private OnFragmentTypeInteractionListener mListener;
 
@@ -88,14 +86,6 @@ public class SignupTypeFragment extends Fragment {
         return view;
     }
 
-    private void initLayout(View view) {
-        Button mButtonSignupTypePersonal = view.findViewById(R.id.buttonSignupTypePersonal);
-        Button mButtonSignupTypeGarage = view.findViewById(R.id.buttonSignupTypeGarage);
-
-        mButtonSignupTypePersonal.setOnClickListener(v -> onButtonSignupTypePersonalClicked());
-        mButtonSignupTypeGarage.setOnClickListener(v -> onButtonSignupTypeGarageClicked());
-    }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -105,6 +95,14 @@ public class SignupTypeFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    private void initLayout(View view) {
+        Button mButtonSignupTypePersonal = view.findViewById(R.id.buttonSignupTypePersonal);
+        Button mButtonSignupTypeGarage = view.findViewById(R.id.buttonSignupTypeGarage);
+
+        mButtonSignupTypePersonal.setOnClickListener(v -> onButtonSignupTypePersonalClicked());
+        mButtonSignupTypeGarage.setOnClickListener(v -> onButtonSignupTypeGarageClicked());
     }
 
     public void onButtonSignupTypePersonalClicked() {

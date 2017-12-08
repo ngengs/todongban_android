@@ -52,12 +52,11 @@ import retrofit2.Response;
 public class MainActivityPersonal extends AppCompatActivity
         implements PersonalRequestHelpFragment.OnFragmentInteractionListener,
         PersonalProcessHelpFragment.OnFragmentInteractionListener {
-    private static final String TAG = "MainActivityPersonal";
-
     public static final String ARGS_USER = "USER";
     public static final String ARGS_BROADCAST_FILTER
             = "com.ngengs.skripsi.todongban.UPDATE_HELPER_LIST";
     public static final String ARGS_BROADCAST_DATA = "PEOPLE_HELP";
+    private static final String TAG = "MainActivityPersonal";
     private User mUser;
     private String mToken;
     private API mApi;
@@ -114,6 +113,14 @@ public class MainActivityPersonal extends AppCompatActivity
             initFragment();
 //            initPlayServices();
 //            initMaps();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mHelpProcess) {
+            unregisterReceiver(mBroadcastReceiver);
         }
     }
 
@@ -176,14 +183,6 @@ public class MainActivityPersonal extends AppCompatActivity
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mHelpProcess) {
-            unregisterReceiver(mBroadcastReceiver);
-        }
-    }
-
-    @Override
     public void onBackPressed() {
         if (mFragment != null) {
             if (mFragment instanceof PersonalRequestHelpFragment) {
@@ -198,7 +197,7 @@ public class MainActivityPersonal extends AppCompatActivity
                 }
             }
         }
-        if(mDrawer.isDrawerOpen(GravityCompat.START)) {
+        if (mDrawer.isDrawerOpen(GravityCompat.START)) {
             mDrawer.closeDrawer(GravityCompat.START);
             return;
         }

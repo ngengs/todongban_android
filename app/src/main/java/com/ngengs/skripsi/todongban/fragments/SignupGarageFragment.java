@@ -91,52 +91,12 @@ public class SignupGarageFragment extends Fragment {
         return fragment;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                                       +
-                                       " must implement OnFragmentSignupBasicInteractionListener");
-        }
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mUser = getArguments().getParcelable(ARG_USER);
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_signup_garage, container, false);
-        mContext = getContext();
-
-        SignupActivity mSignupActivity = (SignupActivity) getActivity();
-        if (mSignupActivity != null) mSignupActivity.setAppTitle(R.string.title_activity_testing);
-        initMaps();
-        return view;
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-
     private void initMaps() {
         Log.d(TAG, "initMaps() called");
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this::onMapReady);
     }
-
 
     public void onMapReady(GoogleMap googleMap) {
         Log.d(TAG, "onMapReady() called with: googleMap = [" + googleMap + "]");
@@ -183,7 +143,45 @@ public class SignupGarageFragment extends Fragment {
         }
     }
 
-    private void buttonSubmit(){
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                                       +
+                                       " must implement OnFragmentSignupBasicInteractionListener");
+        }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mUser = getArguments().getParcelable(ARG_USER);
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_signup_garage, container, false);
+        mContext = getContext();
+
+        SignupActivity mSignupActivity = (SignupActivity) getActivity();
+        if (mSignupActivity != null) mSignupActivity.setAppTitle(R.string.title_activity_testing);
+        initMaps();
+        return view;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    private void buttonSubmit() {
 
     }
 

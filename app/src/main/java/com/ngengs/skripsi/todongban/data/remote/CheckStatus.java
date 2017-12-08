@@ -23,17 +23,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 import com.ngengs.skripsi.todongban.data.local.User;
 
-public class CheckStatus extends BaseData implements Parcelable{
-    @SerializedName("data")
-    private User data;
-
-    public CheckStatus() {
-    }
-
-    protected CheckStatus(Parcel in) {
-        data = in.readParcelable(User.class.getClassLoader());
-    }
-
+public class CheckStatus extends BaseData implements Parcelable {
     public static final Creator<CheckStatus> CREATOR = new Creator<CheckStatus>() {
         @Override
         public CheckStatus createFromParcel(Parcel in) {
@@ -45,6 +35,15 @@ public class CheckStatus extends BaseData implements Parcelable{
             return new CheckStatus[size];
         }
     };
+    @SerializedName("data")
+    private User data;
+
+    public CheckStatus() {
+    }
+
+    protected CheckStatus(Parcel in) {
+        data = in.readParcelable(User.class.getClassLoader());
+    }
 
     public User getData() {
         return data;

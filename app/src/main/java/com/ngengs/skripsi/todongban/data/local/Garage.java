@@ -20,7 +20,18 @@ package com.ngengs.skripsi.todongban.data.local;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Garage implements Parcelable{
+public class Garage implements Parcelable {
+    public static final Creator<Garage> CREATOR = new Creator<Garage>() {
+        @Override
+        public Garage createFromParcel(Parcel in) {
+            return new Garage(in);
+        }
+
+        @Override
+        public Garage[] newArray(int size) {
+            return new Garage[size];
+        }
+    };
     private String id;
     private User user;
     private String name;
@@ -44,18 +55,6 @@ public class Garage implements Parcelable{
         latitude = in.readDouble();
         longitude = in.readDouble();
     }
-
-    public static final Creator<Garage> CREATOR = new Creator<Garage>() {
-        @Override
-        public Garage createFromParcel(Parcel in) {
-            return new Garage(in);
-        }
-
-        @Override
-        public Garage[] newArray(int size) {
-            return new Garage[size];
-        }
-    };
 
     public String getId() {
         return id;

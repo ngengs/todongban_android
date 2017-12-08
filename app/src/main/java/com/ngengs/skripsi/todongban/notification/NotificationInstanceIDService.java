@@ -30,8 +30,6 @@ import com.ngengs.skripsi.todongban.utils.networks.API;
 import com.ngengs.skripsi.todongban.utils.networks.ApiResponse;
 import com.ngengs.skripsi.todongban.utils.networks.NetworkHelpers;
 
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 public class NotificationInstanceIDService extends FirebaseInstanceIdService {

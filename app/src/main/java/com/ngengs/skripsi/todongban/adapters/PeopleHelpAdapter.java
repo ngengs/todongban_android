@@ -62,17 +62,21 @@ public class PeopleHelpAdapter extends RecyclerView.Adapter<PeopleHelpAdapter.Vi
         return mData.size();
     }
 
-    public void addData(PeopleHelp data){
+    public void addData(PeopleHelp data) {
         mData.add(data);
         notifyItemInserted(getItemCount() - 1);
     }
 
-    public List<PeopleHelp> getData(){
+    public List<PeopleHelp> getData() {
         return mData;
     }
 
     public void setOnClickListener(OnClickListener clickListener) { mListener = clickListener; }
 
+
+    public interface OnClickListener {
+        void onClick(@NonNull String helpResponseId);
+    }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView mPeopleHelpName;
@@ -87,15 +91,10 @@ public class PeopleHelpAdapter extends RecyclerView.Adapter<PeopleHelpAdapter.Vi
             this.mPeopleHelpDistance = view.findViewById(R.id.text_people_help_distance);
             this.mPeopleHelpLayout = view.findViewById(R.id.text_people_help_layout);
             mPeopleHelpLayout.setOnClickListener(v -> {
-                if(mListener!= null){
+                if (mListener != null) {
                     mListener.onClick(mData.get(getAdapterPosition()).getId());
                 }
             });
         }
-    }
-
-
-    public interface OnClickListener {
-        void onClick(@NonNull String helpResponseId);
     }
 }

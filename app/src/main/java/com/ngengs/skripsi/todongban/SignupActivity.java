@@ -64,7 +64,7 @@ public class SignupActivity extends AppCompatActivity implements
     private SharedPreferences mSharedPreferences;
 
 
-//    private User mUser;
+    //    private User mUser;
 //    private Garage mGarage;
     private API mApi;
 
@@ -116,7 +116,7 @@ public class SignupActivity extends AppCompatActivity implements
 //        }
     }
 
-    private void goToPageBasic(){
+    private void goToPageBasic() {
         mFragmentManager.beginTransaction()
                         .add(mFrameLayoutSignUp.getId(), SignupBasicFragment.newInstance(null))
                         .commit();
@@ -145,6 +145,16 @@ public class SignupActivity extends AppCompatActivity implements
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_signin) {
+            Intent intent = new Intent(this, SigninActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onBackPressed() {
         if (mFragmentManager.getBackStackEntryCount() > 0) {
             mFragmentManager.popBackStack();
@@ -158,16 +168,6 @@ public class SignupActivity extends AppCompatActivity implements
 //        mUser.setType(userType);
         if (userData.getType() == User.TYPE_PERSONAL) submitNewAccountPersonal(userData);
         else if (userData.getType() == User.TYPE_GARAGE) goToPageGarage(userData);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_signin) {
-            Intent intent = new Intent(this, SigninActivity.class);
-            startActivity(intent);
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void submitNewAccountPersonal(User user) {

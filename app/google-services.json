@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "877213685525",
+    "firebase_url": "https://todong-ban-1501457539054.firebaseio.com",
+    "project_id": "todong-ban-1501457539054",
+    "storage_bucket": "todong-ban-1501457539054.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:877213685525:android:301c2c0a24c9b78d",
+        "android_client_info": {
+          "package_name": "com.ngengs.skripsi.todongban"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "877213685525-h2j4gu3n9upv7m531n3c57mvq4as3h74.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ngengs.skripsi.todongban",
+            "certificate_hash": "b8d11cdd662a411d2dcff10aa1be0b9ed35e57e4"
+          }
+        },
+        {
+          "client_id": "877213685525-v6t0p8o416o4krilbkvn27q7toucr1a6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBajJUJh32j29HLrZa7uPY8RFfj8RkKrNM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "877213685525-v6t0p8o416o4krilbkvn27q7toucr1a6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

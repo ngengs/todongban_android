@@ -18,6 +18,7 @@
 package com.ngengs.skripsi.todongban;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -29,32 +30,63 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.firebase.jobdispatcher.Constraint;
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.GooglePlayDriver;
+import com.firebase.jobdispatcher.Job;
+import com.firebase.jobdispatcher.Lifetime;
+import com.firebase.jobdispatcher.RetryStrategy;
+import com.firebase.jobdispatcher.Trigger;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.ngengs.skripsi.todongban.data.enumerations.Values;
+import com.ngengs.skripsi.todongban.data.local.User;
+import com.ngengs.skripsi.todongban.data.remote.CheckStatus;
+import com.ngengs.skripsi.todongban.services.LocationChangedService;
+import com.ngengs.skripsi.todongban.utils.networks.API;
+import com.ngengs.skripsi.todongban.utils.networks.ApiResponse;
+import com.ngengs.skripsi.todongban.utils.networks.NetworkHelpers;
+import com.ngengs.skripsi.todongban.utils.playservices.PlayServicesAvailableResponse;
+import com.ngengs.skripsi.todongban.utils.playservices.PlayServicesUtils;
 
 import java.util.Arrays;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import retrofit2.Response;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends AppCompatActivity implements PlayServicesAvailableResponse {
     private static final String TAG = "SplashActivity";
 
     // Permission Variable
     private static final String[] PERMISSION_ALL = {Manifest.permission.ACCESS_FINE_LOCATION,
+                                                    Manifest.permission.ACCESS_COARSE_LOCATION,
                                                     Manifest.permission.CAMERA,
                                                     Manifest.permission.READ_EXTERNAL_STORAGE,
                                                     Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private static final int REQUEST_CODE_PERMISSION = 1;
+    private static final int REQUEST_CODE_PLAY_SERVICES = 20;
 
     // View Binding
-    @BindView(R.id.textProcess)
-    TextView mTextProcess;
+    private TextView mTextProcess;
+
+    // Connection
+    @SuppressWarnings("FieldCanBeLocal")
+    private API mApi;
+
+    private User mUser;
+    private SharedPreferences mSharedPreferences;
+    private GoogleApiAvailability mGoogleApiAvailability;
+    private String mToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        ButterKnife.bind(this);
+        initLayout();
+        mGoogleApiAvailability = GoogleApiAvailability.getInstance();
         runApp(savedInstanceState, true);
+    }
+
+    private void initLayout() {
+        mTextProcess = findViewById(R.id.textProcess);
     }
 
     @SuppressWarnings("UnusedParameters")
@@ -69,19 +101,83 @@ public class SplashActivity extends AppCompatActivity {
         // Check if user has logged in
         Log.d(TAG, "onCreate: check user data");
         mTextProcess.setText(R.string.splashCheckUser);
-        SharedPreferences sharedPreferences = getSharedPreferences("TodongBanPreference",
-                                                                   MODE_PRIVATE);
-        String token = sharedPreferences.getString("token", null);
-        // TODO Handle login or main screen from Splashscreen
-        //noinspection StatementWithEmptyBody
-        if (TextUtils.isEmpty(token)) {
-            Log.d(TAG, "onCreate: run login");
-            // Show Sign In / Sign Up Screen
+        mSharedPreferences = getSharedPreferences(Values.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+        mToken = mSharedPreferences.getString(Values.SHARED_PREFERENCES_KEY_TOKEN, null);
+        Log.d(TAG, "runApp: token:" + mToken);
+        // TODO Handle main screen from SplashScreen
+        if (TextUtils.isEmpty(mToken)) {
+            Log.d(TAG, "mToken: run sign in / sign up");
+            runPageWithoutToken(false);
+        } else {
+            Log.d(TAG, "onCreate: token not empty");
+            checkToken();
         }
-        else {
-            Log.d(TAG, "onCreate: run home");
+    }
+
+    private void runPageWithoutToken(boolean clearToken) {
+        Log.d(TAG, "runPageWithoutToken() called with: clearExistToken = [" + clearToken + "]");
+        if (clearToken) {
+            mSharedPreferences.edit().putString(Values.SHARED_PREFERENCES_KEY_TOKEN, null).apply();
+        }
+        Intent intent = new Intent(this, SignupActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void runPageWithStatusUser(User user) {
+        Log.d(TAG, "runPageWithStatusUser() called with: statusUser = [" + user + "]");
+        Intent intent = null;
+        if (user.getStatus() == User.STATUS_DEACTIVE) {
+            intent = new Intent(this, WaitVerificationActivity.class);
+
+        } else if (user.getStatus() == User.STATUS_ACTIVE) {
+            mSharedPreferences.edit()
+                              .putInt(Values.SHARED_PREFERENCES_KEY_USER_TYPE, user.getType())
+                              .apply();
             // Show Main Screen
+            if (user.getType() == User.TYPE_PERSONAL) {
+                FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(
+                        new GooglePlayDriver(this));
+                dispatcher.cancelAll();
+                Bundle jobBundle = new Bundle();
+                jobBundle.putString(LocationChangedService.PARAM_TOKEN, mToken);
+                jobBundle.putInt(LocationChangedService.PARAM_TYPE, user.getType());
+                Job job = dispatcher
+                        .newJobBuilder()
+                        .setService(LocationChangedService.class)
+                        .setTag("job_update_location")
+                        .setConstraints(Constraint.ON_ANY_NETWORK)
+                        .setLifetime(Lifetime.FOREVER)
+                        .setRecurring(true)
+                        .setReplaceCurrent(true)
+                        .setTrigger(Trigger.executionWindow(10 * 60, 20 * 60))
+                        .setRetryStrategy(RetryStrategy.DEFAULT_LINEAR)
+                        .setExtras(jobBundle)
+                        .build();
+                dispatcher.mustSchedule(job);
+                intent = new Intent(this, MainActivityPersonal.class);
+                intent.putExtra(MainActivityPersonal.ARGS_USER, user);
+            } else {
+                intent = new Intent(this, MainActivityGarage.class);
+            }
+
+        } else {
+//            mSharedPreferences.edit().putString("token", null).apply();
+            // Show Login Page
+//            intent = new Intent(this, SignupActivity.class);
+            runPageWithoutToken(true);
         }
+        if (intent != null) {
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    private void checkToken() {
+        Log.d(TAG, "checkToken() called with: token = [" + mToken + "]");
+        mApi = NetworkHelpers.provideAPI(this);
+        mApi.checkStatus(NetworkHelpers.authorizationHeader(mToken))
+            .enqueue(new ApiResponse<>(this::checkUserSuccess, this::checkUserFailure));
     }
 
     /**
@@ -127,8 +223,7 @@ public class SplashActivity extends AppCompatActivity {
                         .onPositive((dialog, wich) -> requestPermissions(PERMISSION_ALL,
                                                                          REQUEST_CODE_PERMISSION))
                         .show();
-            }
-            else {
+            } else {
                 // Request permission without explanation
                 requestPermissions(PERMISSION_ALL, REQUEST_CODE_PERMISSION);
             }
@@ -155,9 +250,57 @@ public class SplashActivity extends AppCompatActivity {
         // Request permission again when user denied
         if (shouldRequestAgain) {
             checkAppPermission();
-        }
-        else {
+        } else {
             runApp(null, false);
         }
+    }
+
+    private void checkPlayService() {
+        int playServicesAvailable = mGoogleApiAvailability.isGooglePlayServicesAvailable(this);
+        PlayServicesUtils.checkStatus(playServicesAvailable, this);
+    }
+
+    @Override
+    public void onSuccess() {
+        if (mUser != null) {
+            runPageWithStatusUser(mUser);
+        }
+    }
+
+    @Override
+    public void onError(int resultCode) {
+        Log.e(TAG, "onError: PlayService Error");
+        mTextProcess.setText("Gagal menggunakan Google Play Services");
+        if (mGoogleApiAvailability.isUserResolvableError(resultCode)) {
+            mGoogleApiAvailability.getErrorDialog(this, resultCode, REQUEST_CODE_PLAY_SERVICES)
+                                  .show(); ;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_PLAY_SERVICES && resultCode == RESULT_OK) {
+            checkPlayService();
+        }
+    }
+
+    private void checkUserSuccess(Response<CheckStatus> response) {
+        Log.d(TAG, "checkUserSuccess() called with: response = [" + response + "]");
+        CheckStatus checkStatus = response.body();
+        if (checkStatus != null) {
+//            runPageWithStatusUser(checkStatus.getData());
+            mUser = checkStatus.getData();
+            checkPlayService();
+        } else {
+            checkUserFailure(new Throwable("Data empty"));
+            mTextProcess.setText("Data login telah kadaluarsa");
+            runPageWithoutToken(true);
+        }
+    }
+
+    private void checkUserFailure(Throwable t) {
+        Log.e(TAG, "onFailure: ", t);
+        mTextProcess.setText("Terjadi kesalahan pada server");
     }
 }

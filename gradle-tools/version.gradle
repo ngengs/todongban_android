@@ -1,0 +1,169 @@
+/*==============================================================================
+ Copyright (c) 2017 Rizky Kharisma (@ngengs)
+
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ =============================================================================*/
+
+// Versioning file definition
+def versionProperties
+def versionPropertiesFile = rootProject.file("app/version.properties")
+if (versionPropertiesFile.exists()) {
+    versionProperties = new Properties()
+    versionProperties.load(new FileInputStream(versionPropertiesFile))
+} else {
+    throw new RuntimeException('Version properties file not Found')
+}
+
+class AppVersion {
+    private int major
+    private int minor
+    private int patch
+    private int build
+    private String copyRight
+    private def file
+
+    def AppVersion(properties, copyRight, file) {
+        major = properties['VERSION_MAJOR'] as int
+        minor = properties['VERSION_MINOR'] as int
+        patch = properties['VERSION_PATCH'] as int
+        build = properties['VERSION_BUILD'] as int
+        this.copyRight = copyRight
+        this.file = file
+    }
+
+    int getMajor() {
+        return major
+    }
+
+    int getMinor() {
+        return minor
+    }
+
+    int getPatch() {
+        return patch
+    }
+
+    int getBuild() {
+        return build
+    }
+
+    def versionCode() {
+        return (major * 10000000) + (minor * 100000) + (patch * 100) + build
+    }
+
+    String versionName() {
+        return "${major}.${minor}.${patch}"
+    }
+
+    def bumpMajor() {
+        major = major + 1
+        minor = 0
+        patch = 0
+        build = build + 1
+    }
+
+    def bumpMinor() {
+        minor = minor + 1
+        patch = 0
+        build = build + 1
+    }
+
+    def bumpPatch() {
+        patch = patch + 1
+        build = build + 1
+    }
+
+    def saveVersion() {
+        println "Updating data..."
+        file.text = """${copyRight}
+# Use gradle task instead touch this file
+#
+# Available command:
+# updateMajor
+# updateMinor
+# updatePatch
+#
+# Version order in application will be MAJOR.MINOR.PATCH and BUILD is for counter only
+# Update time: ${new Date()}
+VERSION_MAJOR=${major}
+VERSION_MINOR=${minor}
+VERSION_PATCH=${patch}
+VERSION_BUILD=${build}
+"""
+    }
+}
+
+def appVersion = new AppVersion(versionProperties, rootProject.ext.copyrightHeader, rootProject.file("app/version.properties"))
+
+def passVersionToRootProject(AppVersion version) {
+    rootProject.ext.versionMajor = version.getMajor()
+    rootProject.ext.versionMinor = version.getMinor()
+    rootProject.ext.versionPatch = version.getPatch()
+    rootProject.ext.versionBuild = version.getBuild()
+    rootProject.ext.versionCode = version.versionCode()
+    rootProject.ext.versionName = version.versionName()
+}
+
+passVersionToRootProject(appVersion)
+
+task updateMajor {
+    doLast {
+        println "Bump Major version..."
+        println "Preparing data..."
+        println "From:\t${appVersion.getMajor()}"
+        appVersion.bumpMajor()
+        println "To:\t${appVersion.getMajor()}"
+        println "Version target:\t${appVersion.versionName()}"
+        passVersionToRootProject(appVersion)
+        appVersion.saveVersion()
+    }
+}
+
+task updateMinor {
+    doLast {
+        println "Bump Minor version..."
+        println "Preparing data..."
+        println "From:\t${appVersion.getMinor()}"
+        appVersion.bumpMinor()
+        println "To:\t${appVersion.getMinor()}"
+        println "Version target:\t${appVersion.versionName()}"
+        passVersionToRootProject(appVersion)
+        appVersion.saveVersion()
+    }
+}
+
+task updatePatch {
+    doLast {
+        println "Bump Patch version..."
+        println "Preparing data..."
+        println "From:\t${appVersion.getPatch()}"
+        appVersion.bumpPatch()
+        println "To:\t${appVersion.getPatch()}"
+        println "Version target:\t${appVersion.versionName()}"
+        passVersionToRootProject(appVersion)
+        appVersion.saveVersion()
+    }
+}
+
+task checkVersionCode {
+    doLast {
+        println appVersion.versionCode()
+    }
+}
+
+task checkVersionName {
+    doLast {
+        println appVersion.versionName()
+    }
+}

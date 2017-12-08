@@ -17,9 +17,39 @@
 
 <resources>
     <string name="appName">Todong Ban</string>
+    <string name="appNameShort">Todong</string>
     <string name="splashCheckPermission">Memeriksa perizinan…</string>
     <string name="ok">OK</string>
+    <string name="cancel">Batal</string>
     <string name="explanationPermissionDetail">Perizinan lokasi digunakan untuk mendapatkan lokasi terkini anda.\nPerizinan kamera dan penyimpanan digunakan untuk mendapatkan foto profile dan lainnya</string>
     <string name="explanationPermissionTitle">Aplikasi membutuhkan perizinan Lokasi, Kamera dan Penyimpanan</string>
     <string name="splashCheckUser">Memeriksa status pengguna…</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="title_signup">Daftar Baru</string>
+    <string name="title_signup_as">Daftar Baru Sebagai</string>
+    <string name="title_signin">Masuk</string>
+    <string name="button_signup_personal">Daftar Sebagai Akun Pribadi</string>
+    <string name="button_signup_garage">Daftar Sebagai Akun Bengkel</string>
+    <string name="under_verification_detail">Akun anda sedang dalam proses verifikasi, silahkan menunggu hingga proses verifikasi selesai</string>
+
+    <string name="help_vehicle_motorcycle">Sepeda Motor</string>
+    <string name="help_vehicle_car">Mobil</string>
+    <string name="help_type_flat_tire">Ban Bocor/Kempis</string>
+    <string name="help_type_no_fuel">Bensin Habis</string>
+    <string name="help_type_broken">Mogok</string>
+
+    <string name="help_confirmation_title">Konfirmasi Permintaan Bantuan</string>
+    <string name="help_confirmation_message">Anda meminta bantuan pada kendaraan %1$s dengan jenis bantuan %2$s</string>
+    <string name="help_confirmation_message_hint">Pesan Anda</string>
+
+    <string name="notification_message_found_people_helper">Menemukan sesorang yang bersedia membantu</string>
+    <string name="title_activity_testing">TestingActivity</string>
+    <string name="title_select_location">Pilih Lokasi</string>
+
 </resources>

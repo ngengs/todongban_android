@@ -1,3 +1,9 @@
 <component name="ProjectDictionaryState">
-  <dictionary name="ngengs" />
+  <dictionary name="ngengs">
+    <words>
+      <w>signin</w>
+      <w>signout</w>
+      <w>signup</w>
+    </words>
+  </dictionary>
 </component>

@@ -1,5 +1,8 @@
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
+apply from: rootProject.file('gradle-tools/server.gradle')
+apply from: rootProject.file('gradle-tools/apikey.gradle')
+apply from: rootProject.file('gradle-tools/version.gradle')
+apply from: rootProject.file('gradle-tools/keystore.gradle')
 
 /*==============================================================================
  Copyright (c) 2017 Rizky Kharisma (@ngengs)
@@ -10,7 +13,7 @@ apply plugin: 'me.tatarka.retrolambda'
  You may obtain a copy of the License at
 
       http://www.apache.org/licenses/LICENSE-2.0
-
+ 
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,86 +21,69 @@ apply plugin: 'me.tatarka.retrolambda'
  limitations under the License.
  =============================================================================*/
 
-// Signing key definition
-def keystoreProperties = null
-def keystorePropertiesFile = rootProject.file("app/keystore.properties")
-if (keystorePropertiesFile.exists()) {
-    keystoreProperties = new Properties()
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-} else {
-    println "Building without signing key"
-}
-
-// Versioning file definition
-def versionProperties
-def versionPropertiesFile = rootProject.file("app/version.properties")
-if (versionPropertiesFile.exists()) {
-    versionProperties = new Properties()
-    versionProperties.load(new FileInputStream(versionPropertiesFile))
-} else {
-    throw new Exception('Version properties file not Found')
-}
-// Versioning number definition
-int versionMajor = versionProperties['VERSION_MAJOR'] as int
-int versionMinor = versionProperties['VERSION_MINOR'] as int
-int versionPatch = versionProperties['VERSION_PATCH'] as int
-int versionBuild = versionProperties['VERSION_BUILD'] as int
-
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    compileSdkVersion 27
+    buildToolsVersion '27.0.2'
     defaultConfig {
-        applicationId "com.ngengs.skripsi.todongban"
+        applicationId 'com.ngengs.skripsi.todongban'
         minSdkVersion 16
-        targetSdkVersion 26
-        versionCode((versionMajor * 10000000) + (versionMinor * 100000) + (versionPatch * 100) + versionBuild)
-        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+        targetSdkVersion 27
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+        manifestPlaceholders = [
+                mapsAPI: rootProject.ext.apiKeyGoogleMaps
+        ]
+        buildConfigField "String", "SERVER_ADDRESS", rootProject.ext.apiServerAddress
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            if (variant.name != 'debug') {
+                outputFileName = "${applicationId}-v${versionName}-build.${getBuildDate()}-${variant.name}.apk"
+            } else {
+                outputFileName = "${applicationId}-${variant.name}.apk"
+            }
+        }
     }
 
     signingConfigs {
         release {
-            if (keystoreProperties != null) {
-                storeFile file(keystoreProperties['STORE_LOCATION_RELEASE'])
-                storePassword keystoreProperties['STORE_PASSWORD_RELEASE']
-                keyAlias keystoreProperties['KEY_ALIAS_RELEASE']
-                keyPassword keystoreProperties['KEY_PASSWORD_RELEASE']
+            if (rootProject.ext.keyExist) {
+                storeFile file(rootProject.ext.keyStoreLocationRelease)
+                storePassword rootProject.ext.keyStorePasswordRelease
+                keyAlias rootProject.ext.keyAliasRelease
+                keyPassword rootProject.ext.keyPasswordRelease
             }
         }
 
         debug {
-            if (keystoreProperties != null) {
-                storeFile file(keystoreProperties['STORE_LOCATION_DEBUG'])
-                storePassword keystoreProperties['STORE_PASSWORD_DEBUG']
-                keyAlias keystoreProperties['KEY_ALIAS_DEBUG']
-                keyPassword keystoreProperties['KEY_PASSWORD_DEBUG']
+            if (rootProject.ext.keyExist) {
+                storeFile file(rootProject.ext.keyStoreLocationDebug)
+                storePassword rootProject.ext.keyStorePasswordDebug
+                keyAlias rootProject.ext.keyAliasDebug
+                keyPassword rootProject.ext.keyPasswordDebug
             }
         }
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             debuggable false
-            if (keystorePropertiesFile.exists()) {
+            if (rootProject.ext.keyExist) {
                 signingConfig signingConfigs.release
             }
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            applicationVariants.all { variant ->
-                variant.outputs.each { output ->
-                    def newName = output.outputFile.name
-                    newName = newName.replace("app-", applicationId + "-")
-                    newName = newName.replace("-release", "-v" + versionName + "-build." + getBuildDate() + "-release")
-                    output.outputFile = new File(output.outputFile.parent, newName)
-                }
-            }
+            proguardFiles fileTree(include: ['*.pro'], dir: 'proguards').asList().toArray()
         }
 
         debug {
             minifyEnabled false
             versionNameSuffix "-debug"
             debuggable true
-            if (keystorePropertiesFile.exists()) {
+            if (rootProject.ext.keyExist) {
                 signingConfig signingConfigs.debug
             }
         }
@@ -118,103 +104,39 @@ static def getBuildDate() {
     return date
 }
 
-task updateMajor {
-    doLast {
-        println "Bump Major version..."
-        println "Preparing data..."
-        println "From:\t${versionMajor}"
-        versionMajor = versionMajor + 1
-        versionMinor = 0
-        versionPatch = 0
-        versionBuild = versionBuild + 1
-        println "To:\t${versionMajor}"
-        println "Version target:\t${versionMajor}.${versionMinor}.${versionPatch}"
-        writeUpdateVersion(versionMajor, versionMinor, versionPatch, versionBuild)
-    }
-}
-
-task updateMinor {
-    doLast {
-        println "Bump Minor version..."
-        println "Preparing data..."
-        println "From:\t${versionMinor}"
-        versionMinor = versionMinor + 1
-        versionPatch = 0
-        versionBuild = versionBuild + 1
-        println "To:\t${versionMinor}"
-        println "Version target:\t${versionMajor}.${versionMinor}.${versionPatch}"
-        writeUpdateVersion(versionMajor, versionMinor, versionPatch, versionBuild)
-    }
-}
-
-task updatePatch {
-    doLast {
-        println "Bump Patch version..."
-        println "Preparing data..."
-        println "From:\t${versionPatch}"
-        versionPatch = versionPatch + 1
-        versionBuild = versionBuild + 1
-        println "To:\t${versionPatch}"
-        println "Version target:\t${versionMajor}.${versionMinor}.${versionPatch}"
-        writeUpdateVersion(versionMajor, versionMinor, versionPatch, versionBuild)
-    }
-}
-
-void writeUpdateVersion(int major, int minor, int patch, int build) {
-    println "Updating data..."
-    def file = rootProject.file("app/version.properties")
-    file.text = """################################################################################
-# Copyright (c) 2017 Rizky Kharisma (@ngengs)
-#
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-################################################################################
-
-# Use gradle task instead touch this file
-#
-# Available command:
-# updateMajor
-# updateMinor
-# updatePatch
-#
-# Version order in application will be MAJOR.MINOR.PATCH and BUILD is for counter only
-# Update time: ${new Date()}
-VERSION_MAJOR=${major}
-VERSION_MINOR=${minor}
-VERSION_PATCH=${patch}
-VERSION_BUILD=${build}
-"""
-}
-
-retrolambda {
-    javaVersion JavaVersion.VERSION_1_7
-}
-
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestApi('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:26.0.0'
-    compile 'com.android.support:animated-vector-drawable:26.0.0'
-    compile 'com.android.support:design:26.0.0'
-    compile 'com.android.support:support-v13:26.0.0'
-    compile 'com.android.support:recyclerview-v7:26.0.0'
-    compile 'com.google.code.gson:gson:2.8.1'
-    compile 'com.afollestad.material-dialogs:core:0.9.4.5'
-    compile 'com.jakewharton:butterknife:8.7.0'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    testCompile 'junit:junit:4.12'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
+    api 'com.android.support:appcompat-v7:27.0.2'
+    implementation 'com.android.support:animated-vector-drawable:27.0.2'
+    implementation 'com.android.support:design:27.0.2'
+    implementation 'com.android.support:cardview-v7:27.0.2'
+    implementation 'com.android.support:support-v13:27.0.2'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.android.support:support-v4:27.0.2'
+    implementation 'com.android.support:recyclerview-v7:27.0.2'
+    implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
+    implementation 'com.google.android.gms:play-services-identity:11.6.2'
+    implementation 'com.google.android.gms:play-services-location:11.6.2'
+    implementation 'com.google.android.gms:play-services-places:11.6.2'
+    implementation 'com.google.android.gms:play-services-maps:11.6.2'
+    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.afollestad.material-dialogs:core:0.9.6.0', {
+        exclude group: 'com.android.support'
+    }
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.squareup.okhttp3:okhttp:3.9.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'co.infinum:materialdatetimepicker-support:3.3.1'
+    implementation 'com.google.firebase:firebase-messaging:11.6.2'
+    implementation 'me.zhanghai.android.materialprogressbar:library:1.4.2'
+    testApi 'junit:junit:4.12'
+    annotationProcessor 'com.android.support:support-annotations:27.0.2'
 }
+
+apply plugin: 'com.google.gms.google-services'

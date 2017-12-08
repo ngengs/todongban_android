@@ -20,6 +20,7 @@
     <color name="colorPrimary">#D32F2F</color>
     <color name="colorPrimaryDark">#B71C1C</color>
     <color name="colorAccent">#FFC107</color>
+    <color name="colorAccentTransparent">#78ffc107</color>
 
     <color name="colorTextInDark">#FFF</color>
     <color name="colorTextInLight">#111</color>

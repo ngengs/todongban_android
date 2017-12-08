@@ -235,8 +235,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/image_avatar"
         app:civ_border_color="#FFF"
-        app:civ_border_width="2dp"
-        />
+        app:civ_border_width="2dp"/>
 
     <Button
         android:id="@+id/buttonSignupBasicNext"
@@ -249,7 +248,6 @@
         android:layout_marginRight="4dp"
         android:layout_marginStart="4dp"
         android:text="Selanjutnya"
-        android:theme="@style/AppTheme.ButtonAccent"
-        />
+        android:theme="@style/AppTheme.ButtonAccent"/>
 
 </FrameLayout>

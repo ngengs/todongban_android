@@ -74,7 +74,6 @@
         android:layout_toRightOf="@id/image_vehicle_type"
         android:gravity="start|center"
         android:minHeight="60dp"
-        android:text="asd"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

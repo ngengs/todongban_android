@@ -101,18 +101,6 @@
         app:layout_constraintTop_toBottomOf="@+id/process_waiting_text"
         app:srcCompat="@drawable/ic_cancel"/>
 
-    <!--<ImageView-->
-    <!--android:id="@+id/process_waiting_cancel"-->
-    <!--android:layout_width="64dp"-->
-    <!--android:layout_height="64dp"-->
-    <!--android:tint="#FFF"-->
-    <!--android:visibility="gone"-->
-    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--app:layout_constraintEnd_toEndOf="parent"-->
-    <!--app:layout_constraintStart_toStartOf="parent"-->
-    <!--app:layout_constraintTop_toBottomOf="@+id/process_waiting_text"-->
-    <!--app:srcCompat="@drawable/ic_cancel"/>-->
-
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/people_help_data_layout"
         android:layout_width="match_parent"

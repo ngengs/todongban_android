@@ -62,7 +62,7 @@
         android:background="#e1000000"
         android:gravity="center"
         android:padding="8dp"
-        android:text="Pilih Lokasi"
+        android:text="@string/title_select_location"
         android:textColor="#fff"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/map_marker_changer_image"

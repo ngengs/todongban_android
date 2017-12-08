@@ -11,7 +11,6 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +35,7 @@ import java.util.Date;
 import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,7 +46,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * handle an instance of this fragment.
  */
 public class SignupBasicFragment extends Fragment {
-    private static final String TAG = "SignupBasicFragment";
 
     private static final String ARG_PARAM = "data";
     private static final int REQUEST_CODE_CHOOSE_PROFILE = 10;
@@ -118,15 +117,15 @@ public class SignupBasicFragment extends Fragment {
             mInputSignupBaseEmail.setError(null);
             mInputSignupBasePhone.setError(null);
 
-            Log.d(TAG, "onButtonNextClicked: name:" + name);
-            Log.d(TAG, "onButtonNextClicked: username:" + username);
-            Log.d(TAG, "onButtonNextClicked: email:" + email);
-            Log.d(TAG, "onButtonNextClicked: password:" + password);
-            Log.d(TAG, "onButtonNextClicked: phone:" + phone);
-            Log.d(TAG, "onButtonNextClicked: address:" + address);
-            Log.d(TAG, "onButtonNextClicked: birthDate:" + birthDateString);
-            Log.d(TAG, "onButtonNextClicked: gender:" + gender);
-            Log.d(TAG, "onButtonNextClicked: identityNumber:" + identityNumber);
+            Timber.d("onButtonNextClicked: name: %s", name);
+            Timber.d("onButtonNextClicked: username: %s", username);
+            Timber.d("onButtonNextClicked: email: %s", email);
+            Timber.d("onButtonNextClicked: password: %s", password);
+            Timber.d("onButtonNextClicked: phone: %s", phone);
+            Timber.d("onButtonNextClicked: address: %s", address);
+            Timber.d("onButtonNextClicked: birthDate: %s", birthDateString);
+            Timber.d("onButtonNextClicked: gender: %s", gender);
+            Timber.d("onButtonNextClicked: identityNumber: %s", identityNumber);
 
             int errorCode = 0;
 
@@ -138,18 +137,18 @@ public class SignupBasicFragment extends Fragment {
                 gender != 0 && mProfileImage != null && mIdentityImage != null) {
                 boolean validEmail = Patterns.EMAIL_ADDRESS.matcher(email).matches();
                 if (!validEmail) errorCode += 1;
-                Log.d(TAG, "onButtonNextClicked: Valid Email address: " + validEmail);
+                Timber.d("onButtonNextClicked: Valid Email address: %s", validEmail);
                 boolean validPhone = Patterns.PHONE.matcher(phone).matches();
-                Log.d(TAG, "onButtonNextClicked: Valid Phone number: " + validPhone);
+                Timber.d("onButtonNextClicked: Valid Phone number: %s", validPhone);
                 if (!validPhone) errorCode += 10;
                 boolean validUsername = Pattern.compile("^[a-z0-9_-]{3,15}$")
                                                .matcher(username)
                                                .matches();
                 if (!validUsername) errorCode += 100;
-                Log.d(TAG, "onButtonNextClicked: Valid Username: " + validUsername);
+                Timber.d("onButtonNextClicked: Valid Username: %s", validUsername);
                 boolean validPassword = (password.length() >= 6);
                 if (!validPassword) errorCode += 1000;
-                Log.d(TAG, "onButtonNextClicked: Valid Password: " + validPassword);
+                Timber.d("onButtonNextClicked: Valid Password: %s", validPassword);
 
 
                 try {
@@ -168,7 +167,7 @@ public class SignupBasicFragment extends Fragment {
                 if (phone.substring(0, 2).equalsIgnoreCase("62")) {
                     phone = "0" + phone.substring(2, phone.length() - 1);
                 }
-                Log.d(TAG, "onButtonNextClicked: phone:" + phone);
+                Timber.d("onButtonNextClicked: phone: %s", phone);
                 mUser.setUsername(username);
                 mUser.setFullName(name);
                 mUser.setPhone(phone);
@@ -213,7 +212,7 @@ public class SignupBasicFragment extends Fragment {
                     }
 
                 }
-                Log.d(TAG, "onButtonNextClicked: Cant next: " + stringBuilder.toString());
+                Timber.d("onButtonNextClicked: Cant next: %s", stringBuilder);
                 Snackbar.make(mImageSignupProfile,
                               stringBuilder.toString(),
                               Snackbar.LENGTH_SHORT).show();
@@ -231,7 +230,7 @@ public class SignupBasicFragment extends Fragment {
                     calendar.set(year, monthOfYear, dayOfMonth);
                     DateFormat format = DateFormat.getDateInstance();
                     String formatedDate = format.format(calendar.getTime());
-                    Log.d(TAG, "onInputSignupBaseBirthDateClicked: " + formatedDate);
+                    Timber.d("onInputSignupBaseBirthDateClicked: %s", formatedDate);
                     mInputSignupBaseBirthDate.setText(formatedDate);
                     viewPicker.dismiss();
                 });
@@ -261,8 +260,8 @@ public class SignupBasicFragment extends Fragment {
                                             Intent.createChooser(cameraIntent, "Pilih Gallery"),
                                             REQUEST_CODE_CHOOSE_IDENTITY_CAMERA);
                                 } else {
-                                    Log.d(TAG,
-                                          "onLayoutImageSignupIdentityClicked: Fail handle image for camera result");
+                                    Timber.d(
+                                            "onLayoutImageSignupIdentityClicked: Fail handle image for camera result");
                                     Snackbar.make(mImageSignupProfile,
                                                   "Gagal membuat file untuk hasil kamera",
                                                   Snackbar.LENGTH_SHORT).show();
@@ -304,8 +303,8 @@ public class SignupBasicFragment extends Fragment {
                                             Intent.createChooser(cameraIntent, "Pilih Gallery"),
                                             REQUEST_CODE_CHOOSE_PROFILE_CAMERA);
                                 } else {
-                                    Log.d(TAG,
-                                          "onLayoutImageSignupIdentityClicked: Fail handle image for camera result");
+                                    Timber.d(
+                                            "onLayoutImageSignupIdentityClicked: Fail handle image for camera result");
                                     Snackbar.make(mImageSignupProfile,
                                                   "Gagal membuat file untuk hasil kamera",
                                                   Snackbar.LENGTH_SHORT).show();
@@ -436,7 +435,7 @@ public class SignupBasicFragment extends Fragment {
         if (mUser != null) bindOldData();
         else mUser = new User();
         if (mSignupActivity != null) mSignupActivity.setAppTitle(R.string.title_signup);
-        Log.d(TAG, "onCreateView: alreadyLoaded: " + mAlreadyLoaded);
+        Timber.d("onCreateView: alreadyLoaded: %s", mAlreadyLoaded);
         if (mAlreadyLoaded) bindOldImage();
         if (savedInstanceState == null && !mAlreadyLoaded) mAlreadyLoaded = true;
         return view;

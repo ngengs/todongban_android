@@ -23,7 +23,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
@@ -38,6 +37,7 @@ import com.ngengs.skripsi.todongban.utils.networks.ApiResponse;
 import com.ngengs.skripsi.todongban.utils.networks.NetworkHelpers;
 
 import retrofit2.Response;
+import timber.log.Timber;
 
 public class LocationChangedService extends JobService
         implements GoogleApiClient.ConnectionCallbacks,
@@ -55,13 +55,13 @@ public class LocationChangedService extends JobService
 
     @Override
     public boolean onStartJob(JobParameters job) {
-        Log.d(TAG, "onStartJob() called with: job = [" + job + "]");
+        Timber.tag(TAG).d("onStartJob() called with: job = [ %s ]", job);
         givenParams = job;
         if (givenParams.getExtras() != null) {
             mToken = givenParams.getExtras().getString(PARAM_TOKEN, null);
             int userType = givenParams.getExtras().getInt(PARAM_TYPE, -1);
             if (!TextUtils.isEmpty(mToken) && userType == User.TYPE_PERSONAL) {
-                Log.d(TAG, "onStartJob: running: token: " + mToken + ", type: " + userType);
+                Timber.tag(TAG).d("onStartJob: running: token: %s, type: %s", mToken, userType);
 //                jobFinished(givenParams, false);
                 mGoogleApiClient = new GoogleApiClient
                         .Builder(getBaseContext(), this, this)
@@ -76,7 +76,7 @@ public class LocationChangedService extends JobService
 
     @Override
     public boolean onStopJob(JobParameters job) {
-        Log.d(TAG, "onStopJob() called with: job = [" + job + "]");
+        Timber.tag(TAG).d("onStopJob() called with: job = [ %s ]", job);
         if (mGoogleApiClient != null) {
             mGoogleApiClient.disconnect();
         }
@@ -84,8 +84,9 @@ public class LocationChangedService extends JobService
     }
 
     private void pushUpdate(double latitude, double longitude) {
-        Log.d(TAG, "pushUpdate() called with: token = [" + mToken + "], latitude = [" + latitude +
-                   "], longitude = [" + longitude + "]");
+        Timber.tag(TAG)
+              .d("pushUpdate() called with: latitude = [ %s ], longitude = [ %s ]", latitude,
+                 longitude);
         API mApi = NetworkHelpers.provideAPI(getBaseContext());
         mApi.updateLocation(NetworkHelpers.authorizationHeader(mToken), latitude, longitude)
             .enqueue(new ApiResponse<>(this::updateSuccess, this::updateFailure));
@@ -93,27 +94,27 @@ public class LocationChangedService extends JobService
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        Log.d(TAG, "onConnected() called with: bundle = [" + bundle + "]");
+        Timber.tag(TAG).d("onConnected() called with: bundle = [ %s ]", bundle);
         getLocation();
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        Log.d(TAG, "onConnectionSuspended() called with: i = [" + i + "]");
+        Timber.tag(TAG).d("onConnectionSuspended() called with: i = [ %s ]", i);
         mGoogleApiClient.connect();
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.d(TAG,
-              "onConnectionFailed() called with: connectionResult = [" + connectionResult + "]");
+        Timber.tag(TAG)
+              .d("onConnectionFailed() called with: connectionResult = [ %s ]", connectionResult);
         jobFinished(givenParams, false);
     }
 
 
     @SuppressLint("MissingPermission")
     private void getLocation() {
-        Log.d(TAG, "getLocation() called");
+        Timber.tag(TAG).d("getLocation() called");
         Task<Location> resultLocation = LocationServices
                 .getFusedLocationProviderClient(getBaseContext())
                 .getLastLocation();
@@ -121,19 +122,19 @@ public class LocationChangedService extends JobService
             if (task.isSuccessful()) {
                 pushUpdate(task.getResult().getLatitude(), task.getResult().getLongitude());
             } else {
-                Log.e(TAG, "getLocation: kesalahan saat mendapatkan lokasi");
+                Timber.tag(TAG).e("getLocation: Gagal mendapatkan lokasi");
                 jobFinished(givenParams, false);
             }
         });
     }
 
     public void updateSuccess(Response<SingleStringData> response) {
-        Log.d(TAG, "updateSuccess() called with: response = [" + response + "]");
+        Timber.tag(TAG).d("updateSuccess() called with: response = [ %s ]", response);
         jobFinished(givenParams, false);
     }
 
     public void updateFailure(Throwable t) {
-        Log.e(TAG, "updateFailure: ", t);
+        Timber.tag(TAG).e(t, "updateFailure: ");
         jobFinished(givenParams, false);
     }
 }

@@ -31,7 +31,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
@@ -48,6 +47,7 @@ import com.ngengs.skripsi.todongban.utils.networks.ApiResponse;
 import com.ngengs.skripsi.todongban.utils.networks.NetworkHelpers;
 
 import retrofit2.Response;
+import timber.log.Timber;
 
 public class MainActivityPersonal extends AppCompatActivity
         implements PersonalRequestHelpFragment.OnFragmentInteractionListener,
@@ -56,7 +56,7 @@ public class MainActivityPersonal extends AppCompatActivity
     public static final String ARGS_BROADCAST_FILTER
             = "com.ngengs.skripsi.todongban.UPDATE_HELPER_LIST";
     public static final String ARGS_BROADCAST_DATA = "PEOPLE_HELP";
-    private static final String TAG = "MainActivityPersonal";
+
     private User mUser;
     private String mToken;
     private API mApi;
@@ -103,7 +103,7 @@ public class MainActivityPersonal extends AppCompatActivity
         mHelpProcess = mSharedPreferences.getBoolean(Values.SHARED_PREFERENCES_KEY_IN_HELP_PROCESS,
                                                      false);
         if (mToken == null) {
-            Log.e(TAG, "onCreate: Empty token data");
+            Timber.e("onCreate: Empty token data");
             throw new RuntimeException("Empty token data");
         }
         if (mUser == null) {
@@ -133,13 +133,13 @@ public class MainActivityPersonal extends AppCompatActivity
     }
 
     private void goToPageRequestHelp() {
-        Log.d(TAG, "goToPageRequestHelp() called");
+        Timber.d("goToPageRequestHelp() called");
         mFragment = PersonalRequestHelpFragment.newInstance();
         changePage();
     }
 
     private void goToPageProcessHelp(@Nullable RequestHelp requestHelp) {
-        Log.d(TAG, "goToPageProcessHelp() called with: requestHelp = [" + requestHelp + "]");
+        Timber.d("goToPageProcessHelp() called with: requestHelp = [ %s ]", requestHelp);
         if (requestHelp == null) {
             String helpType = mSharedPreferences.getString(
                     Values.SHARED_PREFERENCES_KEY_TYPE_HELP_PROCESS, null);
@@ -153,19 +153,19 @@ public class MainActivityPersonal extends AppCompatActivity
     }
 
     private void changePage() {
-        Log.d(TAG, "changePage() called");
+        Timber.d("changePage() called");
         if (mFragment != null) {
-            Log.d(TAG, "changePage: Fragment not null");
+            Timber.d("changePage: %s", "Fragment not null");
             Fragment fragment = getSupportFragmentManager().findFragmentById(
                     R.id.frame_personal_main);
             FragmentTransaction fragmentTransaction
                     = getSupportFragmentManager().beginTransaction();
 
             if (fragment == null) {
-                Log.d(TAG, "changePage: create new fragment");
+                Timber.d("changePage: %s", "Create new Fragment");
                 fragmentTransaction.add(R.id.frame_personal_main, mFragment);
             } else {
-                Log.d(TAG, "changePage: replace fragment");
+                Timber.d("changePage: %s", "Replace exist Fragment");
                 fragmentTransaction.replace(R.id.frame_personal_main, mFragment);
             }
             fragmentTransaction.commit();
@@ -208,7 +208,7 @@ public class MainActivityPersonal extends AppCompatActivity
 
     @Override
     public void onHelpRequested(RequestHelp requestHelp) {
-        Log.d(TAG, "onHelpRequested() called with: requestHelp = [" + requestHelp + "]");
+        Timber.d("onHelpRequested() called with: requestHelp = [ %s ]", requestHelp);
         removeDrawerListener();
         mHelpProcess = true;
         registerReceiver(mBroadcastReceiver, mIntentFilter);
@@ -238,7 +238,7 @@ public class MainActivityPersonal extends AppCompatActivity
 
     @Override
     public void onProcessCancel(String requestId) {
-        Log.d(TAG, "onProcessCancel() called with: requestId = [" + requestId + "]");
+        Timber.d("onProcessCancel() called with: requestId = [ %s ]", requestId);
         mHelpProcess = false;
         mHelpProcessId = null;
         unregisterReceiver(mBroadcastReceiver);
@@ -254,7 +254,7 @@ public class MainActivityPersonal extends AppCompatActivity
     }
 
     private void getUserSuccess(Response<CheckStatus> response) {
-        Log.d(TAG, "getUserSuccess() called with: response = [" + response + "]");
+        Timber.d("getUserSuccess() called with: response = [ %s ]", response);
         CheckStatus responseBody = response.body();
         if (responseBody != null) {
             mUser = responseBody.getData();
@@ -266,11 +266,11 @@ public class MainActivityPersonal extends AppCompatActivity
     }
 
     private void getUserFailure(Throwable t) {
-        Log.e(TAG, "getUserFailure: ", t);
+        Timber.e(t, "getUserFailure: ");
     }
 
     private void helpRequestSuccess(Response<SingleStringData> response) {
-        Log.d(TAG, "helpRequestSuccess() called with: response = [" + response + "]");
+        Timber.d("helpRequestSuccess() called with: response = [ %s ]", response);
         SingleStringData body = response.body();
         if (body != null) {
             if (mFragment instanceof PersonalProcessHelpFragment) {
@@ -286,20 +286,20 @@ public class MainActivityPersonal extends AppCompatActivity
     }
 
     private void helpRequestFailure(Throwable t) {
-        Log.e(TAG, "helpRequestFailure: ", t);
+        Timber.e(t, "helpRequestFailure: ");
     }
 
     private void helpCancelSuccess(Response<SingleStringData> response) {
-        Log.d(TAG, "helpCancelSuccess() called with: response = [" + response + "]");
+        Timber.d("helpCancelSuccess() called with: response = [ %s ]", response);
         goToPageRequestHelp();
     }
 
     private void helpCancelFailure(Throwable t) {
-        Log.e(TAG, "helpCancelFailure: ", t);
+        Timber.e(t, "helpCancelFailure: ");
     }
 
     private void signoutSuccess(Response<SingleStringData> response) {
-        Log.d(TAG, "signoutSuccess() called with: response = [" + response + "]");
+        Timber.d("signoutSuccess() called with: response = [ %s ]", response);
         FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(
                 new GooglePlayDriver(getBaseContext()));
         dispatcher.cancelAll();
@@ -310,7 +310,7 @@ public class MainActivityPersonal extends AppCompatActivity
     }
 
     private void signoutFailure(Throwable t) {
-        Log.e(TAG, "signoutFailure: ", t);
+        Timber.e(t, "signoutFailure: ");
     }
 
     private class FoundHelpersBroadcastReceiver extends BroadcastReceiver {
@@ -318,7 +318,7 @@ public class MainActivityPersonal extends AppCompatActivity
         @Override
         public void onReceive(Context context, Intent intent) {
             PeopleHelp peopleHelp = intent.getParcelableExtra(ARGS_BROADCAST_DATA);
-            Log.d(TAG, "onReceive: " + peopleHelp);
+            Timber.d("onReceive: %s", peopleHelp);
             if (mFragment instanceof PersonalProcessHelpFragment) {
                 ((PersonalProcessHelpFragment) mFragment).addData(peopleHelp);
             }

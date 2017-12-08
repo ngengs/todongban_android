@@ -32,7 +32,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -56,6 +55,7 @@ import java.util.List;
 
 import me.zhanghai.android.materialprogressbar.CircularProgressDrawable;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
+import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -67,7 +67,6 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
  */
 @SuppressLint("ClickableViewAccessibility")
 public class PersonalProcessHelpFragment extends Fragment {
-    private static final String TAG = "PersonalProcessHelp";
     private static final String ARG_PARAM_REQUEST_HELP = "args_request";
     private static final String ARG_PARAM_ID_REQUEST_HELP = "args_id";
     private static final int SECOND_FOR_CANCEL = 4;
@@ -99,12 +98,12 @@ public class PersonalProcessHelpFragment extends Fragment {
         public void run() {
             int progress = mProcessWaitingProgressCancel.getProgress();
             if (progress < 100) {
-                Log.d(TAG, "run: " + progress);
+                Timber.d("run: %s", progress);
                 mCancelProcess = false;
                 mProcessWaitingProgressCancel.incrementProgressBy(100 / SECOND_FOR_CANCEL);
                 mHandler.postDelayed(this, 1000);
             } else {
-                Log.d(TAG, "run: cancel");
+                Timber.d("run: cancel");
                 mCancelProcess = true;
                 Toast.makeText(mContext, "Proses pencarian bantuan dibatalkan",
                                Toast.LENGTH_SHORT).show();
@@ -199,13 +198,13 @@ public class PersonalProcessHelpFragment extends Fragment {
         mProcessWaitingCancel.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    Log.d(TAG, "onCreateView: down");
+                    Timber.d("onCreateView: down");
                     v.performClick();
                     mProcessWaitingProgressCancel.setVisibility(View.VISIBLE);
                     mHandler.postDelayed(mRunnable, 1000);
                     return true;
                 case MotionEvent.ACTION_UP:
-                    Log.d(TAG, "onCreateView: cancel");
+                    Timber.d("onCreateView: cancel");
                     if (!mCancelProcess) {
                         Toast.makeText(mContext,
                                        "Tahan tombol untuk membatalkan proses pencarian",

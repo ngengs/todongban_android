@@ -26,7 +26,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -48,12 +47,10 @@ import com.ngengs.skripsi.todongban.utils.networks.NetworkHelpers;
 import com.ngengs.skripsi.todongban.utils.playservices.PlayServicesAvailableResponse;
 import com.ngengs.skripsi.todongban.utils.playservices.PlayServicesUtils;
 
-import java.util.Arrays;
-
 import retrofit2.Response;
+import timber.log.Timber;
 
 public class SplashActivity extends AppCompatActivity implements PlayServicesAvailableResponse {
-    private static final String TAG = "SplashActivity";
 
     // Permission Variable
     private static final String[] PERMISSION_ALL = {Manifest.permission.ACCESS_FINE_LOCATION,
@@ -93,29 +90,29 @@ public class SplashActivity extends AppCompatActivity implements PlayServicesAva
     private void runApp(Bundle savedInstanceState, boolean needCheckPermission) {
         // Check permission if user use phone with SDK >= 23
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && needCheckPermission) {
-            Log.i(TAG, "onCreate: check permission");
+            Timber.i("onCreate: check permission");
             mTextProcess.setText(R.string.splashCheckPermission);
             checkAppPermission();
         }
 
         // Check if user has logged in
-        Log.d(TAG, "onCreate: check user data");
+        Timber.d("onCreate: check user data");
         mTextProcess.setText(R.string.splashCheckUser);
         mSharedPreferences = getSharedPreferences(Values.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
         mToken = mSharedPreferences.getString(Values.SHARED_PREFERENCES_KEY_TOKEN, null);
-        Log.d(TAG, "runApp: token:" + mToken);
+        Timber.d("runApp: token: %s", mToken);
         // TODO Handle main screen from SplashScreen
         if (TextUtils.isEmpty(mToken)) {
-            Log.d(TAG, "mToken: run sign in / sign up");
+            Timber.d("mToken: run sign in / sign up");
             runPageWithoutToken(false);
         } else {
-            Log.d(TAG, "onCreate: token not empty");
+            Timber.d("onCreate: token not empty");
             checkToken();
         }
     }
 
     private void runPageWithoutToken(boolean clearToken) {
-        Log.d(TAG, "runPageWithoutToken() called with: clearExistToken = [" + clearToken + "]");
+        Timber.d("runPageWithoutToken() called with: clearToken = [ %s ]", clearToken);
         if (clearToken) {
             mSharedPreferences.edit().putString(Values.SHARED_PREFERENCES_KEY_TOKEN, null).apply();
         }
@@ -125,7 +122,7 @@ public class SplashActivity extends AppCompatActivity implements PlayServicesAva
     }
 
     private void runPageWithStatusUser(User user) {
-        Log.d(TAG, "runPageWithStatusUser() called with: statusUser = [" + user + "]");
+        Timber.d("runPageWithStatusUser() called with: user = [ %s ]", user);
         Intent intent = null;
         if (user.getStatus() == User.STATUS_DEACTIVE) {
             intent = new Intent(this, WaitVerificationActivity.class);
@@ -174,7 +171,7 @@ public class SplashActivity extends AppCompatActivity implements PlayServicesAva
     }
 
     private void checkToken() {
-        Log.d(TAG, "checkToken() called with: token = [" + mToken + "]");
+        Timber.d("checkToken() called");
         mApi = NetworkHelpers.provideAPI(this);
         mApi.checkStatus(NetworkHelpers.authorizationHeader(mToken))
             .enqueue(new ApiResponse<>(this::checkUserSuccess, this::checkUserFailure));
@@ -184,7 +181,7 @@ public class SplashActivity extends AppCompatActivity implements PlayServicesAva
      * TODO JavaDoc
      */
     private void checkAppPermission() {
-        Log.d(TAG, "checkAppPermission() called");
+        Timber.d("checkAppPermission() called");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             for (String permission : PERMISSION_ALL) {
                 if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
@@ -200,7 +197,7 @@ public class SplashActivity extends AppCompatActivity implements PlayServicesAva
      */
     @SuppressWarnings("JavaDoc")
     private void requestAppPermissionPrompt() {
-        Log.d(TAG, "requestAppPermissionPrompt() called");
+        Timber.d("requestAppPermissionPrompt() called");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             // Check if user need explanation
             boolean needPermissionExplanation = false;
@@ -245,7 +242,7 @@ public class SplashActivity extends AppCompatActivity implements PlayServicesAva
 
     @Override
     public void onError(int resultCode) {
-        Log.e(TAG, "onError: PlayService Error");
+        Timber.d("onError() called with: resultCode = [ %s ]", resultCode);
         mTextProcess.setText("Gagal menggunakan Google Play Services");
         if (mGoogleApiAvailability.isUserResolvableError(resultCode)) {
             mGoogleApiAvailability.getErrorDialog(this, resultCode, REQUEST_CODE_PLAY_SERVICES)
@@ -265,9 +262,9 @@ public class SplashActivity extends AppCompatActivity implements PlayServicesAva
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        Log.d(TAG, "onRequestPermissionsResult() called with: requestCode = [" + requestCode
-                   + "], permissions = [" + Arrays.toString(permissions) + "], grantResults = ["
-                   + Arrays.toString(grantResults) + "]");
+        Timber.d(
+                "onRequestPermissionsResult() called with: requestCode = [ %s ], permissions = [ %s ], grantResults = [ %s ]",
+                requestCode, permissions, grantResults);
         boolean shouldRequestAgain = false;
         // Check if permission granted
         if (grantResults.length > 0) {
@@ -287,7 +284,7 @@ public class SplashActivity extends AppCompatActivity implements PlayServicesAva
     }
 
     private void checkUserSuccess(Response<CheckStatus> response) {
-        Log.d(TAG, "checkUserSuccess() called with: response = [" + response + "]");
+        Timber.d("checkUserSuccess() called with: response = [ %s ]", response);
         CheckStatus checkStatus = response.body();
         if (checkStatus != null) {
 //            runPageWithStatusUser(checkStatus.getData());
@@ -301,7 +298,7 @@ public class SplashActivity extends AppCompatActivity implements PlayServicesAva
     }
 
     private void checkUserFailure(Throwable t) {
-        Log.e(TAG, "onFailure: ", t);
+        Timber.e(t, "onFailure: ");
         mTextProcess.setText("Terjadi kesalahan pada server");
     }
 }

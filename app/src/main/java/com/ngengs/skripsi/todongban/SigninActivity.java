@@ -27,7 +27,6 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -44,6 +43,7 @@ import com.ngengs.skripsi.todongban.utils.networks.NetworkHelpers;
 
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import retrofit2.Response;
+import timber.log.Timber;
 
 public class SigninActivity extends AppCompatActivity {
     private final static String TAG = "SigninActivity";
@@ -93,7 +93,7 @@ public class SigninActivity extends AppCompatActivity {
     }
 
     private void initLayout() {
-        Log.d(TAG, "initLayout() called");
+        Timber.tag(TAG).d("initLayout() called");
         mToolbarSignIn = findViewById(R.id.toolbarSignIn);
         mAppBarSignIn = findViewById(R.id.appBarSignIn);
         mInputSigninUsername = findViewById(R.id.inputSigninUsername);
@@ -108,7 +108,7 @@ public class SigninActivity extends AppCompatActivity {
     }
 
     private void signIn() {
-        Log.d(TAG, "signIn() called");
+        Timber.d("signIn() called");
         mInputLayoutSigninUsername.setErrorEnabled(false);
         mInputLayoutSigninPassword.setErrorEnabled(false);
         mProgress.setVisibility(View.VISIBLE);
@@ -137,7 +137,7 @@ public class SigninActivity extends AppCompatActivity {
     }
 
     private void signinSuccess(Response<SingleStringData> response) {
-        Log.d(TAG, "signinSuccess() called with: response = [" + response + "]");
+        Timber.d("signinSuccess() called with: response = [ %s ]", response);
 
         SingleStringData data = response.body();
         if (data != null && !TextUtils.isEmpty(data.getData())) {
@@ -161,7 +161,7 @@ public class SigninActivity extends AppCompatActivity {
     }
 
     private void signinFailure(Throwable t) {
-        Log.e(TAG, "onFailure: ", t);
+        Timber.e(t, "onFailure: ");
         Toast.makeText(getBaseContext(), "Terjadi kesalahan saat mengakses server",
                        Toast.LENGTH_SHORT).show();
     }

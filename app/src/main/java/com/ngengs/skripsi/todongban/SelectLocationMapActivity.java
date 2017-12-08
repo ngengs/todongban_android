@@ -22,12 +22,13 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.ngengs.skripsi.todongban.fragments.MapFragment;
+
+import timber.log.Timber;
 
 public class SelectLocationMapActivity extends AppCompatActivity
         implements MapFragment.OnFragmentMinimalInteractionListener {
@@ -105,13 +106,13 @@ public class SelectLocationMapActivity extends AppCompatActivity
     }
 
     private void selectMyLocation() {
-        Log.d(TAG, "selectMyLocation() called");
+        Timber.d("selectMyLocation() called");
         mMap.setToMyLocation();
     }
 
     @Override
     public void onMyLocationReady() {
-        Log.d(TAG, "onMyLocationReady() called");
+        Timber.d("onMyLocationReady() called");
         if (mMapsMyLocationButton.getVisibility() == View.GONE) {
             mMapsMyLocationButton.setVisibility(View.VISIBLE);
         }
@@ -122,14 +123,14 @@ public class SelectLocationMapActivity extends AppCompatActivity
 
     @Override
     public void onProcessEdit() {
-        Log.d(TAG, "onProcessEdit() called");
+        Timber.tag(TAG).d("onProcessEdit() called");
         mEditMode = true;
         mMapsSelectButton.hide();
     }
 
     @Override
     public void onFinishEdit() {
-        Log.d(TAG, "onFinishEdit() called");
+        Timber.d("onFinishEdit() called");
         mEditMode = false;
         mMapsSelectButton.show();
     }

@@ -29,7 +29,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
-import android.util.Log;
 
 import com.ngengs.skripsi.todongban.BuildConfig;
 import com.ngengs.skripsi.todongban.R;
@@ -38,6 +37,8 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import timber.log.Timber;
 
 @SuppressWarnings("WeakerAccess")
 public class ImageUtils {
@@ -134,7 +135,7 @@ public class ImageUtils {
     }
 
     public static Bitmap handleImageCamera(@NonNull String imagePath, int imageSize) {
-        Log.d(TAG, "handleImageCamera: " + imagePath);
+        Timber.tag(TAG).d("handleImageCamera: %s", imagePath);
 
         // Get the dimensions of the bitmap
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();

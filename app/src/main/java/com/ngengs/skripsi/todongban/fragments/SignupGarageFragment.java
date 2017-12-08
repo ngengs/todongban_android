@@ -20,8 +20,8 @@ package com.ngengs.skripsi.todongban.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +40,8 @@ import com.ngengs.skripsi.todongban.SignupActivity;
 import com.ngengs.skripsi.todongban.data.local.Garage;
 import com.ngengs.skripsi.todongban.data.local.User;
 
+import timber.log.Timber;
+
 import static android.app.Activity.RESULT_OK;
 
 /**
@@ -50,8 +52,8 @@ import static android.app.Activity.RESULT_OK;
  * Use the {@link SignupGarageFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class SignupGarageFragment extends Fragment {
-    private static final String TAG = "SignupGarageFragment";
 
     private static final String ARG_USER = "user";
 
@@ -92,14 +94,14 @@ public class SignupGarageFragment extends Fragment {
     }
 
     private void initMaps() {
-        Log.d(TAG, "initMaps() called");
+        Timber.d("initMaps() called");
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this::onMapReady);
     }
 
     public void onMapReady(GoogleMap googleMap) {
-        Log.d(TAG, "onMapReady() called with: googleMap = [" + googleMap + "]");
+        Timber.d("onMapReady() called with: googleMap = [ %s ]", googleMap);
         mGoogleMap = googleMap;
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
         mGoogleMap.setTrafficEnabled(false);
@@ -118,7 +120,7 @@ public class SignupGarageFragment extends Fragment {
     }
 
     private void mapClicked() {
-        Log.d(TAG, "mapClicked() called");
+        Timber.d("mapClicked() called");
         Intent intent = new Intent(mContext, SelectLocationMapActivity.class);
         startActivityForResult(intent, REQUEST_CODE);
     }
@@ -164,7 +166,7 @@ public class SignupGarageFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_signup_garage, container, false);
         mContext = getContext();

@@ -27,7 +27,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +54,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import timber.log.Timber;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment can implement the
@@ -68,7 +69,6 @@ import java.util.Locale;
  */
 public class MapFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
-    private static final String TAG = "MapFragment";
 
     private static final String ARG_PADDING_VERTICAL = "padding_vertical";
     private static final String ARG_PADDING_HORIZONTAL = "padding_horizontal";
@@ -126,7 +126,7 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
 
     @Override
     public void onAttach(Context context) {
-        Log.d(TAG, "onAttach: ");
+        Timber.d("onAttach: ");
         super.onAttach(context);
         if (context instanceof OnFragmentCompleteInteractionListener) {
             mCompleteListener = (OnFragmentCompleteInteractionListener) context;
@@ -234,7 +234,7 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
     }
 
     private void initPlayServices() {
-        Log.d(TAG, "initPlayServices() called");
+        Timber.d("initPlayServices() called");
         mGoogleApiClient = new GoogleApiClient.Builder(mContext, this, this)
                 .addApi(LocationServices.API)
                 .build();
@@ -242,14 +242,14 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
     }
 
     private void initMaps() {
-        Log.d(TAG, "initMaps() called");
+        Timber.d("initMaps() called");
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this::onMapReady);
     }
 
     private void selectedMapMarker() {
-        Log.d(TAG, "selectedMapMarker() called");
+        Timber.d("selectedMapMarker() called");
         if (mGoogleMap != null) {
             LatLng latLng = mGoogleMap.getCameraPosition().target;
             mLocation.setLatitude(latLng.latitude);
@@ -261,7 +261,7 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
     }
 
     public void onMapReady(GoogleMap googleMap) {
-        Log.d(TAG, "onMapReady() called with: googleMap = [" + googleMap + "]");
+        Timber.d("onMapReady() called with: googleMap = [ %s ]", googleMap);
         mGoogleMap = googleMap;
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
         mGoogleMap.setTrafficEnabled(false);
@@ -283,7 +283,7 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
 
     @SuppressLint({"MissingPermission", "SetTextI18n"})
     private void changeLocationOnMap() {
-        Log.d(TAG, "changeLocationOnMap() called");
+        Timber.d("changeLocationOnMap() called");
         if (mGoogleMap == null) {
             initMaps();
             return;
@@ -305,7 +305,7 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
         mMarker = mGoogleMap.addMarker(new MarkerOptions().position(position).flat(true).icon(
                 BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_people_request_help)));
         mProcessMovingCamera = true;
-        Log.d(TAG, "changeLocationOnMap: Location:" + position);
+        Timber.d("changeLocationOnMap: Location: %s", position);
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(position),
                                  new GoogleMapResponse(this::mapsFinishChangeLocation,
                                                        this::mapsCancelChangeLocation));
@@ -316,37 +316,36 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        Log.d(TAG, "onConnected() called with: bundle = [" + bundle + "]");
+        Timber.d("onConnected() called with: bundle = [ %s ]", bundle);
         detectLocation();
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        Log.d(TAG, "onConnectionSuspended() called with: i = [" + i + "]");
+        Timber.d("onConnectionSuspended() called with: i = [ %s ]", i);
         mGoogleApiClient.connect();
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.d(TAG,
-              "onConnectionFailed() called with: connectionResult = [" +
-              connectionResult.getErrorCode() + "]");
+        Timber.d("onConnectionFailed() called with: connectionResult = [ %s ]",
+                 connectionResult.getErrorCode());
     }
 
     @SuppressLint("MissingPermission")
     private void detectLocation() {
-        Log.d(TAG, "detectLocation() called");
+        Timber.d("detectLocation() called");
         Task<Location> resultLocation = LocationServices
                 .getFusedLocationProviderClient(mContext)
                 .getLastLocation();
         resultLocation.addOnCompleteListener(task -> {
-            Log.d(TAG, "detectLocation: finishing get location");
+            Timber.d("detectLocation: Finishing get location");
             if (task.isSuccessful()) {
-                Log.d(TAG, "detectLocation: success get location");
+                Timber.d("detectLocation: success get location");
                 mLocation = task.getResult();
                 changeLocationOnMap();
             } else {
-                Log.e(TAG, "detectLocation: kesalahan saat mendapatkan lokasi");
+                Timber.e("detectLocation: kesalahan saat mendapatkan lokasi");
                 Toast.makeText(mContext,
                                "Gagal mendapatkan lokasi anda sekarang, silahkan mengatur lokasi anda secara manual",
                                Toast.LENGTH_SHORT).show();
@@ -355,7 +354,7 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
     }
 
     private void mapMovement() {
-        Log.d(TAG, "mapMovement() called");
+        Timber.d("mapMovement() called");
         if (!mEditLocation && !mProcessMovingCamera) {
             mEditLocation = true;
             if (mMarker != null) {
@@ -372,7 +371,7 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
     }
 
     private void locationChangeMarker() {
-        Log.d(TAG, "locationChangeMarker() called");
+        Timber.d("locationChangeMarker() called");
         if (mEditLocation) {
             mMapMarkerChangerIndicator.setVisibility(View.VISIBLE);
             mMapMarkerChangerImage.setVisibility(View.VISIBLE);
@@ -389,9 +388,8 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
     }
 
     private Address getAddress(double latitude, double longitude) {
-        Log.d(TAG,
-              "getAddress() called with: latitude = [" + latitude + "], longitude = [" + longitude +
-              "]");
+        Timber.d("getAddress() called with: latitude = [ %s ], longitude = [ %s ]", latitude,
+                 longitude);
         Geocoder geocoder;
         List<Address> addresses;
         geocoder = new Geocoder(mContext, Locale.getDefault());
@@ -400,7 +398,7 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
             addresses = geocoder.getFromLocation(latitude, longitude, 1);
             return addresses.get(0);
         } catch (IOException e) {
-            Log.e(TAG, "getAddress: ", e);
+            Timber.e(e, "getAddress: ");
             Toast.makeText(mContext, "Gagal mendapatkan nama alamat dari lokasi yang dipilih",
                            Toast.LENGTH_SHORT).show();
             return null;
@@ -408,8 +406,8 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
     }
 
     private void mapsFinishChangeLocation() {
-        Log.d(TAG, "mapsFinishChangeLocation() called");
-        Log.d(TAG, "animateCamera:onFinish(): Location:" + mGoogleMap.getCameraPosition().target);
+        Timber.d("mapsFinishChangeLocation() called");
+        Timber.d("animateCamera:onFinish(): Location: %s", mGoogleMap.getCameraPosition().target);
         mProcessMovingCamera = false;
         if (mCompleteListener != null) {
             mCompleteListener.onMapFinishMove();
@@ -417,7 +415,7 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
     }
 
     private void mapsCancelChangeLocation() {
-        Log.d(TAG, "mapsCancelChangeLocation() called");
+        Timber.d("mapsCancelChangeLocation() called");
         mProcessMovingCamera = false;
         mapMovement();
     }

@@ -32,7 +32,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +44,8 @@ import com.ngengs.skripsi.todongban.adapters.HelpTypeAdapter;
 import com.ngengs.skripsi.todongban.data.local.RequestHelp;
 import com.ngengs.skripsi.todongban.utils.customviews.BottomSheetResponse;
 
+import timber.log.Timber;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -55,7 +56,6 @@ import com.ngengs.skripsi.todongban.utils.customviews.BottomSheetResponse;
  */
 public class PersonalRequestHelpFragment extends Fragment
         implements MapFragment.OnFragmentCompleteInteractionListener {
-    private static final String TAG = "PersonalRequestHelp";
 
     //    private GoogleMap mGoogleMap;
 //    private GoogleApiClient mGoogleApiClient;
@@ -189,7 +189,7 @@ public class PersonalRequestHelpFragment extends Fragment
     }
 
     private void selectedHelpType(String helpTypeId) {
-        Log.d(TAG, "selectedHelpType() called with: helpTypeId = [" + helpTypeId + "]");
+        Timber.d("selectedHelpType() called with: helpTypeId = [ %s ]", helpTypeId);
         showBottomSheet(false);
         mRequestHelp = new RequestHelp(helpTypeId);
         String helpConfirmationMessage = getString(
@@ -209,7 +209,7 @@ public class PersonalRequestHelpFragment extends Fragment
                     dialog.dismiss();
                 })
                 .onPositive((dialog, which) -> {
-                    Log.d(TAG, "selectedHelpType: Select positive");
+                    Timber.d("selectedHelpType: Select positive");
                     //noinspection ConstantConditions
                     mRequestHelp.setMessage(dialog.getInputEditText().getText().toString());
                     mRequestHelp.setLocationLatitude(mMap.getLatitude());
@@ -217,7 +217,7 @@ public class PersonalRequestHelpFragment extends Fragment
                     mRequestHelp.setLocationName(mLocationName.getText().toString());
                     dialog.dismiss();
                     if (mListener != null) {
-                        Log.d(TAG, "selectedHelpType: " + mRequestHelp);
+                        Timber.d("selectedHelpType: %s", mRequestHelp);
                         mListener.onHelpRequested(mRequestHelp);
                     }
                 })
@@ -228,7 +228,7 @@ public class PersonalRequestHelpFragment extends Fragment
     }
 
     private void grayScaleVehicleImage() {
-        Log.d(TAG, "grayScaleVehicleImage() called");
+        Timber.d("grayScaleVehicleImage() called");
         ColorMatrix matrix = new ColorMatrix();
         matrix.setSaturation(0);
         ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
@@ -238,7 +238,7 @@ public class PersonalRequestHelpFragment extends Fragment
     }
 
     private void showMyLocationButton(boolean show) {
-        Log.d(TAG, "showMyLocationButton() called with: show = [" + show + "]");
+        Timber.d("showMyLocationButton() called with: show = [ %s ]", show);
         if (show) {
             mMyLocationFab.animate().scaleX(1).scaleY(1).translationY(0).setDuration(150).start();
         } else {
@@ -247,7 +247,7 @@ public class PersonalRequestHelpFragment extends Fragment
     }
 
     private void selectableVehicleType(View view) {
-        Log.d(TAG, "selectableVehicleType() called with: view = [" + view + "]");
+        Timber.d("selectableVehicleType() called with: view = [ %s ]", view);
         if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
             showMyLocationButton(false);
             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -270,7 +270,7 @@ public class PersonalRequestHelpFragment extends Fragment
     }
 
     private void showBottomSheet(boolean show) {
-        Log.d(TAG, "showBottomSheet() called with: show = [" + show + "]");
+        Timber.d("showBottomSheet() called with: show = [ %s ]", show);
         if (mBottomSheetBehavior.isHideable() == show) {
             mBottomSheetBehavior.setHideable(!show);
         }
@@ -307,8 +307,8 @@ public class PersonalRequestHelpFragment extends Fragment
     }
 
     private void bottomSheetStateChanged(View bottomSheet, int newState) {
-        Log.d(TAG, "bottomSheetStateChanged() called with: bottomSheet = [" + bottomSheet +
-                   "], newState = [" + newState + "]");
+        Timber.d("bottomSheetStateChanged() called with: bottomSheet = [ %s ], newState = [ %s ]",
+                 bottomSheet, newState);
         if (newState == BottomSheetBehavior.STATE_DRAGGING) {
             showMyLocationButton(false);
         } else if (newState == BottomSheetBehavior.STATE_EXPANDED) {
@@ -337,7 +337,7 @@ public class PersonalRequestHelpFragment extends Fragment
     @SuppressLint("SetTextI18n")
     @Override
     public void onAddressChanged(String address) {
-        Log.d(TAG, "onAddressChanged() called with: address = [" + address + "]");
+        Timber.d("onAddressChanged() called with: address = [ %s ]", address);
         if (!TextUtils.isEmpty(address)) {
             mLocationName.setText(address);
         } else {
@@ -347,13 +347,13 @@ public class PersonalRequestHelpFragment extends Fragment
 
     @Override
     public void onMapFinishMove() {
-        Log.d(TAG, "onMapFinishMove() called");
+        Timber.d("onMapFinishMove() called");
         showBottomSheet(true);
     }
 
     @Override
     public void onMyLocationReady() {
-        Log.d(TAG, "onMyLocationReady() called");
+        Timber.d("onMyLocationReady() called");
         if (mMyLocationFab.getVisibility() == View.GONE) {
             mMyLocationFab.setVisibility(View.VISIBLE);
         }
@@ -361,14 +361,14 @@ public class PersonalRequestHelpFragment extends Fragment
 
     @Override
     public void onProcessEdit() {
-        Log.d(TAG, "onProcessEdit() called");
+        Timber.d("onProcessEdit() called");
         mEditLocation = true;
         showBottomSheet(false);
     }
 
     @Override
     public void onFinishEdit() {
-        Log.d(TAG, "onFinishEdit() called");
+        Timber.d("onFinishEdit() called");
         mEditLocation = false;
         showBottomSheet(true);
     }

@@ -21,10 +21,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+
+import timber.log.Timber;
 
 public class TestingActivity extends AppCompatActivity {
-    private static final String TAG = "TestingActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,24 +45,25 @@ public class TestingActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(TAG, "onActivityResult() called with: requestCode = [" + requestCode +
-                   "], resultCode = [" + resultCode + "], data = [" + data + "]");
+        Timber.d(
+                "onActivityResult() called with: requestCode = [ %s ], resultCode = [ %s ], data = [ %s ]",
+                requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
-                Log.d(TAG, "onActivityResult: RESULT OK");
+                Timber.d("onActivityResult: RESULT OK");
                 double latitude = data.getDoubleExtra(SelectLocationMapActivity.RESULT_LATITUDE, 0);
                 double longitude = data.getDoubleExtra(SelectLocationMapActivity.RESULT_LONGITUDE,
                                                        0);
-                Log.d(TAG, "onActivityResult: latitude: " + latitude + ", longitude: " + longitude);
+                Timber.d("onActivityResult: latitude: %s , longitude: %s", latitude, longitude);
                 String address = data.getStringExtra(SelectLocationMapActivity.RESULT_ADDRESS);
                 if (address != null) {
-                    Log.d(TAG, "onActivityResult: address: " + address);
+                    Timber.d("onActivityResult: address: %s", address);
                 } else {
-                    Log.d(TAG, "onActivityResult: address empty");
+                    Timber.d("onActivityResult: address empty");
                 }
             } else {
-                Log.d(TAG, "onActivityResult: RESULT NOT OK");
+                Timber.d("onActivityResult: RESULT NOT OK");
             }
         }
     }

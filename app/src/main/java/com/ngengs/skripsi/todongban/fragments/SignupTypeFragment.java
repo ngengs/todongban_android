@@ -20,8 +20,8 @@ package com.ngengs.skripsi.todongban.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +31,8 @@ import com.ngengs.skripsi.todongban.R;
 import com.ngengs.skripsi.todongban.SignupActivity;
 import com.ngengs.skripsi.todongban.data.local.User;
 
+import timber.log.Timber;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link SignupTypeFragment#newInstance} factory method to
@@ -38,7 +40,6 @@ import com.ngengs.skripsi.todongban.data.local.User;
  */
 public class SignupTypeFragment extends Fragment {
     public static final String ARG_USER = "user";
-    private static final String TAG = "SignupTypeFragment";
     private User mUser;
     private OnFragmentTypeInteractionListener mListener;
 
@@ -75,13 +76,13 @@ public class SignupTypeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_signup_type, container, false);
         initLayout(view);
         SignupActivity activity = (SignupActivity) getActivity();
-        Log.d(TAG, "onCreateView: activity:" + activity);
+        Timber.d("onCreateView: activity: %s", activity);
         if (activity != null) activity.setAppTitle(R.string.title_signup_as);
         return view;
     }

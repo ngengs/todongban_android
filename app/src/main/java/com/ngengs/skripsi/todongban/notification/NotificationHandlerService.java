@@ -18,7 +18,6 @@
 package com.ngengs.skripsi.todongban.notification;
 
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -28,6 +27,8 @@ import com.ngengs.skripsi.todongban.utils.notifications.handler.PeopleHelpNotifi
 
 import java.util.Map;
 
+import timber.log.Timber;
+
 public class NotificationHandlerService extends FirebaseMessagingService {
     private static final String TAG = "NotificationHandlerS";
 
@@ -36,16 +37,16 @@ public class NotificationHandlerService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        Log.d(TAG, "onMessageReceived: " + remoteMessage.getMessageId());
+        Timber.tag(TAG).d("onMessageReceived() called with: remoteMessage = [ %s ]", remoteMessage);
         mSharedPreferences = getSharedPreferences(Values.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
 
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
+        Timber.tag(TAG).d("From: %s", remoteMessage.getFrom());
 
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
-            Log.d(TAG, "Message data payload: " + remoteMessage.getData());
+            Timber.tag(TAG).d("Message data payload: %s", remoteMessage.getData());
 
             if (/* Check if data needs to be processed by long running job */ true) {
                 // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
@@ -85,7 +86,8 @@ public class NotificationHandlerService extends FirebaseMessagingService {
 
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+            Timber.tag(TAG)
+                  .d("Message Notification Body: %s", remoteMessage.getNotification().getBody());
             //noinspection ConstantConditions
             NotificationBuilder.sendNotification(this, Values.NOTIFICATION_ID_DEFAULT,
                                                  Values.NOTIFICATION_TAG_DEFAULT,

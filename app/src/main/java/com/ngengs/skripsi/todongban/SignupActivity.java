@@ -25,7 +25,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -50,12 +49,12 @@ import java.util.List;
 
 import okhttp3.MultipartBody;
 import retrofit2.Response;
+import timber.log.Timber;
 
 public class SignupActivity extends AppCompatActivity implements
         SignupBasicFragment.OnFragmentSignupBasicInteractionListener,
         SignupTypeFragment.OnFragmentTypeInteractionListener,
         SignupGarageFragment.OnFragmentInteractionListener {
-    private static final String TAG = "SignupActivity";
 
     private Toolbar mToolbarSignup;
     private FrameLayout mFrameLayoutSignUp;
@@ -94,9 +93,9 @@ public class SignupActivity extends AppCompatActivity implements
     }
 
     public void setAppTitle(@StringRes int title) {
-        Log.d(TAG, "setAppTitle() called with: title = [" + title + "]");
+        Timber.d("setAppTitle() called with: title = [ %s ]", title);
         if (getSupportActionBar() != null) {
-            Log.d(TAG, "setAppTitle: changing");
+            Timber.d("setAppTitle: %s", "changing");
             setTitle(title);
             getSupportActionBar().setTitle(title);
             mToolbarSignup.setTitle(title);
@@ -105,7 +104,7 @@ public class SignupActivity extends AppCompatActivity implements
 
     @Override
     public void onButtonBasicNextClicked(User userData) {
-        Log.d(TAG, "onButtonBasicNextClicked() called with: userData = [" + userData + "]");
+        Timber.d("onButtonBasicNextClicked() called with: userData = [ %s ]", userData);
         goToPageType(userData);
 //        mUser = userData;
 //        if (mUser.getType() != User.TYPE_PERSONAL && mUser.getType() != User.TYPE_GARAGE) {
@@ -116,13 +115,16 @@ public class SignupActivity extends AppCompatActivity implements
 //        }
     }
 
+    @SuppressWarnings("unused")
     private void goToPageBasic() {
+        Timber.d("goToPageBasic() called");
         mFragmentManager.beginTransaction()
                         .add(mFrameLayoutSignUp.getId(), SignupBasicFragment.newInstance(null))
                         .commit();
     }
 
     private void goToPageType(User user) {
+        Timber.d("goToPageType() called with: user = [ %s ]", user);
         mFragmentManager.beginTransaction()
                         .replace(mFrameLayoutSignUp.getId(), SignupTypeFragment.newInstance(user))
                         .addToBackStack("SignupTypeFragment")
@@ -130,6 +132,7 @@ public class SignupActivity extends AppCompatActivity implements
     }
 
     private void goToPageGarage(User user) {
+        Timber.d("goToPageGarage() called with: user = [ %s ]", user);
         mFragmentManager.beginTransaction()
                         .replace(mFrameLayoutSignUp.getId(),
                                  SignupGarageFragment.newInstance(user))
@@ -165,19 +168,20 @@ public class SignupActivity extends AppCompatActivity implements
 
     @Override
     public void onButtonTypeClicked(User userData) {
-//        mUser.setType(userType);
+        Timber.d("onButtonTypeClicked() called with: userData = [ %s ]", userData);
         if (userData.getType() == User.TYPE_PERSONAL) submitNewAccountPersonal(userData);
         else if (userData.getType() == User.TYPE_GARAGE) goToPageGarage(userData);
     }
 
     private void submitNewAccountPersonal(User user) {
+        Timber.d("submitNewAccountPersonal() called with: user = [ %s ]", user);
         mFrameLayoutSignUp.setVisibility(View.GONE);
         mDialog.show();
         List<MultipartBody.Part> partImages = new ArrayList<>();
         partImages.add(NetworkHelpers.prepareImagePart("avatar", user.getAvatarUri()));
         partImages.add(NetworkHelpers.prepareImagePart("identity_picture", user.getIdentityUri()));
         String token = FirebaseInstanceId.getInstance().getToken();
-        Log.d(TAG, "submitNewAccountPersonal: Token:" + token);
+        Timber.d("submitNewAccountPersonal: %s: %s", "Token", token);
         user.setDeviceId(token);
         mApi.signupPersonal(NetworkHelpers.prepareStringPart(user.getUsername()),
                             NetworkHelpers.prepareStringPart(user.getEmail()),
@@ -193,12 +197,13 @@ public class SignupActivity extends AppCompatActivity implements
     }
 
     private void submitNewAccountGarage() {
+        Timber.d("submitNewAccountGarage() called");
         mFrameLayoutSignUp.setVisibility(View.GONE);
         mDialog.show();
     }
 
     private void signupPersonalSuccess(Response<Signup> response) {
-        Log.d(TAG, "signupPersonalSuccess() called with: response = [" + response + "]");
+        Timber.d("signupPersonalSuccess() called with: response = [ %s ]", response);
 
         Signup responseSignup = response.body();
         if (responseSignup != null) {
@@ -216,7 +221,7 @@ public class SignupActivity extends AppCompatActivity implements
 
 
     private void signupPersonalFailure(Throwable t) {
-        Log.e(TAG, "signupPersonalFailure: ", t);
+        Timber.e(t, "signupPersonalFailure: ");
 
         Snackbar.make(mFrameLayoutSignUp, t.getMessage(), Snackbar.LENGTH_SHORT).show();
         while (mFragmentManager.getBackStackEntryCount() > 0) {
@@ -226,7 +231,7 @@ public class SignupActivity extends AppCompatActivity implements
 
     @Override
     public void onButtonGarageSubmitClicked(Garage garage) {
-        Log.d(TAG, "onButtonGarageSubmitClicked() called with: garage = [" + garage + "]");
+        Timber.d("onButtonGarageSubmitClicked() called with: garage = [ %s ]", garage);
 //        mGarage = garage;
         submitNewAccountGarage();
     }

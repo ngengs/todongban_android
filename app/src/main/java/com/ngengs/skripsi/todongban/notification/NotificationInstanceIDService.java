@@ -20,7 +20,6 @@ package com.ngengs.skripsi.todongban.notification;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
@@ -31,6 +30,7 @@ import com.ngengs.skripsi.todongban.utils.networks.ApiResponse;
 import com.ngengs.skripsi.todongban.utils.networks.NetworkHelpers;
 
 import retrofit2.Response;
+import timber.log.Timber;
 
 public class NotificationInstanceIDService extends FirebaseInstanceIdService {
     private static final String TAG = "NotificationInstanceIDS";
@@ -40,7 +40,7 @@ public class NotificationInstanceIDService extends FirebaseInstanceIdService {
     public void onTokenRefresh() {
         // Get updated InstanceID token.
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        Log.d(TAG, "onTokenRefresh: " + refreshedToken);
+        Timber.tag(TAG).d("onTokenRefresh: %s", refreshedToken);
 
         mSharedPreferences = getSharedPreferences(Values.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
         String savedToken = mSharedPreferences.getString(Values.SHARED_PREFERENCES_KEY_TOKEN, null);
@@ -52,7 +52,7 @@ public class NotificationInstanceIDService extends FirebaseInstanceIdService {
     }
 
     public void updateSuccess(Response<SingleStringData> response) {
-        Log.d(TAG, "updateSuccess() called with: response = [" + response + "]");
+        Timber.tag(TAG).d("updateSuccess() called with: response = [ %s ]", response);
         SingleStringData data = response.body();
         if (data != null) {
             mSharedPreferences.edit()
@@ -62,7 +62,7 @@ public class NotificationInstanceIDService extends FirebaseInstanceIdService {
     }
 
     public void updateFailure(@NonNull Throwable t) {
-        Log.e(TAG, "onFailure: ", t);
+        Timber.tag(TAG).e(t, "onFailure: ");
         mSharedPreferences.edit()
                           .putString(Values.SHARED_PREFERENCES_KEY_TOKEN, null)
                           .apply();

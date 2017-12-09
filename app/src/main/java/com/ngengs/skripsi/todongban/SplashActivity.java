@@ -77,12 +77,12 @@ public class SplashActivity extends AppCompatActivity implements PlayServicesAva
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        initLayout();
+        initView();
         mGoogleApiAvailability = GoogleApiAvailability.getInstance();
         runApp(savedInstanceState, true);
     }
 
-    private void initLayout() {
+    private void initView() {
         mTextProcess = findViewById(R.id.textProcess);
     }
 
@@ -247,7 +247,6 @@ public class SplashActivity extends AppCompatActivity implements PlayServicesAva
         if (mGoogleApiAvailability.isUserResolvableError(resultCode)) {
             mGoogleApiAvailability.getErrorDialog(this, resultCode, REQUEST_CODE_PLAY_SERVICES)
                                   .show();
-            ;
         }
     }
 

@@ -68,7 +68,7 @@ public class SigninActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
-        initLayout();
+        initView();
         setSupportActionBar(mToolbarSignIn);
         setTitle(R.string.title_signin);
         mApi = NetworkHelpers.provideAPI(this);
@@ -92,8 +92,8 @@ public class SigninActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void initLayout() {
-        Timber.tag(TAG).d("initLayout() called");
+    private void initView() {
+        Timber.tag(TAG).d("initView() called");
         mToolbarSignIn = findViewById(R.id.toolbarSignIn);
         mAppBarSignIn = findViewById(R.id.appBarSignIn);
         mInputSigninUsername = findViewById(R.id.inputSigninUsername);

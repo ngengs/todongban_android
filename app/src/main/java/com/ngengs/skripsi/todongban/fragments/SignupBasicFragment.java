@@ -1,3 +1,20 @@
+/*==============================================================================
+ Copyright (c) 2017 Rizky Kharisma (@ngengs)
+
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ =============================================================================*/
+
 package com.ngengs.skripsi.todongban.fragments;
 
 import android.app.Activity;
@@ -9,7 +26,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
-import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Patterns;
@@ -326,7 +342,7 @@ public class SignupBasicFragment extends Fragment {
                 .show();
     }
 
-    private void initLayout(View view) {
+    private void initView(View view) {
         mInputSignupBaseName = view.findViewById(R.id.inputSignupBaseName);
         mInputSignupBaseUsername = view.findViewById(R.id.inputSignupBaseUsername);
         mInputSignupBaseEmail = view.findViewById(R.id.inputSignupBaseEmail);
@@ -433,7 +449,7 @@ public class SignupBasicFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_signup_basic, container, false);
         mContext = getContext();
 
-        initLayout(view);
+        initView(view);
         SignupActivity mSignupActivity = (SignupActivity) getActivity();
         if (mUser != null) bindOldData();
         else mUser = new User();

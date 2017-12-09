@@ -80,7 +80,7 @@ public class SignupTypeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_signup_type, container, false);
-        initLayout(view);
+        initView(view);
         SignupActivity activity = (SignupActivity) getActivity();
         Timber.d("onCreateView: activity: %s", activity);
         if (activity != null) activity.setAppTitle(R.string.title_signup_as);
@@ -98,7 +98,7 @@ public class SignupTypeFragment extends Fragment {
         mListener = null;
     }
 
-    private void initLayout(View view) {
+    private void initView(View view) {
         Button mButtonSignupTypePersonal = view.findViewById(R.id.buttonSignupTypePersonal);
         Button mButtonSignupTypeGarage = view.findViewById(R.id.buttonSignupTypeGarage);
 

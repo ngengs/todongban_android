@@ -71,7 +71,7 @@ public class SignupActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        initLayout();
+        initView();
         setSupportActionBar(mToolbarSignup);
         mApi = NetworkHelpers.provideAPI(this);
         mSharedPreferences = getSharedPreferences(Values.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
@@ -83,11 +83,11 @@ public class SignupActivity extends AppCompatActivity implements
         if (mFragmentManager == null) {
             mFragmentManager = getSupportFragmentManager();
         }
-//        goToPageBasic();
-        goToPageGarage(null);
+        goToPageBasic();
+//        goToPageGarage(null);
     }
 
-    private void initLayout() {
+    private void initView() {
         mToolbarSignup = findViewById(R.id.toolbarSignUp);
         mFrameLayoutSignUp = findViewById(R.id.frameLayoutSignUp);
     }
@@ -159,7 +159,7 @@ public class SignupActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-        if (mFragmentManager.getBackStackEntryCount() > 0) {
+        if (mFragmentManager.getBackStackEntryCount() > 1) {
             mFragmentManager.popBackStack();
             return;
         }

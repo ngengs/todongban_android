@@ -21,6 +21,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Garage implements Parcelable {
+
+    public static final int FORCE_CLOSE_NOT = 0;
+    public static final int FORCE_CLOSE_TRUE = 1;
+
     public static final Creator<Garage> CREATOR = new Creator<Garage>() {
         @Override
         public Garage createFromParcel(Parcel in) {
@@ -40,6 +44,7 @@ public class Garage implements Parcelable {
     private String address;
     private double latitude;
     private double longitude;
+    private int forceClose;
 
     public Garage(User user) {
         this.user = user;
@@ -54,6 +59,7 @@ public class Garage implements Parcelable {
         address = in.readString();
         latitude = in.readDouble();
         longitude = in.readDouble();
+        forceClose = in.readInt();
     }
 
     public String getId() {
@@ -120,6 +126,14 @@ public class Garage implements Parcelable {
         this.longitude = longitude;
     }
 
+    public int getForceClose() {
+        return forceClose;
+    }
+
+    public void setForceClose(int forceClose) {
+        this.forceClose = forceClose;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -135,6 +149,7 @@ public class Garage implements Parcelable {
         dest.writeString(address);
         dest.writeDouble(latitude);
         dest.writeDouble(longitude);
+        dest.writeInt(forceClose);
     }
 
     @Override
@@ -148,6 +163,7 @@ public class Garage implements Parcelable {
                ", address='" + address + '\'' +
                ", latitude=" + latitude +
                ", longitude=" + longitude +
+               ", forceClose=" + forceClose +
                '}';
     }
 }

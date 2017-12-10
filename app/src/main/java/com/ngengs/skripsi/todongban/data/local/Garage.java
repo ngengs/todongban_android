@@ -20,6 +20,10 @@ package com.ngengs.skripsi.todongban.data.local;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.Date;
+
 public class Garage implements Parcelable {
 
     public static final int FORCE_CLOSE_NOT = 0;
@@ -36,14 +40,23 @@ public class Garage implements Parcelable {
             return new Garage[size];
         }
     };
+    @SerializedName(value = "garage_id", alternate = "id")
     private String id;
+    @SerializedName(value = "garage_user", alternate = "user")
     private User user;
+    @SerializedName(value = "garage_name", alternate = "name")
     private String name;
-    private long openHour;
-    private long closeHour;
+    @SerializedName(value = "garage_open", alternate = "open")
+    private Date openHour;
+    @SerializedName(value = "garage_close", alternate = "close")
+    private Date closeHour;
+    @SerializedName(value = "garage_address", alternate = "address")
     private String address;
+    @SerializedName(value = "garage_latitude", alternate = "latitude")
     private double latitude;
+    @SerializedName(value = "garage_longitude", alternate = "longitude")
     private double longitude;
+    @SerializedName(value = "garage_force_close", alternate = "force_close")
     private int forceClose;
 
     public Garage(User user) {
@@ -54,8 +67,8 @@ public class Garage implements Parcelable {
         id = in.readString();
         user = in.readParcelable(User.class.getClassLoader());
         name = in.readString();
-        openHour = in.readLong();
-        closeHour = in.readLong();
+        openHour = new Date(in.readLong());
+        closeHour = new Date(in.readLong());
         address = in.readString();
         latitude = in.readDouble();
         longitude = in.readDouble();
@@ -86,19 +99,19 @@ public class Garage implements Parcelable {
         this.name = name;
     }
 
-    public long getOpenHour() {
+    public Date getOpenHour() {
         return openHour;
     }
 
-    public void setOpenHour(long openHour) {
+    public void setOpenHour(Date openHour) {
         this.openHour = openHour;
     }
 
-    public long getCloseHour() {
+    public Date getCloseHour() {
         return closeHour;
     }
 
-    public void setCloseHour(long closeHour) {
+    public void setCloseHour(Date closeHour) {
         this.closeHour = closeHour;
     }
 
@@ -144,8 +157,8 @@ public class Garage implements Parcelable {
         dest.writeString(id);
         dest.writeParcelable(user, flags);
         dest.writeString(name);
-        dest.writeLong(openHour);
-        dest.writeLong(closeHour);
+        dest.writeLong(openHour.getTime());
+        dest.writeLong(closeHour.getTime());
         dest.writeString(address);
         dest.writeDouble(latitude);
         dest.writeDouble(longitude);

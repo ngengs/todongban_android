@@ -74,9 +74,10 @@ public class User implements Parcelable {
     @SerializedName("device_id")
     private String deviceId;
     // Local image
-    private Uri avatarUri;
-    private Uri identityUri;
+    private transient Uri avatarUri;
+    private transient Uri identityUri;
     // Local Password
+    @SerializedName("password")
     private String passwordClean;
 
     public User() {

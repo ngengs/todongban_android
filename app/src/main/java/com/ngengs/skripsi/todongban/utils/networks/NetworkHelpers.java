@@ -21,9 +21,15 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.ngengs.skripsi.todongban.BuildConfig;
+import com.ngengs.skripsi.todongban.utils.GsonUtils;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
@@ -34,6 +40,7 @@ import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import timber.log.Timber;
 
 @SuppressWarnings("WeakerAccess")
 public class NetworkHelpers {
@@ -44,7 +51,8 @@ public class NetworkHelpers {
     private static final int WRITE_TIMEOUT = 300;
     private static final int TIMEOUT = 300;
 
-    public static OkHttpClient provideOkHttp(Context context) {
+    @NonNull
+    public static OkHttpClient provideOkHttp(@NonNull Context context) {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
@@ -59,22 +67,38 @@ public class NetworkHelpers {
                 .build();
     }
 
-
+    @NonNull
     public static Retrofit provideRetrofit(OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .baseUrl(NetworkHelpers.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(GsonUtils.provideGson()))
                 .client(okHttpClient)
                 .build();
     }
 
-
-    public static API provideAPI(Context context) {
+    @NonNull
+    public static API provideAPI(@NonNull Context context) {
         return provideRetrofit(provideOkHttp(context)).create(API.class);
     }
 
-    public static RequestBody prepareStringPart(Object value) {
+    @NonNull
+    public static RequestBody prepareStringPart(@NonNull Object value) {
+        Timber.d("prepareStringPart() called with: value = [ %s ]", value);
         return RequestBody.create(MultipartBody.FORM, String.valueOf(value));
+    }
+
+    @NonNull
+    public static Map<String, RequestBody> prepareMapPart(@NonNull Object value) {
+        Timber.d("prepareMapPart() called with: value = [ %s ]", value);
+        Map<String, RequestBody> map = new HashMap<>();
+        Gson gson = GsonUtils.provideGson();
+        String jsonString = gson.toJson(value);
+        JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
+        for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
+            map.put(entry.getKey(),
+                    NetworkHelpers.prepareStringPart(entry.getValue().getAsString()));
+        }
+        return map;
     }
 
     @NonNull
@@ -83,7 +107,10 @@ public class NetworkHelpers {
     }
 
     @NonNull
-    public static MultipartBody.Part prepareImagePart(String partName, Uri fileUri) {
+    public static MultipartBody.Part prepareImagePart(@NonNull String partName,
+                                                      @NonNull Uri fileUri) {
+        Timber.d("prepareImagePart() called with: partName = [ %s ], fileUri = [ %s ]", partName,
+                 fileUri);
         File file = new File(fileUri.getPath());
 
         // handle RequestBody instance from file

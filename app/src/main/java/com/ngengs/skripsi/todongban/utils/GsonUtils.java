@@ -23,7 +23,7 @@ import com.google.gson.GsonBuilder;
 public class GsonUtils {
     private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-    public static Gson provideGson(){
+    public static Gson provideGson() {
         return new GsonBuilder().setDateFormat(DATE_FORMAT).create();
     }
 }

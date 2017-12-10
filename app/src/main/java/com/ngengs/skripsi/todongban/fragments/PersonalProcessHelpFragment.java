@@ -48,6 +48,7 @@ import com.ngengs.skripsi.todongban.data.enumerations.Values;
 import com.ngengs.skripsi.todongban.data.local.PeopleHelp;
 import com.ngengs.skripsi.todongban.data.local.RequestHelp;
 import com.ngengs.skripsi.todongban.data.local.User;
+import com.ngengs.skripsi.todongban.utils.GsonUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -317,7 +318,7 @@ public class PersonalProcessHelpFragment extends Fragment {
     }
 
     private void loadDataFromLocal() {
-        Gson gson = new Gson();
+        Gson gson = GsonUtils.provideGson();
         String existPeopleHelpString = mSharedPreferences.getString(
                 Values.SHARED_PREFERENCES_KEY_PEOPLE_HELP, null);
         List<PeopleHelp> existPeopleHelp = new ArrayList<>();

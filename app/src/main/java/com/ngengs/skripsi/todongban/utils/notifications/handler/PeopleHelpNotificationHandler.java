@@ -27,6 +27,7 @@ import com.ngengs.skripsi.todongban.MainActivityPersonal;
 import com.ngengs.skripsi.todongban.R;
 import com.ngengs.skripsi.todongban.data.enumerations.Values;
 import com.ngengs.skripsi.todongban.data.local.PeopleHelp;
+import com.ngengs.skripsi.todongban.utils.GsonUtils;
 import com.ngengs.skripsi.todongban.utils.notifications.NotificationBuilder;
 
 import java.util.ArrayList;
@@ -57,7 +58,7 @@ public class PeopleHelpNotificationHandler {
 
     private static void saveData(SharedPreferences sharedPreferences,
                                  PeopleHelp data) {
-        Gson gson = new Gson();
+        Gson gson = GsonUtils.provideGson();
         List<PeopleHelp> saveData = new ArrayList<>();
         String oldData = sharedPreferences.getString(Values.SHARED_PREFERENCES_KEY_PEOPLE_HELP,
                                                      null);

@@ -79,15 +79,15 @@ public class SplashActivity extends AppCompatActivity implements PlayServicesAva
         setContentView(R.layout.activity_splash);
         initView();
         mGoogleApiAvailability = GoogleApiAvailability.getInstance();
-        runApp(savedInstanceState, true);
+        runApp(true);
     }
 
     private void initView() {
         mTextProcess = findViewById(R.id.textProcess);
     }
 
-    @SuppressWarnings("UnusedParameters")
-    private void runApp(Bundle savedInstanceState, boolean needCheckPermission) {
+    private void runApp(boolean needCheckPermission) {
+        Timber.d("runApp() called with: needCheckPermission = [ %s ]", needCheckPermission);
         // Check permission if user use phone with SDK >= 23
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && needCheckPermission) {
             Timber.i("onCreate: check permission");
@@ -123,6 +123,11 @@ public class SplashActivity extends AppCompatActivity implements PlayServicesAva
 
     private void runPageWithStatusUser(User user) {
         Timber.d("runPageWithStatusUser() called with: user = [ %s ]", user);
+        if (user == null) {
+            mTextProcess.setText("Data pengguna tidak ditemukan");
+            runPageWithoutToken(true);
+            return;
+        }
         Intent intent = null;
         if (user.getStatus() == User.STATUS_DEACTIVE) {
             intent = new Intent(this, WaitVerificationActivity.class);
@@ -235,9 +240,7 @@ public class SplashActivity extends AppCompatActivity implements PlayServicesAva
 
     @Override
     public void onSuccess() {
-        if (mUser != null) {
-            runPageWithStatusUser(mUser);
-        }
+        runPageWithStatusUser(mUser);
     }
 
     @Override
@@ -278,7 +281,7 @@ public class SplashActivity extends AppCompatActivity implements PlayServicesAva
         if (shouldRequestAgain) {
             checkAppPermission();
         } else {
-            runApp(null, false);
+            runApp(false);
         }
     }
 

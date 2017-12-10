@@ -22,6 +22,7 @@ import com.ngengs.skripsi.todongban.data.remote.Signup;
 import com.ngengs.skripsi.todongban.data.remote.SingleStringData;
 
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -33,37 +34,20 @@ import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 
 public interface API {
 
     @Multipart
     @POST("api/user/signup")
-    Call<Signup> signupPersonal(@Part("username") RequestBody username,
-                                @Part("email") RequestBody email,
-                                @Part("password") RequestBody password,
-                                @Part("full_name") RequestBody fullName,
-                                @Part("phone") RequestBody phone,
-                                @Part("gender") RequestBody gender,
-                                @Part("address") RequestBody address,
-                                @Part("identity_number") RequestBody identityNumber,
-                                @Part("device_id") RequestBody deviceId,
-                                @Part("type") RequestBody type,
-                                @Part List<MultipartBody.Part> files);
-
-    @Multipart
-    @POST("api/user/signup")
-    Call<Signup> signupGarage();
+    Call<Signup> signup(@PartMap() Map<String, RequestBody> signupData,
+                        @Part List<MultipartBody.Part> files);
 
     @FormUrlEncoded
     @POST("api/user/signin")
     Call<SingleStringData> signin(@Field("username") String username,
                                   @Field("password") String password,
                                   @Field("device_id") String deviceId);
-//    @FormUrlEncoded
-//    @POST("api/user/signin")
-//    Call<SingleStringData> signin(@Field("username") String username,
-//                                  @Field("password") String password,
-//                                  @Field("device_id") String deviceId);
 
     @GET("api/user/signout")
     Call<SingleStringData> signout(@Header("Authorization") String authHeader);

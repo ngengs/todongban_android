@@ -19,6 +19,7 @@ package com.ngengs.skripsi.todongban;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
@@ -45,9 +46,12 @@ import com.ngengs.skripsi.todongban.utils.networks.ApiResponse;
 import com.ngengs.skripsi.todongban.utils.networks.NetworkHelpers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Response;
 import timber.log.Timber;
 
@@ -159,7 +163,10 @@ public class SignupActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-        if (mFragmentManager.getBackStackEntryCount() > 1) {
+        if (mDialog.isShowing()) {
+            return;
+        }
+        if (mFragmentManager.getBackStackEntryCount() > 0) {
             mFragmentManager.popBackStack();
             return;
         }
@@ -177,33 +184,74 @@ public class SignupActivity extends AppCompatActivity implements
         Timber.d("submitNewAccountPersonal() called with: user = [ %s ]", user);
         mFrameLayoutSignUp.setVisibility(View.GONE);
         mDialog.show();
-        List<MultipartBody.Part> partImages = new ArrayList<>();
-        partImages.add(NetworkHelpers.prepareImagePart("avatar", user.getAvatarUri()));
-        partImages.add(NetworkHelpers.prepareImagePart("identity_picture", user.getIdentityUri()));
-        String token = FirebaseInstanceId.getInstance().getToken();
-        Timber.d("submitNewAccountPersonal: %s: %s", "Token", token);
-        user.setDeviceId(token);
-        mApi.signupPersonal(NetworkHelpers.prepareStringPart(user.getUsername()),
-                            NetworkHelpers.prepareStringPart(user.getEmail()),
-                            NetworkHelpers.prepareStringPart(user.getPasswordClean()),
-                            NetworkHelpers.prepareStringPart(user.getFullName()),
-                            NetworkHelpers.prepareStringPart(user.getPhone()),
-                            NetworkHelpers.prepareStringPart(user.getGender()),
-                            NetworkHelpers.prepareStringPart(user.getAddress()),
-                            NetworkHelpers.prepareStringPart(user.getIdentityNumber()),
-                            NetworkHelpers.prepareStringPart(user.getDeviceId()),
-                            NetworkHelpers.prepareStringPart(user.getType()), partImages)
-            .enqueue(new ApiResponse<>(this::signupPersonalSuccess, this::signupPersonalFailure));
+        user = prepareUserToken(user);
+        List<MultipartBody.Part> partImages = new ArrayList<>(
+                prepareSignupImage(user.getAvatarUri(), user.getIdentityUri()));
+//        mApi.signupPersonal(NetworkHelpers.prepareStringPart(user.getUsername()),
+//                            NetworkHelpers.prepareStringPart(user.getEmail()),
+//                            NetworkHelpers.prepareStringPart(user.getPasswordClean()),
+//                            NetworkHelpers.prepareStringPart(user.getFullName()),
+//                            NetworkHelpers.prepareStringPart(user.getPhone()),
+//                            NetworkHelpers.prepareStringPart(user.getGender()),
+//                            NetworkHelpers.prepareStringPart(user.getAddress()),
+//                            NetworkHelpers.prepareStringPart(user.getIdentityNumber()),
+//                            NetworkHelpers.prepareStringPart(user.getDeviceId()),
+//                            NetworkHelpers.prepareStringPart(user.getType()), partImages)
+        Map<String, RequestBody> signupData = new HashMap<>(
+                NetworkHelpers.prepareMapPart(user));
+        mApi.signup(signupData, partImages)
+            .enqueue(new ApiResponse<>(this::signupSuccess, this::signupFailure));
     }
 
-    private void submitNewAccountGarage() {
-        Timber.d("submitNewAccountGarage() called");
+    private void submitNewAccountGarage(Garage garage) {
+        Timber.d("submitNewAccountGarage() called with: garage = [ %s ]", garage);
         mFrameLayoutSignUp.setVisibility(View.GONE);
         mDialog.show();
+        User user = prepareUserToken(garage.getUser());
+        List<MultipartBody.Part> partImages = new ArrayList<>(
+                prepareSignupImage(user.getAvatarUri(), user.getIdentityUri()));
+//        mApi.signupGarage(NetworkHelpers.prepareStringPart(user.getUsername()),
+//                          NetworkHelpers.prepareStringPart(user.getEmail()),
+//                          NetworkHelpers.prepareStringPart(user.getPasswordClean()),
+//                          NetworkHelpers.prepareStringPart(user.getFullName()),
+//                          NetworkHelpers.prepareStringPart(user.getPhone()),
+//                          NetworkHelpers.prepareStringPart(user.getGender()),
+//                          NetworkHelpers.prepareStringPart(user.getAddress()),
+//                          NetworkHelpers.prepareStringPart(user.getIdentityNumber()),
+//                          NetworkHelpers.prepareStringPart(user.getDeviceId()),
+//                          NetworkHelpers.prepareStringPart(user.getType()),
+//                          NetworkHelpers.prepareStringPart(garage.getName()),
+//                          NetworkHelpers.prepareStringPart(garage.getOpenHour()),
+//                          NetworkHelpers.prepareStringPart(garage.getCloseHour()),
+//                          NetworkHelpers.prepareStringPart(garage.getAddress()),
+//                          NetworkHelpers.prepareStringPart(garage.getLatitude()),
+//                          NetworkHelpers.prepareStringPart(garage.getLongitude()),
+//                          partImages
+//        )
+        garage.setUser(null);
+        Map<String, RequestBody> signupData = new HashMap<>(NetworkHelpers.prepareMapPart(garage));
+        signupData.putAll(NetworkHelpers.prepareMapPart(user));
+        mApi.signup(signupData, partImages)
+            .enqueue(new ApiResponse<>(this::signupSuccess, this::signupFailure));
     }
 
-    private void signupPersonalSuccess(Response<Signup> response) {
-        Timber.d("signupPersonalSuccess() called with: response = [ %s ]", response);
+    private User prepareUserToken(User user) {
+        Timber.d("prepareUserToken() called with: user = [ %s ]", user);
+        String token = FirebaseInstanceId.getInstance().getToken();
+        Timber.d("prepareUserToken: Token: %s", token);
+        user.setDeviceId(token);
+        return user;
+    }
+
+    private List<MultipartBody.Part> prepareSignupImage(Uri avatarUri, Uri identityUri) {
+        List<MultipartBody.Part> partImages = new ArrayList<>();
+        partImages.add(NetworkHelpers.prepareImagePart("avatar", avatarUri));
+        partImages.add(NetworkHelpers.prepareImagePart("identity_picture", identityUri));
+        return partImages;
+    }
+
+    private void signupSuccess(Response<Signup> response) {
+        Timber.d("signupSuccess() called with: response = [ %s ]", response);
 
         Signup responseSignup = response.body();
         if (responseSignup != null) {
@@ -220,8 +268,8 @@ public class SignupActivity extends AppCompatActivity implements
     }
 
 
-    private void signupPersonalFailure(Throwable t) {
-        Timber.e(t, "signupPersonalFailure: ");
+    private void signupFailure(Throwable t) {
+        Timber.e(t, "signupFailure: ");
 
         Snackbar.make(mFrameLayoutSignUp, t.getMessage(), Snackbar.LENGTH_SHORT).show();
         while (mFragmentManager.getBackStackEntryCount() > 0) {
@@ -232,7 +280,14 @@ public class SignupActivity extends AppCompatActivity implements
     @Override
     public void onButtonGarageSubmitClicked(Garage garage) {
         Timber.d("onButtonGarageSubmitClicked() called with: garage = [ %s ]", garage);
+//        Gson gson = new Gson();
+//        String json = gson.toJson(garage);
+//        Timber.d("onButtonGarageSubmitClicked: JSON: %s", json);
+//        LinkedHashTreeMap map = gson.fromJson(json, LinkedHashTreeMap.class);
+//        Timber.d("onButtonGarageSubmitClicked: MAP: %s", map);
+//        Map<String, RequestBody> mapBody = NetworkHelpers.prepareMapPart(garage);
+//        Timber.d("onButtonGarageSubmitClicked: MAP PART: %s", mapBody);
 //        mGarage = garage;
-        submitNewAccountGarage();
+        submitNewAccountGarage(garage);
     }
 }

@@ -24,6 +24,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.ngengs.skripsi.todongban.data.enumerations.Values;
 import com.ngengs.skripsi.todongban.utils.notifications.NotificationBuilder;
 import com.ngengs.skripsi.todongban.utils.notifications.handler.PeopleHelpNotificationHandler;
+import com.ngengs.skripsi.todongban.utils.notifications.handler.SignupNotificationHandler;
 
 import java.util.Map;
 
@@ -47,16 +48,10 @@ public class NotificationHandlerService extends FirebaseMessagingService {
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Timber.tag(TAG).d("Message data payload: %s", remoteMessage.getData());
-
-            if (/* Check if data needs to be processed by long running job */ true) {
-                // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
-            } else {
-                // Handle message within 10 seconds
-            }
             Map<String, String> payload = remoteMessage.getData();
-            if (payload.containsKey("type")) {
-                int type = Integer.parseInt(payload.get(Values.NOTIFICATION_DATA_GLOBAL_TYPE));
-                if (type == Values.NOTIFICATION_TYPE_PEOPLE_HELP) {
+            if (payload.containsKey(Values.NOTIFICATION_DATA_GLOBAL_CODE)) {
+                int code = Integer.parseInt(payload.get(Values.NOTIFICATION_DATA_GLOBAL_CODE));
+                if (code == Values.NOTIFICATION_CODE_PEOPLE_HELP) {
                     PeopleHelpNotificationHandler.handle(this, payload);
 //                    Log.d(TAG, "onMessageReceived: send broadcast");
 //                    String helpId = payload.get(Values.NOTIFICATION_DATA_PEOPLE_HELP_ID);
@@ -79,6 +74,8 @@ public class NotificationHandlerService extends FirebaseMessagingService {
 //                                                         NotificationBuilder.buildPendingIntentDefault(
 //                                                                 this), null);
 //                    sendBroadcast(intent);
+                } else if (code == Values.NOTIFICATION_CODE_SIGNUP_SUCCESS) {
+                    SignupNotificationHandler.handle(this, payload);
                 }
             }
 

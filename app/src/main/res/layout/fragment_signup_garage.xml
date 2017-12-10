@@ -71,7 +71,7 @@
                     android:layout_height="wrap_content"
                     android:cursorVisible="false"
                     android:focusable="false"
-                    android:hint="Tanggal Lahir"
+                    android:hint="Jam Buka"
                     android:inputType="text|time"/>
             </android.support.design.widget.TextInputLayout>
 
@@ -88,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:cursorVisible="false"
                     android:focusable="false"
-                    android:hint="Tanggal Lahir"
+                    android:hint="Jam Tutup"
                     android:inputType="text|time"/>
             </android.support.design.widget.TextInputLayout>
 

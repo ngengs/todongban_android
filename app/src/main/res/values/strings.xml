@@ -48,6 +48,7 @@
     <string name="help_confirmation_message">Anda meminta bantuan pada kendaraan %1$s dengan jenis bantuan %2$s</string>
     <string name="help_confirmation_message_hint">Pesan Anda</string>
 
+    <string name="notification_message_signup_complete">Pendaftaran anda telah di verifikasi, silahkan menggunakan aplikasi dan membantu sesama</string>
     <string name="notification_message_found_people_helper">Menemukan sesorang yang bersedia membantu</string>
     <string name="title_activity_testing">TestingActivity</string>
     <string name="title_select_location">Pilih Lokasi</string>

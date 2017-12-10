@@ -26,15 +26,19 @@ public final class Values {
     public static final String SHARED_PREFERENCES_KEY_TYPE_HELP_PROCESS = "type_help_process";
     public static final String SHARED_PREFERENCES_KEY_PEOPLE_HELP = "people_help";
 
-    public static final int NOTIFICATION_TYPE_PEOPLE_HELP = 201;
+    public static final int NOTIFICATION_CODE_SIGNUP_SUCCESS = 100;
+    public static final int NOTIFICATION_CODE_SIGNUP_FAILED = 101;
+    public static final int NOTIFICATION_CODE_PEOPLE_HELP = 201;
 
     public static final int NOTIFICATION_ID_DEFAULT = 0;
-    public static final int NOTIFICATION_ID_PEOPLE_HELP = 1;
+    public static final int NOTIFICATION_ID_SIGNUP = 1;
+    public static final int NOTIFICATION_ID_PEOPLE_HELP = 2;
 
     public static final String NOTIFICATION_TAG_DEFAULT = "TDB_NOTIFICATION";
+    public static final String NOTIFICATION_TAG_SIGNUP = "TDB_SIGNUP";
     public static final String NOTIFICATION_TAG_PEOPLE_HELP = "TDB_FOUND_PEOPLE";
 
-    public static final String NOTIFICATION_DATA_GLOBAL_TYPE = "type";
+    public static final String NOTIFICATION_DATA_GLOBAL_CODE = "code";
     public static final String NOTIFICATION_DATA_PEOPLE_HELP_ID = "id";
     public static final String NOTIFICATION_DATA_PEOPLE_HELP_NAME = "name";
     public static final String NOTIFICATION_DATA_PEOPLE_HELP_BADGE = "badge";

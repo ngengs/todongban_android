@@ -78,6 +78,8 @@ public class SignupBasicFragment extends Fragment {
     private TextInputEditText mInputSignupBasePhone;
     private TextInputEditText mInputSignupBaseAddress;
     private CircleImageView mImageSignupIdentity;
+    @SuppressWarnings("FieldCanBeLocal")
+    private View mInputSignupBaseIdentityLayout;
     private TextInputEditText mInputSignupBaseIdentity;
     private CircleImageView mImageSignupProfile;
     @SuppressWarnings("FieldCanBeLocal")
@@ -351,6 +353,7 @@ public class SignupBasicFragment extends Fragment {
         mInputSignupBasePhone = view.findViewById(R.id.inputSignupBasePhone);
         mInputSignupBaseAddress = view.findViewById(R.id.inputSignupBaseAddress);
         mImageSignupIdentity = view.findViewById(R.id.imageSignupIdentity);
+        mInputSignupBaseIdentityLayout = view.findViewById(R.id.inputLayoutSignupBaseIdentity);
         mInputSignupBaseIdentity = view.findViewById(R.id.inputSignupBaseIdentity);
         mImageSignupProfile = view.findViewById(R.id.imageSignupProfile);
         mButtonSignupBasicNext = view.findViewById(R.id.buttonSignupBasicNext);
@@ -360,6 +363,8 @@ public class SignupBasicFragment extends Fragment {
         // Click action builder
         mImageSignupProfile.setOnClickListener(v -> onImageSignupProfileClicked());
         mImageSignupIdentity.setOnClickListener(v -> onLayoutImageSignupIdentityClicked());
+        mInputSignupBaseIdentityLayout.setOnClickListener(
+                v -> onLayoutImageSignupIdentityClicked());
         mInputSignupBaseBirthDate.setOnClickListener(v -> onInputSignupBaseBirthDateClicked());
         mButtonSignupBasicNext.setOnClickListener(v -> onButtonNextClicked());
         mImageSignupProfile.setImageBitmap(ResourceUtils.getBitmapFromVectorDrawable(mContext, R.drawable.ic_avatar));

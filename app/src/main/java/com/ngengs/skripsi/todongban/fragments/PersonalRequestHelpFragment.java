@@ -41,6 +41,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.ngengs.skripsi.todongban.R;
 import com.ngengs.skripsi.todongban.adapters.HelpTypeAdapter;
+import com.ngengs.skripsi.todongban.data.local.HelpType;
 import com.ngengs.skripsi.todongban.data.local.RequestHelp;
 import com.ngengs.skripsi.todongban.utils.customviews.BottomSheetResponse;
 
@@ -254,9 +255,9 @@ public class PersonalRequestHelpFragment extends Fragment
         }
 
         if (view.getId() == R.id.selectable_type_motorcycle) {
-            mSelectedVehicle = RequestHelp.VEHICLE_TYPE_MOTORCYCLE;
+            mSelectedVehicle = HelpType.VEHICLE_MOTORCYCLE;
         } else if (view.getId() == R.id.selectable_type_car) {
-            mSelectedVehicle = RequestHelp.VEHICLE_TYPE_CAR;
+            mSelectedVehicle = HelpType.VEHICLE_CAR;
         }
 
         grayScaleVehicleImage();

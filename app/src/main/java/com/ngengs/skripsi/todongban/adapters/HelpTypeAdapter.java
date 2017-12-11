@@ -26,7 +26,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ngengs.skripsi.todongban.R;
-import com.ngengs.skripsi.todongban.data.local.RequestHelp;
+import com.ngengs.skripsi.todongban.data.local.HelpType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,9 +50,9 @@ public class HelpTypeAdapter extends RecyclerView.Adapter<HelpTypeAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         String helpType = mData.get(position);
-        holder.mImageHelpType.setImageResource(RequestHelp.getIconFromHelpType(helpType));
-        holder.mImageVehicleType.setImageResource(RequestHelp.getVehicleIconFromHelpType(helpType));
-        holder.mTextHelpType.setText(RequestHelp.getNameFromHelpType(helpType));
+        holder.mImageHelpType.setImageResource(HelpType.getIconFromHelpType(helpType));
+        holder.mImageVehicleType.setImageResource(HelpType.getVehicleIconFromHelpType(helpType));
+        holder.mTextHelpType.setText(HelpType.getNameFromHelpType(helpType));
     }
 
     @Override
@@ -64,7 +64,7 @@ public class HelpTypeAdapter extends RecyclerView.Adapter<HelpTypeAdapter.ViewHo
         int firstSize = getItemCount();
         mData.clear();
         notifyItemRangeRemoved(0, firstSize);
-        mData.addAll(RequestHelp.getHelpTypeList(vehicleType));
+        mData.addAll(HelpType.getHelpTypeList(vehicleType));
         notifyItemRangeInserted(0, getItemCount());
     }
 

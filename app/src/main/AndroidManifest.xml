@@ -30,6 +30,7 @@
     <uses-feature android:name="android.hardware.location.gps"/>
 
     <application
+        android:name=".TodongBanApp"
         android:allowBackup="true"
         android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
@@ -37,7 +38,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
-        android:name=".TodongBanApp"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".SplashActivity"
@@ -117,7 +117,8 @@
         </activity>
         <activity
             android:name=".MainActivityGarage"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <service
@@ -138,6 +139,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".SignoutActivity"
+            android:theme="@style/AppTheme.BackgroundFullPrimary">
         </activity>
     </application>
 

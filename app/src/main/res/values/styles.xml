@@ -35,6 +35,11 @@
         <item name="android:textColor">@color/colorTextInDark</item>
     </style>
 
+    <style name="AppTheme.BackgroundFullPrimary" parent="AppTheme.NoActionBar">
+        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorTextInDark</item>
+    </style>
+
     <style name="AppTheme.FullMap" parent="AppTheme.NoActionBar"/>
 
     <style name="AppTheme.WaitVerification" parent="AppTheme.NoActionBar">

@@ -32,8 +32,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.firebase.jobdispatcher.FirebaseJobDispatcher;
-import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.ngengs.skripsi.todongban.data.enumerations.Values;
 import com.ngengs.skripsi.todongban.data.local.PeopleHelp;
 import com.ngengs.skripsi.todongban.data.local.RequestHelp;
@@ -75,21 +73,7 @@ public class MainActivityPersonal extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_personal);
-        mDrawer = findViewById(R.id.drawer_layout);
-        mNavigationView = findViewById(R.id.nav_view);
-        mNavigationView.setNavigationItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.menu_signout:
-                    mSharedPreferences.edit()
-                                      .putString(Values.SHARED_PREFERENCES_KEY_TOKEN, null)
-                                      .apply();
-                    mApi.signout(NetworkHelpers.authorizationHeader(mToken))
-                        .enqueue(new ApiResponse<>(this::signoutSuccess, this::signoutFailure));
-                    break;
-            }
-            return true;
-        });
-
+        initView();
 
         if (getIntent().getParcelableExtra(ARGS_USER) != null) {
             mUser = getIntent().getParcelableExtra(ARGS_USER);
@@ -114,6 +98,20 @@ public class MainActivityPersonal extends AppCompatActivity
 //            initPlayServices();
 //            initMaps();
         }
+    }
+
+    private void initView() {
+        mDrawer = findViewById(R.id.drawer_layout);
+        mNavigationView = findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.menu_signout:
+                    SignoutActivity.runSignout(this);
+                    break;
+            }
+            return true;
+        });
+
     }
 
     @Override
@@ -296,21 +294,6 @@ public class MainActivityPersonal extends AppCompatActivity
 
     private void helpCancelFailure(Throwable t) {
         Timber.e(t, "helpCancelFailure: ");
-    }
-
-    private void signoutSuccess(Response<SingleStringData> response) {
-        Timber.d("signoutSuccess() called with: response = [ %s ]", response);
-        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(
-                new GooglePlayDriver(getBaseContext()));
-        dispatcher.cancelAll();
-        Intent intent = new Intent(getApplicationContext(),
-                                   SplashActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
-    private void signoutFailure(Throwable t) {
-        Timber.e(t, "signoutFailure: ");
     }
 
     private class FoundHelpersBroadcastReceiver extends BroadcastReceiver {

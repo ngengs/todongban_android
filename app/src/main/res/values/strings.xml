@@ -52,5 +52,7 @@
     <string name="notification_message_found_people_helper">Menemukan sesorang yang bersedia membantu</string>
     <string name="title_activity_testing">TestingActivity</string>
     <string name="title_select_location">Pilih Lokasi</string>
+    <string name="message_failed_signout">Gagal keluar dari aplikasi</string>
+    <string name="try_again">Coba Lagi</string>
 
 </resources>

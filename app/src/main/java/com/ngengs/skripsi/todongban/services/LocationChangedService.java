@@ -87,8 +87,8 @@ public class LocationChangedService extends JobService
         Timber.tag(TAG)
               .d("pushUpdate() called with: latitude = [ %s ], longitude = [ %s ]", latitude,
                  longitude);
-        API mApi = NetworkHelpers.provideAPI(getBaseContext());
-        mApi.updateLocation(NetworkHelpers.authorizationHeader(mToken), latitude, longitude)
+        API mApi = NetworkHelpers.provideAPI(getBaseContext(), mToken);
+        mApi.updateLocation(latitude, longitude)
             .enqueue(new ApiResponse<>(this::updateSuccess, this::updateFailure));
     }
 

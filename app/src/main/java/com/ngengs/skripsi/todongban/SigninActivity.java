@@ -20,10 +20,8 @@ package com.ngengs.skripsi.todongban;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -37,7 +35,7 @@ import android.widget.Toast;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.ngengs.skripsi.todongban.data.enumerations.Values;
 import com.ngengs.skripsi.todongban.data.remote.SingleStringData;
-import com.ngengs.skripsi.todongban.utils.networks.API;
+import com.ngengs.skripsi.todongban.utils.networks.APIUnSecure;
 import com.ngengs.skripsi.todongban.utils.networks.ApiResponse;
 import com.ngengs.skripsi.todongban.utils.networks.NetworkHelpers;
 
@@ -49,7 +47,6 @@ public class SigninActivity extends AppCompatActivity {
     private final static String TAG = "SigninActivity";
 
     private Toolbar mToolbarSignIn;
-    private AppBarLayout mAppBarSignIn;
     /** Username */
     private TextInputEditText mInputSigninUsername;
     private TextInputLayout mInputLayoutSigninUsername;
@@ -57,11 +54,11 @@ public class SigninActivity extends AppCompatActivity {
     private TextInputEditText mInputSigninPassword;
     private TextInputLayout mInputLayoutSigninPassword;
     /** Signin */
+    @SuppressWarnings("FieldCanBeLocal")
     private Button mButtonSignin;
-    private NestedScrollView mScrollSignin;
     private MaterialProgressBar mProgress;
 
-    private API mApi;
+    private APIUnSecure mApi;
     private SharedPreferences mSharedPreferences;
 
     @Override
@@ -71,7 +68,7 @@ public class SigninActivity extends AppCompatActivity {
         initView();
         setSupportActionBar(mToolbarSignIn);
         setTitle(R.string.title_signin);
-        mApi = NetworkHelpers.provideAPI(this);
+        mApi = NetworkHelpers.provideAPIUnSecure(this);
         mSharedPreferences = getSharedPreferences(Values.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
     }
 
@@ -95,14 +92,12 @@ public class SigninActivity extends AppCompatActivity {
     private void initView() {
         Timber.tag(TAG).d("initView() called");
         mToolbarSignIn = findViewById(R.id.toolbarSignIn);
-        mAppBarSignIn = findViewById(R.id.appBarSignIn);
         mInputSigninUsername = findViewById(R.id.inputSigninUsername);
         mInputLayoutSigninUsername = findViewById(R.id.inputLayoutSigninUsername);
         mInputSigninPassword = findViewById(R.id.inputSigninPassword);
         mInputLayoutSigninPassword = findViewById(R.id.inputLayoutSigninPassword);
         mButtonSignin = findViewById(R.id.buttonSignin);
         mButtonSignin.setOnClickListener(v -> signIn());
-        mScrollSignin = findViewById(R.id.scrollSignIn);
         mProgress = findViewById(R.id.progressSignin);
         mProgress.setVisibility(View.GONE);
     }

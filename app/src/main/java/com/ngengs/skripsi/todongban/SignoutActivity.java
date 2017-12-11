@@ -22,7 +22,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.View;
 
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
@@ -39,7 +38,6 @@ import timber.log.Timber;
 
 public class SignoutActivity extends AppCompatActivity {
 
-    private String mToken;
     private API mApi;
     private SharedPreferences mSharedPreferences;
     private MaterialProgressBar mProgressProcess;
@@ -51,22 +49,14 @@ public class SignoutActivity extends AppCompatActivity {
         initView();
         mSharedPreferences = getSharedPreferences(Values.SHARED_PREFERENCES_NAME,
                                                   MODE_PRIVATE);
-        mToken = mSharedPreferences.getString(Values.SHARED_PREFERENCES_KEY_TOKEN, null);
         mApi = NetworkHelpers.provideAPI(this);
         signoutUser();
     }
 
     private void signoutUser() {
         mProgressProcess.setVisibility(View.VISIBLE);
-        if (!TextUtils.isEmpty(mToken)) {
-            mApi.signout(NetworkHelpers.authorizationHeader(mToken))
-                .enqueue(new ApiResponse<>(
-                        this::signoutSuccess,
-                        this::signoutFailed)
-                );
-        } else {
-            signoutFailed(new Exception("Tidak terdapat token untuk keluar"));
-        }
+        mApi.signout()
+            .enqueue(new ApiResponse<>(this::signoutSuccess, this::signoutFailed));
     }
 
     public static void runSignout(AppCompatActivity activity) {
@@ -81,8 +71,7 @@ public class SignoutActivity extends AppCompatActivity {
                           .putString(Values.SHARED_PREFERENCES_KEY_TOKEN, null)
                           .apply();
 
-        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(
-                new GooglePlayDriver(getBaseContext()));
+        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
         dispatcher.cancelAll();
         Intent intent = new Intent(this, SplashActivity.class);
         startActivity(intent);

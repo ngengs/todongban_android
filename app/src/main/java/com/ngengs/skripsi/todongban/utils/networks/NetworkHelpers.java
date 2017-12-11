@@ -18,13 +18,17 @@
 package com.ngengs.skripsi.todongban.utils.networks;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.ngengs.skripsi.todongban.BuildConfig;
+import com.ngengs.skripsi.todongban.data.enumerations.Values;
 import com.ngengs.skripsi.todongban.utils.GsonUtils;
 
 import java.io.File;
@@ -36,6 +40,7 @@ import okhttp3.Cache;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -53,6 +58,45 @@ public class NetworkHelpers {
 
     @NonNull
     public static OkHttpClient provideOkHttp(@NonNull Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                Values.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        String token = sharedPreferences.getString(Values.SHARED_PREFERENCES_KEY_TOKEN, null);
+
+        return provideOkHttp(context, token);
+    }
+
+    @NonNull
+    public static OkHttpClient provideOkHttp(@NonNull Context context, @Nullable String token) {
+        if (TextUtils.isEmpty(token)) {
+            throw new RuntimeException("Token cant be null in secure API");
+        }
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        Cache cache = new Cache(context.getCacheDir(), CACHE_SIZE);
+
+        return new OkHttpClient.Builder()
+                .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
+                .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
+                .addInterceptor(chain -> {
+                    Request originalRequest = chain.request();
+
+                    Request.Builder requestBuilder = originalRequest
+                            .newBuilder()
+                            .header("Authorization", authorizationHeader(token));
+
+                    Request request = requestBuilder.build();
+
+                    return chain.proceed(request);
+                })
+                .readTimeout(TIMEOUT, TimeUnit.SECONDS)
+                .addInterceptor(loggingInterceptor)
+                .cache(cache)
+                .build();
+    }
+
+    @NonNull
+    public static OkHttpClient provideUnSecureOkHttp(@NonNull Context context) {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
@@ -79,6 +123,16 @@ public class NetworkHelpers {
     @NonNull
     public static API provideAPI(@NonNull Context context) {
         return provideRetrofit(provideOkHttp(context)).create(API.class);
+    }
+
+    @NonNull
+    public static API provideAPI(@NonNull Context context, @Nullable String token) {
+        return provideRetrofit(provideOkHttp(context, token)).create(API.class);
+    }
+
+    @NonNull
+    public static APIUnSecure provideAPIUnSecure(@NonNull Context context) {
+        return provideRetrofit(provideUnSecureOkHttp(context)).create(APIUnSecure.class);
     }
 
     @NonNull

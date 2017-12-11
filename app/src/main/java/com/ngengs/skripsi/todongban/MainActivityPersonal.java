@@ -56,7 +56,6 @@ public class MainActivityPersonal extends AppCompatActivity
     public static final String ARGS_BROADCAST_DATA = "PEOPLE_HELP";
 
     private User mUser;
-    private String mToken;
     private API mApi;
     private Fragment mFragment;
     private DrawerLayout mDrawer;
@@ -83,15 +82,10 @@ public class MainActivityPersonal extends AppCompatActivity
         mIntentFilter = new IntentFilter(ARGS_BROADCAST_FILTER);
 
         mSharedPreferences = getSharedPreferences(Values.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
-        mToken = mSharedPreferences.getString(Values.SHARED_PREFERENCES_KEY_TOKEN, null);
         mHelpProcess = mSharedPreferences.getBoolean(Values.SHARED_PREFERENCES_KEY_IN_HELP_PROCESS,
                                                      false);
-        if (mToken == null) {
-            Timber.e("onCreate: Empty token data");
-            throw new RuntimeException("Empty token data");
-        }
         if (mUser == null) {
-            mApi.checkStatus(NetworkHelpers.authorizationHeader(mToken))
+            mApi.checkStatus()
                 .enqueue(new ApiResponse<>(this::getUserSuccess, this::getUserFailure));
         } else {
             initFragment();
@@ -217,8 +211,7 @@ public class MainActivityPersonal extends AppCompatActivity
                                      requestHelp.getSelectedHelpType())
                           .apply();
         goToPageProcessHelp(requestHelp);
-        mApi.requestHelp(NetworkHelpers.authorizationHeader(mToken),
-                         requestHelp.getLocationLatitude(), requestHelp.getLocationLongitude(),
+        mApi.requestHelp(requestHelp.getLocationLatitude(), requestHelp.getLocationLongitude(),
                          requestHelp.getSelectedHelpType(), requestHelp.getMessage(),
                          requestHelp.getLocationName())
             .enqueue(new ApiResponse<>(this::helpRequestSuccess, this::helpRequestFailure));
@@ -246,7 +239,7 @@ public class MainActivityPersonal extends AppCompatActivity
                           .putString(Values.SHARED_PREFERENCES_KEY_TYPE_HELP_PROCESS, null)
                           .putString(Values.SHARED_PREFERENCES_KEY_PEOPLE_HELP, null)
                           .apply();
-        mApi.requestHelpCancel(NetworkHelpers.authorizationHeader(mToken), requestId)
+        mApi.requestHelpCancel(requestId)
             .enqueue(new ApiResponse<>(this::helpCancelSuccess, this::helpCancelFailure));
         goToPageRequestHelp();
     }

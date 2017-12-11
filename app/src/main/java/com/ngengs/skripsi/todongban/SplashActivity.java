@@ -177,8 +177,8 @@ public class SplashActivity extends AppCompatActivity implements PlayServicesAva
 
     private void checkToken() {
         Timber.d("checkToken() called");
-        mApi = NetworkHelpers.provideAPI(this);
-        mApi.checkStatus(NetworkHelpers.authorizationHeader(mToken))
+        mApi = NetworkHelpers.provideAPI(this, mToken);
+        mApi.checkStatus()
             .enqueue(new ApiResponse<>(this::checkUserSuccess, this::checkUserFailure));
     }
 

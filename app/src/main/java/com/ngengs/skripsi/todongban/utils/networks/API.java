@@ -18,51 +18,28 @@
 package com.ngengs.skripsi.todongban.utils.networks;
 
 import com.ngengs.skripsi.todongban.data.remote.CheckStatus;
-import com.ngengs.skripsi.todongban.data.remote.Signup;
 import com.ngengs.skripsi.todongban.data.remote.SingleStringData;
 
-import java.util.List;
-import java.util.Map;
-
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
-import retrofit2.http.PartMap;
 
 public interface API {
 
-    @Multipart
-    @POST("api/user/signup")
-    Call<Signup> signup(@PartMap() Map<String, RequestBody> signupData,
-                        @Part List<MultipartBody.Part> files);
-
-    @FormUrlEncoded
-    @POST("api/user/signin")
-    Call<SingleStringData> signin(@Field("username") String username,
-                                  @Field("password") String password,
-                                  @Field("device_id") String deviceId);
-
     @GET("api/user/signout")
-    Call<SingleStringData> signout(@Header("Authorization") String authHeader);
+    Call<SingleStringData> signout();
 
     @GET("api/user/check_status")
-    Call<CheckStatus> checkStatus(@Header("Authorization") String authHeader);
+    Call<CheckStatus> checkStatus();
 
     @POST("api/user/update_device_id")
-    Call<SingleStringData> updateDeviceId(@Header("Authorization") String authHeader,
-                                          @Field("device_id") String deviceId);
+    Call<SingleStringData> updateDeviceId(@Field("device_id") String deviceId);
 
     @FormUrlEncoded
     @POST("api/help/request")
-    Call<SingleStringData> requestHelp(@Header("Authorization") String authHeader,
-                                       @Field("latitude") double latitude,
+    Call<SingleStringData> requestHelp(@Field("latitude") double latitude,
                                        @Field("longitude") double longitude,
                                        @Field("help_type") String helpType,
                                        @Field("message") String message,
@@ -70,13 +47,11 @@ public interface API {
 
     @FormUrlEncoded
     @POST("api/help/request_cancel")
-    Call<SingleStringData> requestHelpCancel(@Header("Authorization") String authHeader,
-                                             @Field("id_request") String requestId);
+    Call<SingleStringData> requestHelpCancel(@Field("id_request") String requestId);
 
     @FormUrlEncoded
     @POST("api/location")
-    Call<SingleStringData> updateLocation(@Header("Authorization") String authHeader,
-                                          @Field("latitude") double latitude,
+    Call<SingleStringData> updateLocation(@Field("latitude") double latitude,
                                           @Field("longitude") double longitude);
 
 }

@@ -45,8 +45,8 @@ public class NotificationInstanceIDService extends FirebaseInstanceIdService {
         mSharedPreferences = getSharedPreferences(Values.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
         String savedToken = mSharedPreferences.getString(Values.SHARED_PREFERENCES_KEY_TOKEN, null);
         if (!TextUtils.isEmpty(savedToken)) {
-            API mApi = NetworkHelpers.provideAPI(this);
-            mApi.updateDeviceId(NetworkHelpers.authorizationHeader(savedToken), refreshedToken)
+            API mApi = NetworkHelpers.provideAPI(this, savedToken);
+            mApi.updateDeviceId(refreshedToken)
                 .enqueue(new ApiResponse<>(this::updateSuccess, this::updateFailure));
         }
     }

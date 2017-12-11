@@ -41,7 +41,7 @@ import com.ngengs.skripsi.todongban.data.remote.Signup;
 import com.ngengs.skripsi.todongban.fragments.SignupBasicFragment;
 import com.ngengs.skripsi.todongban.fragments.SignupGarageFragment;
 import com.ngengs.skripsi.todongban.fragments.SignupTypeFragment;
-import com.ngengs.skripsi.todongban.utils.networks.API;
+import com.ngengs.skripsi.todongban.utils.networks.APIUnSecure;
 import com.ngengs.skripsi.todongban.utils.networks.ApiResponse;
 import com.ngengs.skripsi.todongban.utils.networks.NetworkHelpers;
 
@@ -69,7 +69,7 @@ public class SignupActivity extends AppCompatActivity implements
 
     //    private User mUser;
 //    private Garage mGarage;
-    private API mApi;
+    private APIUnSecure mApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +77,7 @@ public class SignupActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_signup);
         initView();
         setSupportActionBar(mToolbarSignup);
-        mApi = NetworkHelpers.provideAPI(this);
+        mApi = NetworkHelpers.provideAPIUnSecure(this);
         mSharedPreferences = getSharedPreferences(Values.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
         mDialog = new MaterialDialog.Builder(this)
                 .content("Memproses...")

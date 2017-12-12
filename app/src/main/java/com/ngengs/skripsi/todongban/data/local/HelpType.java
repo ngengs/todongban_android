@@ -84,8 +84,16 @@ public class HelpType implements Parcelable {
         return status;
     }
 
+    public boolean getStatusBoolean() {
+        return (status == 1);
+    }
+
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public void setStatusBoolean(boolean status) {
+        this.status = (status) ? 1 : 0;
     }
 
     public static List<String> getHelpTypeList(int vehicle) {

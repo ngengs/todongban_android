@@ -18,7 +18,10 @@
 package com.ngengs.skripsi.todongban.utils.networks;
 
 import com.ngengs.skripsi.todongban.data.remote.CheckStatus;
+import com.ngengs.skripsi.todongban.data.remote.HelpConfig;
 import com.ngengs.skripsi.todongban.data.remote.SingleStringData;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -53,5 +56,13 @@ public interface API {
     @POST("api/location")
     Call<SingleStringData> updateLocation(@Field("latitude") double latitude,
                                           @Field("longitude") double longitude);
+
+    @GET("api/config")
+    Call<HelpConfig> getHelpConfig();
+
+    @FormUrlEncoded
+    @POST("api/config/update")
+    Call<HelpConfig> updateHelpConfig(@Field("id_help_type[]") List<String> helpType,
+                                      @Field("status[]") List<Integer> status);
 
 }

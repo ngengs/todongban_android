@@ -55,4 +55,7 @@
     <string name="message_failed_signout">Gagal keluar dari aplikasi</string>
     <string name="try_again">Coba Lagi</string>
 
+    <string name="help_setting_description_on">Anda akan membantu orang lain yang meminta bantuan ini</string>
+    <string name="help_setting_description_off">Anda akan mengabaikan orang lain yang meminta bantuan ini</string>
+
 </resources>

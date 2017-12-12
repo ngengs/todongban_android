@@ -21,36 +21,36 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
+import com.ngengs.skripsi.todongban.data.local.HelpType;
 
-@SuppressWarnings("WeakerAccess")
-public class Signup extends BaseData implements Parcelable {
-    public static final Creator<Signup> CREATOR = new Creator<Signup>() {
+import java.util.List;
+
+public class HelpConfig extends BaseData implements Parcelable {
+    @SerializedName("data")
+    private List<HelpType> data;
+
+    protected HelpConfig(Parcel in) {
+        super(in);
+        data = in.createTypedArrayList(HelpType.CREATOR);
+    }
+
+    public static final Creator<HelpConfig> CREATOR = new Creator<HelpConfig>() {
         @Override
-        public Signup createFromParcel(Parcel in) {
-            return new Signup(in);
+        public HelpConfig createFromParcel(Parcel in) {
+            return new HelpConfig(in);
         }
 
         @Override
-        public Signup[] newArray(int size) {
-            return new Signup[size];
+        public HelpConfig[] newArray(int size) {
+            return new HelpConfig[size];
         }
     };
-    @SerializedName("data")
-    private SignupData data;
 
-    public Signup() {
-    }
-
-    protected Signup(Parcel in) {
-        super(in);
-        data = in.readParcelable(SignupData.class.getClassLoader());
-    }
-
-    public SignupData getData() {
+    public List<HelpType> getData() {
         return data;
     }
 
-    public void setData(SignupData data) {
+    public void setData(List<HelpType> data) {
         this.data = data;
     }
 
@@ -62,6 +62,6 @@ public class Signup extends BaseData implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         super.writeToParcel(parcel, i);
-        parcel.writeParcelable(data, i);
+        parcel.writeTypedList(data);
     }
 }

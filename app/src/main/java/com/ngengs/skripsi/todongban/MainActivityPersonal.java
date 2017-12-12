@@ -99,6 +99,9 @@ public class MainActivityPersonal extends AppCompatActivity
         mNavigationView = findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
+                case R.id.menu_config_help:
+                    HelpSettingActivity.runSetting(this);
+                    break;
                 case R.id.menu_signout:
                     SignoutActivity.runSignout(this);
                     break;

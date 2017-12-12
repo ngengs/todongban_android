@@ -16,19 +16,10 @@
   limitations under the License.
   ===========================================================================-->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="Pengaturan">
-        <menu>
-            <group>
-                <item
-                    android:id="@+id/menu_config_help"
-                    android:title="Jenis Bantuan"/>
-            </group>
-        </menu>
-    </item>
-    <group>
-        <item
-            android:id="@+id/menu_signout"
-            android:title="Signout"/>
-    </group>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_save"
+        android:title="Simpan"
+        app:showAsAction="always"/>
 </menu>

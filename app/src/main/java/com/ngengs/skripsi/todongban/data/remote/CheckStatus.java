@@ -59,5 +59,8 @@ public class CheckStatus extends BaseData implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {parcel.writeParcelable(data, i);}
+    public void writeToParcel(Parcel parcel, int i) {
+        super.writeToParcel(parcel, i);
+        parcel.writeParcelable(data, i);
+    }
 }

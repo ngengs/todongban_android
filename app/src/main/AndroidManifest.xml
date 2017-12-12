@@ -144,6 +144,8 @@
             android:name=".SignoutActivity"
             android:theme="@style/AppTheme.BackgroundFullPrimary">
         </activity>
+        <activity android:name=".HelpSettingActivity">
+        </activity>
     </application>
 
 </manifest>

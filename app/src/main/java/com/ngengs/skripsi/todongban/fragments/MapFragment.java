@@ -23,6 +23,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -76,7 +77,9 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
     private static final String ARG_PADDING_HORIZONTAL = "padding_horizontal";
     private static final String ARG_MARKER_ICON = "marker_icon";
 
+    @DrawableRes
     public static final int MARKER_ICON_HELP = R.drawable.ic_marker_people_request_help;
+    @DrawableRes
     public static final int MARKER_ICON_GARAGE = R.drawable.ic_marker_garage_location;
 
     private int mPaddingVertical;

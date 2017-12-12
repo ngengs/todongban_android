@@ -19,6 +19,8 @@ package com.ngengs.skripsi.todongban.data.local;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.StringRes;
 
 public class RequestHelp implements Parcelable {
 
@@ -109,18 +111,22 @@ public class RequestHelp implements Parcelable {
         return HelpType.getVehicleFromHelpType(selectedHelpType);
     }
 
+    @StringRes
     public int getVehicleName() {
         return HelpType.getVehicleNameFromHelpType(selectedHelpType);
     }
 
+    @DrawableRes
     public int getVehicleIcon() {
         return HelpType.getVehicleIconFromHelpType(selectedHelpType);
     }
 
+    @DrawableRes
     public int getHelpTypeIcon() {
         return HelpType.getIconFromHelpType(selectedHelpType);
     }
 
+    @StringRes
     public int getHelpTypeName() {
         return HelpType.getNameFromHelpType(selectedHelpType);
     }

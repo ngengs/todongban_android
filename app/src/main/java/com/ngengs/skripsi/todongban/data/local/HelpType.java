@@ -19,6 +19,8 @@ package com.ngengs.skripsi.todongban.data.local;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.StringRes;
 
 import com.google.gson.annotations.SerializedName;
 import com.ngengs.skripsi.todongban.R;
@@ -126,6 +128,7 @@ public class HelpType implements Parcelable {
         return 0;
     }
 
+    @StringRes
     public static int getVehicleNameFromHelpType(String helpType) {
         switch (HelpType.getVehicleFromHelpType(helpType)) {
             case HelpType.VEHICLE_CAR:
@@ -137,6 +140,7 @@ public class HelpType implements Parcelable {
         }
     }
 
+    @DrawableRes
     public static int getVehicleIconFromHelpType(String helpType) {
         switch (HelpType.getVehicleFromHelpType(helpType)) {
             case HelpType.VEHICLE_CAR:
@@ -148,6 +152,7 @@ public class HelpType implements Parcelable {
         }
     }
 
+    @DrawableRes
     public static int getIconFromHelpType(String helpType) {
         if (helpType.equalsIgnoreCase(TYPE_CAR_BROKEN)) {
             return R.drawable.ic_help_broken_car;
@@ -165,6 +170,7 @@ public class HelpType implements Parcelable {
         return 0;
     }
 
+    @StringRes
     public static int getNameFromHelpType(String helpType) {
         if (helpType.equalsIgnoreCase(TYPE_CAR_BROKEN)) {
             return R.string.help_type_broken;

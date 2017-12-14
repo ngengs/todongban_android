@@ -93,6 +93,7 @@ public class SplashActivity extends AppCompatActivity implements PlayServicesAva
             Timber.i("onCreate: check permission");
             mTextProcess.setText(R.string.splashCheckPermission);
             checkAppPermission();
+            return;
         }
 
         // Check if user has logged in
@@ -191,9 +192,10 @@ public class SplashActivity extends AppCompatActivity implements PlayServicesAva
             for (String permission : PERMISSION_ALL) {
                 if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
                     requestAppPermissionPrompt();
-                    break;
+                    return;
                 }
             }
+            runApp(false);
         }
     }
 
@@ -222,8 +224,8 @@ public class SplashActivity extends AppCompatActivity implements PlayServicesAva
                         .content(explanationDetail)
                         .positiveText(R.string.ok)
                         .canceledOnTouchOutside(false)
-                        .onPositive((dialog, wich) -> requestPermissions(PERMISSION_ALL,
-                                                                         REQUEST_CODE_PERMISSION))
+                        .onPositive((dialog, which) -> requestPermissions(PERMISSION_ALL,
+                                                                          REQUEST_CODE_PERMISSION))
                         .show();
             } else {
                 // Request permission without explanation

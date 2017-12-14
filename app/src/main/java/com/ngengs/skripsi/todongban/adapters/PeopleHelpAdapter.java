@@ -54,7 +54,16 @@ public class PeopleHelpAdapter extends RecyclerView.Adapter<PeopleHelpAdapter.Vi
         PeopleHelp data = mData.get(position);
         holder.mPeopleHelpBadge.setText(String.valueOf(data));
         holder.mPeopleHelpName.setText(data.getName());
-        holder.mPeopleHelpDistance.setText(data.getDistance() + " Km");
+        if (data.getDistance() >= 1) {
+            holder.mPeopleHelpDistance.setText(data.getDistance() + " Km");
+        } else {
+            double meters = data.getDistance() * 1000;
+            if (meters < 50) {
+                holder.mPeopleHelpDistance.setText("Dekat dari anda");
+            } else {
+                holder.mPeopleHelpDistance.setText(meters + " Meter");
+            }
+        }
     }
 
     @Override

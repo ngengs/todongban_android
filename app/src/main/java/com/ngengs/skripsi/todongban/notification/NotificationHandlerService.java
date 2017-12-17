@@ -51,7 +51,7 @@ public class NotificationHandlerService extends FirebaseMessagingService {
             Map<String, String> payload = remoteMessage.getData();
             if (payload.containsKey(Values.NOTIFICATION_DATA_GLOBAL_CODE)) {
                 int code = Integer.parseInt(payload.get(Values.NOTIFICATION_DATA_GLOBAL_CODE));
-                if (code == Values.NOTIFICATION_CODE_PEOPLE_HELP) {
+                if (code == Values.NOTIFICATION_CODE_RESPONSE_PEOPLE_HELP) {
                     PeopleHelpNotificationHandler.handle(this, payload);
 //                    Log.d(TAG, "onMessageReceived: send broadcast");
 //                    String helpId = payload.get(Values.NOTIFICATION_DATA_PEOPLE_HELP_ID);

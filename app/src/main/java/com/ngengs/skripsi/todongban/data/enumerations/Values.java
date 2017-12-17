@@ -28,7 +28,12 @@ public final class Values {
 
     public static final int NOTIFICATION_CODE_SIGNUP_SUCCESS = 100;
     public static final int NOTIFICATION_CODE_SIGNUP_FAILED = 101;
-    public static final int NOTIFICATION_CODE_PEOPLE_HELP = 201;
+    public static final int NOTIFICATION_CODE_REQUEST_PEOPLE_HELP = 200;
+    public static final int NOTIFICATION_CODE_RESPONSE_PEOPLE_HELP = 201;
+    public static final int NOTIFICATION_CODE_SEARCH_GARAGE = 202;
+    public static final int NOTIFICATION_CODE_SEARCH_PERSONAL = 203;
+    public static final int NOTIFICATION_CODE_RESPONSE_ACCEPTED = 204;
+    public static final int NOTIFICATION_CODE_RESPONSE_REJECTED = 205;
 
     public static final int NOTIFICATION_ID_DEFAULT = 0;
     public static final int NOTIFICATION_ID_SIGNUP = 1;

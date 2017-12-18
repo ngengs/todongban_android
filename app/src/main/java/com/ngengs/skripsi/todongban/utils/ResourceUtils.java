@@ -23,14 +23,16 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.DrawableRes;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 
 public final class ResourceUtils {
     public static Bitmap getBitmapFromVectorDrawable(Context context, @DrawableRes int drawableId) {
-        Drawable drawable = ContextCompat.getDrawable(context, drawableId);
+        Drawable drawable;
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            drawable = (DrawableCompat.wrap(drawable)).mutate();
+            drawable = VectorDrawableCompat.create(context.getResources(), drawableId, null);
+        } else {
+            drawable = ContextCompat.getDrawable(context, drawableId);
         }
 
         Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),

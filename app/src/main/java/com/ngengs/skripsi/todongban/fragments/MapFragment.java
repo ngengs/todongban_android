@@ -431,6 +431,9 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
 
         try {
             addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            if (addresses.isEmpty()) {
+                return null;
+            }
             return addresses.get(0);
         } catch (IOException e) {
             Timber.e(e, "getAddress: ");

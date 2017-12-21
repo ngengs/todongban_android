@@ -31,6 +31,8 @@ import android.support.v4.content.ContextCompat;
 import com.ngengs.skripsi.todongban.R;
 import com.ngengs.skripsi.todongban.SplashActivity;
 
+import timber.log.Timber;
+
 public class NotificationBuilder {
 
     public final static int REQUEST_CODE_DEFAULT = 800;
@@ -54,11 +56,13 @@ public class NotificationBuilder {
                 .setSmallIcon(R.drawable.ic_message_alert);
 
         if (contentIntent != null) {
+            Timber.d("sendNotification: %s", "Set action intent");
             notificationBuilder.setContentIntent(contentIntent);
         }
 
 
         if (deleteIntent != null) {
+            Timber.d("sendNotification: %s", "Set delete intent");
             notificationBuilder.setDeleteIntent(deleteIntent);
         }
 
@@ -74,12 +78,16 @@ public class NotificationBuilder {
     }
 
     public static PendingIntent buildPendingIntentDefault(@NonNull Context context) {
+        Timber.d("buildPendingIntentDefault() called with: context = [ %s ]", context);
         return NotificationBuilder.buildPendingIntent(context, SplashActivity.class,
                                                       REQUEST_CODE_DEFAULT);
     }
 
     public static PendingIntent buildPendingIntent(@NonNull Context context, @NonNull Class<?> clss,
                                                    int requestCode) {
+        Timber.d(
+                "buildPendingIntent() called with: context = [ %s ], clss = [ %s ], requestCode = [ %s ]",
+                context, clss, requestCode);
         Intent intent = new Intent(context, clss);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
@@ -88,8 +96,9 @@ public class NotificationBuilder {
 
     public static PendingIntent buildPendingIntent(@NonNull Context context, @NonNull Intent intent,
                                                    int requestCode) {
-        return PendingIntent.getActivity(context, requestCode/* Request code */,
-                                         intent,
-                                         PendingIntent.FLAG_ONE_SHOT);
+        Timber.d(
+                "buildPendingIntent() called with: context = [ %s ], intent = [ %s ], requestCode = [ %s ]",
+                context, intent, requestCode);
+        return PendingIntent.getActivity(context, requestCode, intent, PendingIntent.FLAG_ONE_SHOT);
     }
 }

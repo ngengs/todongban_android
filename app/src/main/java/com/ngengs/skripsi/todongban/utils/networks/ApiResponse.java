@@ -27,6 +27,7 @@ import com.ngengs.skripsi.todongban.utils.networks.interfaces.SuccessResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
 public class ApiResponse<T> implements Callback<T> {
     private SuccessResponse<T> successResponse;
@@ -45,8 +46,13 @@ public class ApiResponse<T> implements Callback<T> {
 
     @Override
     public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
+        Timber.d("onResponse() called with: call = [ %s ], response = [ %s ]", call, response);
         if (successResponse != null) {
             T responseBody = response.body();
+            if (responseBody == null) {
+                onFailure(call, new Exception("Something wrong"));
+                return;
+            }
             if (responseBody instanceof BaseData) {
                 BaseData responseData = (BaseData) responseBody;
                 if (responseData.getStatusCode() == 200) {
@@ -64,6 +70,7 @@ public class ApiResponse<T> implements Callback<T> {
 
     @Override
     public void onFailure(@NonNull Call<T> call, @NonNull Throwable t) {
+        Timber.e(t, "onFailure: call = [ %s ]", call);
         if (errorResponse != null) {
             errorResponse.onResponse(t);
         }

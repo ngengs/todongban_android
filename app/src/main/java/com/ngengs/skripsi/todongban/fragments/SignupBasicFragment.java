@@ -298,6 +298,7 @@ public class SignupBasicFragment extends Fragment {
                             dialog.dismiss();
                         })
                 .autoDismiss(false)
+                .canceledOnTouchOutside(false)
                 .show();
     }
 
@@ -341,6 +342,7 @@ public class SignupBasicFragment extends Fragment {
                             dialog.dismiss();
                         })
                 .autoDismiss(false)
+                .canceledOnTouchOutside(false)
                 .show();
     }
 

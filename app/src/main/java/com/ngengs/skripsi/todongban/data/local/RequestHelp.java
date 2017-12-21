@@ -24,6 +24,11 @@ import android.support.annotation.StringRes;
 
 public class RequestHelp implements Parcelable {
 
+    public static final int STATUS_CANCEL = 0;
+    public static final int STATUS_REQUEST = 1;
+    public static final int STATUS_PROCESS = 2;
+    public static final int STATUS_FINISH = 3;
+
     public static final Creator<RequestHelp> CREATOR = new Creator<RequestHelp>() {
         @Override
         public RequestHelp createFromParcel(Parcel in) {

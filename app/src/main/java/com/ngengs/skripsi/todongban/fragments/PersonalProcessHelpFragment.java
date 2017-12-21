@@ -24,10 +24,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -36,7 +36,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -79,20 +78,22 @@ public class PersonalProcessHelpFragment extends Fragment {
     private TextView mProcessWaitingText;
     private MaterialProgressBar mProcessWaitingProgress;
     private MaterialProgressBar mProcessWaitingProgressCancel;
+    private MaterialProgressBar mProcessWaitingProgressCancelSecond;
     private FloatingActionButton mProcessWaitingCancel;
     private RecyclerView mRecyclerPersonalHelper;
     private RecyclerView mRecyclerGarageHelper;
     private PeopleHelpAdapter mAdapterPersonal;
     private PeopleHelpAdapter mAdapterGarage;
-    private Button mButtonCancelProcess;
+    private FloatingActionButton mButtonCancelProcess;
     private Toolbar mToolbarPeopleHelp;
-    private NestedScrollView mPeopleHelpDataLayout;
+    private CoordinatorLayout mPeopleHelpDataLayout;
 
     private Context mContext;
     private String mRequestId;
     private boolean mCancelProcess;
     private SharedPreferences mSharedPreferences;
     private Handler mHandler;
+    private Handler mHandlerSecond;
     private OnFragmentInteractionListener mListener;
     private Runnable mRunnable = new Runnable() {
         @Override
@@ -103,6 +104,24 @@ public class PersonalProcessHelpFragment extends Fragment {
                 mCancelProcess = false;
                 mProcessWaitingProgressCancel.incrementProgressBy(100 / SECOND_FOR_CANCEL);
                 mHandler.postDelayed(this, 1000);
+            } else {
+                Timber.d("run: cancel");
+                mCancelProcess = true;
+                Toast.makeText(mContext, "Proses pencarian bantuan dibatalkan",
+                               Toast.LENGTH_SHORT).show();
+                mListener.onProcessCancel(mRequestId);
+            }
+        }
+    };
+    private Runnable mRunnableSecond = new Runnable() {
+        @Override
+        public void run() {
+            int progress = mProcessWaitingProgressCancelSecond.getProgress();
+            if (progress < 100) {
+                Timber.d("run: %s", progress);
+                mCancelProcess = false;
+                mProcessWaitingProgressCancelSecond.incrementProgressBy(100 / SECOND_FOR_CANCEL);
+                mHandlerSecond.postDelayed(this, 1000);
             } else {
                 Timber.d("run: cancel");
                 mCancelProcess = true;
@@ -196,6 +215,9 @@ public class PersonalProcessHelpFragment extends Fragment {
         if (mHandler == null) {
             mHandler = new Handler();
         }
+        if (mHandlerSecond == null) {
+            mHandlerSecond = new Handler();
+        }
         mProcessWaitingCancel.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -223,9 +245,34 @@ public class PersonalProcessHelpFragment extends Fragment {
                 mListener.onProcessCancel(mRequestId);
             }
         });
+        mButtonCancelProcess.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    Timber.d("onCreateView: down");
+                    v.performClick();
+                    mProcessWaitingProgressCancelSecond.setVisibility(View.VISIBLE);
+                    mHandlerSecond.postDelayed(mRunnable, 1000);
+                    return true;
+                case MotionEvent.ACTION_UP:
+                    Timber.d("onCreateView: cancel");
+                    if (!mCancelProcess) {
+                        Toast.makeText(mContext,
+                                       "Tahan tombol untuk membatalkan proses pencarian",
+                                       Toast.LENGTH_SHORT).show();
+                        resetProgressCancelSecond();
+                    }
+                    mHandlerSecond.removeCallbacks(mRunnableSecond);
+                    return true;
+            }
+            return false;
+        });
 
         mAdapterPersonal = new PeopleHelpAdapter(mContext);
+        mAdapterPersonal.setOnClickListener(
+                helpResponseId -> mListener.onSelectedHelper(helpResponseId));
         mAdapterGarage = new PeopleHelpAdapter(mContext);
+        mAdapterGarage.setOnClickListener(
+                helpResponseId -> mListener.onSelectedHelper(helpResponseId));
         mRecyclerPersonalHelper.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerGarageHelper.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerPersonalHelper.setAdapter(mAdapterPersonal);
@@ -258,6 +305,11 @@ public class PersonalProcessHelpFragment extends Fragment {
         mProcessWaitingProgress.setVisibility(View.GONE);
         mProcessWaitingProgressCancel.setVisibility(View.GONE);
         mProcessWaitingProgressCancel.setProgress(0);
+    }
+
+    public void resetProgressCancelSecond() {
+        mProcessWaitingProgressCancelSecond.setVisibility(View.GONE);
+        mProcessWaitingProgressCancelSecond.setProgress(0);
     }
 
     private void toggleViewPeopleHelper() {
@@ -355,6 +407,8 @@ public class PersonalProcessHelpFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         void onProcessCancel(String requestId);
+
+        void onSelectedHelper(String responseId);
     }
 
 }

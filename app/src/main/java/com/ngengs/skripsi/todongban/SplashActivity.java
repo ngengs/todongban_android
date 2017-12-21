@@ -18,9 +18,11 @@
 package com.ngengs.skripsi.todongban;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -44,13 +46,12 @@ import com.ngengs.skripsi.todongban.services.LocationChangedService;
 import com.ngengs.skripsi.todongban.utils.networks.API;
 import com.ngengs.skripsi.todongban.utils.networks.ApiResponse;
 import com.ngengs.skripsi.todongban.utils.networks.NetworkHelpers;
-import com.ngengs.skripsi.todongban.utils.playservices.PlayServicesAvailableResponse;
 import com.ngengs.skripsi.todongban.utils.playservices.PlayServicesUtils;
 
 import retrofit2.Response;
 import timber.log.Timber;
 
-public class SplashActivity extends AppCompatActivity implements PlayServicesAvailableResponse {
+public class SplashActivity extends AppCompatActivity {
 
     // Permission Variable
     private static final String[] PERMISSION_ALL = {Manifest.permission.ACCESS_FINE_LOCATION,
@@ -93,6 +94,17 @@ public class SplashActivity extends AppCompatActivity implements PlayServicesAva
             Timber.i("onCreate: check permission");
             mTextProcess.setText(R.string.splashCheckPermission);
             checkAppPermission();
+            return;
+        }
+
+        if (!checkLocationEnabled()) {
+            new MaterialDialog.Builder(this)
+                    .title("Oops..")
+                    .content(R.string.message_need_location_enable)
+                    .positiveText(R.string.ok)
+                    .canceledOnTouchOutside(false)
+                    .onPositive((dialog, which) -> runApp(needCheckPermission))
+                    .show();
             return;
         }
 
@@ -162,6 +174,7 @@ public class SplashActivity extends AppCompatActivity implements PlayServicesAva
                 intent.putExtra(MainActivityPersonal.ARGS_USER, user);
             } else {
                 intent = new Intent(this, MainActivityGarage.class);
+                intent.putExtra(MainActivityGarage.ARGS_USER, user);
             }
 
         } else {
@@ -183,6 +196,18 @@ public class SplashActivity extends AppCompatActivity implements PlayServicesAva
             .enqueue(new ApiResponse<>(this::checkUserSuccess, this::checkUserFailure));
     }
 
+    private boolean checkLocationEnabled() {
+        boolean enabled = false;
+        LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (manager != null) {
+            if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                enabled = true;
+            }
+        }
+        return enabled;
+    }
+
     /**
      * TODO JavaDoc
      */
@@ -202,7 +227,6 @@ public class SplashActivity extends AppCompatActivity implements PlayServicesAva
     /**
      * TODO Javadoc
      */
-    @SuppressWarnings("JavaDoc")
     private void requestAppPermissionPrompt() {
         Timber.d("requestAppPermissionPrompt() called");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -237,17 +261,16 @@ public class SplashActivity extends AppCompatActivity implements PlayServicesAva
 
     private void checkPlayService() {
         int playServicesAvailable = mGoogleApiAvailability.isGooglePlayServicesAvailable(this);
-        PlayServicesUtils.checkStatus(playServicesAvailable, this);
+        PlayServicesUtils.checkStatus(playServicesAvailable, this::onPlayServiceSuccess,
+                                      this::onPlayServiceError);
     }
 
-    @Override
-    public void onSuccess() {
+    public void onPlayServiceSuccess() {
         runPageWithStatusUser(mUser);
     }
 
-    @Override
-    public void onError(int resultCode) {
-        Timber.d("onError() called with: resultCode = [ %s ]", resultCode);
+    public void onPlayServiceError(int resultCode) {
+        Timber.d("onPlayServiceError() called with: resultCode = [ %s ]", resultCode);
         mTextProcess.setText("Gagal menggunakan Google Play Services");
         if (mGoogleApiAvailability.isUserResolvableError(resultCode)) {
             mGoogleApiAvailability.getErrorDialog(this, resultCode, REQUEST_CODE_PLAY_SERVICES)
@@ -296,8 +319,8 @@ public class SplashActivity extends AppCompatActivity implements PlayServicesAva
             checkPlayService();
         } else {
             checkUserFailure(new Throwable("Data empty"));
-            mTextProcess.setText("Data login telah kadaluarsa");
-            runPageWithoutToken(true);
+//            mTextProcess.setText("Data login telah kadaluarsa");
+//            runPageWithoutToken(true);
         }
     }
 

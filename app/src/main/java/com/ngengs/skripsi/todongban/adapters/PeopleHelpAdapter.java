@@ -27,7 +27,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ngengs.skripsi.todongban.R;
+import com.ngengs.skripsi.todongban.data.local.Badge;
 import com.ngengs.skripsi.todongban.data.local.PeopleHelp;
+import com.ngengs.skripsi.todongban.data.local.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,18 +54,24 @@ public class PeopleHelpAdapter extends RecyclerView.Adapter<PeopleHelpAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         PeopleHelp data = mData.get(position);
-        holder.mPeopleHelpBadge.setText(String.valueOf(data));
+        Badge badge = new Badge(data.getBadgeType());
+        holder.mPeopleHelpBadge.setText(badge.getBadgeName(mContext, data.getUserType()));
         holder.mPeopleHelpName.setText(data.getName());
+        String distance;
         if (data.getDistance() >= 1) {
-            holder.mPeopleHelpDistance.setText(data.getDistance() + " Km");
+            distance = data.getDistance() + " Km";
         } else {
             double meters = data.getDistance() * 1000;
             if (meters < 50) {
-                holder.mPeopleHelpDistance.setText("Dekat dari anda");
+                distance = "Dekat dari anda";
             } else {
-                holder.mPeopleHelpDistance.setText(meters + " Meter");
+                distance = meters + " Meter";
             }
         }
+        if (data.getUserType() == User.TYPE_GARAGE) {
+            distance += (data.isAccept()) ? " (Dapat menghampiri)" : " (Belum dapat menghampiri)";
+        }
+        holder.mPeopleHelpDistance.setText(distance);
     }
 
     @Override
@@ -72,8 +80,24 @@ public class PeopleHelpAdapter extends RecyclerView.Adapter<PeopleHelpAdapter.Vi
     }
 
     public void addData(PeopleHelp data) {
-        mData.add(data);
-        notifyItemInserted(getItemCount() - 1);
+        boolean change = false;
+        int changePosition = 0;
+        for (int i = 0; i < mData.size(); i++) {
+            if (mData.get(i).getId().equalsIgnoreCase(data.getId())) {
+                PeopleHelp newSavedData = mData.get(i);
+                newSavedData.setAccept(data.isAccept());
+                mData.set(i, newSavedData);
+                change = true;
+                changePosition = i;
+                break;
+            }
+        }
+        if (!change) {
+            mData.add(data);
+            notifyItemInserted(getItemCount() - 1);
+        } else {
+            notifyItemChanged(changePosition);
+        }
     }
 
     public List<PeopleHelp> getData() {

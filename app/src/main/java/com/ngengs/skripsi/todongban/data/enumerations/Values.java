@@ -25,6 +25,8 @@ public final class Values {
     public static final String SHARED_PREFERENCES_KEY_ID_HELP_PROCESS = "id_help_process";
     public static final String SHARED_PREFERENCES_KEY_TYPE_HELP_PROCESS = "type_help_process";
     public static final String SHARED_PREFERENCES_KEY_PEOPLE_HELP = "people_help";
+    public static final String SHARED_PREFERENCES_KEY_ID_RESPONSE_SEARCH = "id_response_search";
+    public static final String SHARED_PREFERENCES_KEY_SELECTED_RESPONE = "selected_response";
 
     public static final int NOTIFICATION_CODE_SIGNUP_SUCCESS = 100;
     public static final int NOTIFICATION_CODE_SIGNUP_FAILED = 101;
@@ -34,14 +36,18 @@ public final class Values {
     public static final int NOTIFICATION_CODE_SEARCH_PERSONAL = 203;
     public static final int NOTIFICATION_CODE_RESPONSE_ACCEPTED = 204;
     public static final int NOTIFICATION_CODE_RESPONSE_REJECTED = 205;
+    public static final int NOTIFICATION_CODE_REQUEST_FINISHED = 210;
 
     public static final int NOTIFICATION_ID_DEFAULT = 0;
     public static final int NOTIFICATION_ID_SIGNUP = 1;
     public static final int NOTIFICATION_ID_PEOPLE_HELP = 2;
+    public static final int NOTIFICATION_ID_REQUEST_SEARCH = 3;
+    public static final int NOTIFICATION_ID_REQUEST_FINISH = 4;
 
     public static final String NOTIFICATION_TAG_DEFAULT = "TDB_NOTIFICATION";
     public static final String NOTIFICATION_TAG_SIGNUP = "TDB_SIGNUP";
     public static final String NOTIFICATION_TAG_PEOPLE_HELP = "TDB_FOUND_PEOPLE";
+    public static final String NOTIFICATION_TAG_REQUEST_SEARCH = "TDB_REQUEST_SEARCH";
 
     public static final String NOTIFICATION_DATA_GLOBAL_CODE = "code";
     public static final String NOTIFICATION_DATA_PEOPLE_HELP_ID = "id";
@@ -49,4 +55,9 @@ public final class Values {
     public static final String NOTIFICATION_DATA_PEOPLE_HELP_BADGE = "badge";
     public static final String NOTIFICATION_DATA_PEOPLE_HELP_DISTANCE = "distance";
     public static final String NOTIFICATION_DATA_PEOPLE_HELP_USER_TYPE = "user_type";
+    public static final String NOTIFICATION_DATA_PEOPLE_HELP_ACCEPT = "accept";
+    public static final String NOTIFICATION_DATA_REQUEST_SEARCH_ID = "id";
+    public static final String NOTIFICATION_DATA_REQUEST_SEARCH_NAME = "name";
+    public static final String NOTIFICATION_DATA_REQUEST_SEARCH_TYPE = "help_type";
+    public static final String NOTIFICATION_DATA_REQUEST_SEARCH_DISTANCE = "distance";
 }

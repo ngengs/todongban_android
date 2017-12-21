@@ -128,23 +128,41 @@
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
             </intent-filter>
         </service>
+        <service
+            android:name=".services.ClearRequestSearchNotificationService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
+            </intent-filter>
+        </service>
 
         <activity android:name=".SelectLocationMapActivity">
-        </activity>
-        <activity
-            android:name=".TestingActivity"
-            android:label="@string/title_activity_testing">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity
             android:name=".SignoutActivity"
             android:theme="@style/AppTheme.BackgroundFullPrimary">
         </activity>
         <activity android:name=".HelpSettingActivity">
+        </activity>
+        <activity android:name=".ResponseActivity">
+        </activity>
+        <activity
+            android:name=".ResponseActionActivity"
+            android:theme="@style/AppTheme.NoDisplay">
+        </activity>
+        <activity
+            android:name=".EditProfileActivity"
+            android:label="Pengaturan Profil">
+        </activity>
+        <activity
+            android:name=".EditGarageActivity"
+            android:label="Pengaturan Bengkel">
+        </activity>
+        <activity
+            android:name=".BadgeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".HistoryActivity">
         </activity>
     </application>
 

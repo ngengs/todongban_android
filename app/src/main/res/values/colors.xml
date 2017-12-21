@@ -24,4 +24,10 @@
 
     <color name="colorTextInDark">#FFF</color>
     <color name="colorTextInLight">#111</color>
+
+
+    <color name="colorChart1">@color/colorPrimary</color>
+    <color name="colorChart2">@color/colorAccent</color>
+    <color name="colorChart3">#2196F3</color>
+    <color name="colorChart4">#4CAF50</color>
 </resources>

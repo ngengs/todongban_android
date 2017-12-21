@@ -82,7 +82,7 @@ public class ImageUtils {
 
     public static Object[] handleImageGallery(@NonNull Context context, @NonNull Intent data)
             throws Exception {
-        Object[] imageResult = null;
+        Object[] imageResult;
         Uri selectedImage = data.getData();
         imageResult = handleImageGallery(context, selectedImage);
         return imageResult;
@@ -90,7 +90,7 @@ public class ImageUtils {
 
     public static Object[] handleImageGallery(@NonNull Context context, @NonNull Uri selectedImage)
             throws Exception {
-        Bitmap bitmapImage = null;
+        Bitmap bitmapImage;
         String[] filePathColumn = {MediaStore.Images.Media.DATA};
         Cursor cursor = context.getContentResolver().query(selectedImage,
                                                            filePathColumn, null, null, null);

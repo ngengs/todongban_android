@@ -35,7 +35,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class PeopleHelpNotificationHandler {
+public class ResponsePeopleHelpNotificationHandler {
 
     public static void handle(Context context, Map<String, String> payload) {
         String helpId = payload.get(Values.NOTIFICATION_DATA_PEOPLE_HELP_ID);
@@ -46,15 +46,31 @@ public class PeopleHelpNotificationHandler {
                 payload.get(Values.NOTIFICATION_DATA_PEOPLE_HELP_USER_TYPE));
         double distance = Double.parseDouble(
                 payload.get(Values.NOTIFICATION_DATA_PEOPLE_HELP_DISTANCE));
-        PeopleHelp peopleHelp = new PeopleHelp(helpId, name, badge, userType, distance);
+        boolean accept = Boolean.parseBoolean(
+                payload.get(Values.NOTIFICATION_DATA_PEOPLE_HELP_ACCEPT));
+        PeopleHelp peopleHelp = new PeopleHelp(helpId, name, badge, userType, distance, accept);
         SharedPreferences sharedPreferences = context.getSharedPreferences(
                 Values.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-        if (PeopleHelpNotificationHandler.isCanRun(sharedPreferences)) {
-            PeopleHelpNotificationHandler.saveData(sharedPreferences, peopleHelp);
-            PeopleHelpNotificationHandler.sendNotification(context);
-            PeopleHelpNotificationHandler.sendBroadcast(context, peopleHelp);
+        if (ResponsePeopleHelpNotificationHandler.isCanRun(sharedPreferences)) {
+            ResponsePeopleHelpNotificationHandler.saveData(sharedPreferences, peopleHelp);
+            ResponsePeopleHelpNotificationHandler.sendNotification(context);
+            ResponsePeopleHelpNotificationHandler.sendBroadcast(context, peopleHelp);
         }
     }
+
+    public static void handleReject(Context context, Map<String, String> payload) {
+        String helpId = payload.get(Values.NOTIFICATION_DATA_PEOPLE_HELP_ID);
+        PeopleHelp peopleHelp = new PeopleHelp(helpId);
+        peopleHelp.setAccept(false);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                Values.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        if (ResponsePeopleHelpNotificationHandler.isCanRun(sharedPreferences)) {
+            ResponsePeopleHelpNotificationHandler.saveData(sharedPreferences, peopleHelp);
+            ResponsePeopleHelpNotificationHandler.sendNotification(context);
+            ResponsePeopleHelpNotificationHandler.sendBroadcast(context, peopleHelp);
+        }
+    }
+
 
     private static void saveData(SharedPreferences sharedPreferences,
                                  PeopleHelp data) {
@@ -66,7 +82,17 @@ public class PeopleHelpNotificationHandler {
             PeopleHelp[] temp = gson.fromJson(oldData, PeopleHelp[].class);
             saveData.addAll(Arrays.asList(temp));
         }
-        saveData.add(data);
+        boolean alreadyHave = false;
+        for (int i = 0; i < saveData.size(); i++) {
+            if (saveData.get(i).getId().equalsIgnoreCase(data.getId())) {
+                PeopleHelp newSavedData = saveData.get(i);
+                newSavedData.setAccept(data.isAccept());
+                saveData.set(i, newSavedData);
+                alreadyHave = true;
+                break;
+            }
+        }
+        if (!alreadyHave) saveData.add(data);
         sharedPreferences.edit()
                          .putString(Values.SHARED_PREFERENCES_KEY_PEOPLE_HELP,
                                     gson.toJson(saveData))

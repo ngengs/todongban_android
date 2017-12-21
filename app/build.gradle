@@ -70,8 +70,19 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             debuggable false
+            if (rootProject.ext.keyExist) {
+                signingConfig signingConfigs.release
+            }
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles fileTree(include: ['*.pro'], dir: 'proguards').asList().toArray()
+        }
+
+        alpha {
+            minifyEnabled false
+            debuggable false
+            versionNameSuffix "-alpha"
             if (rootProject.ext.keyExist) {
                 signingConfig signingConfigs.release
             }
@@ -127,6 +138,7 @@ dependencies {
         exclude group: 'com.android.support'
     }
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.squareup.okhttp3:okhttp:3.9.1'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'

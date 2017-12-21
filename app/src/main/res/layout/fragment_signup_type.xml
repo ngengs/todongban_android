@@ -15,44 +15,40 @@
   limitations under the License.
   ===========================================================================-->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="com.ngengs.skripsi.todongban.fragments.SignupTypeFragment">
 
-    <RelativeLayout
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ngengs.skripsi.todongban.fragments.SignupTypeFragment">
+
+
+    <Button
+        android:id="@+id/buttonSignupTypePersonal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginStart="4dp"
+        android:text="@string/button_signup_personal"
+        android:theme="@style/AppTheme.ButtonAccent"/>
 
-
-        <Button
-            android:id="@+id/buttonSignupTypePersonal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            android:layout_marginStart="4dp"
-            android:text="@string/button_signup_personal"
-            android:theme="@style/AppTheme.ButtonAccent"/>
-
-        <Button
-            android:id="@+id/buttonSignupTypeGarage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/buttonSignupTypePersonal"
-            android:layout_gravity="bottom"
-            android:layout_marginEnd="4dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="32dp"
-            android:text="@string/button_signup_garage"
-            android:theme="@style/AppTheme.ButtonBlack"/>
-    </RelativeLayout>
-
-</FrameLayout>
+    <Button
+        android:id="@+id/buttonSignupTypeGarage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buttonSignupTypePersonal"
+        android:layout_gravity="bottom"
+        android:layout_marginEnd="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/button_signup_garage"
+        android:theme="@style/AppTheme.ButtonBlack"/>
+</RelativeLayout>

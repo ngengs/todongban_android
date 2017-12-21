@@ -28,9 +28,6 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <string name="title_signup">Daftar Baru</string>
     <string name="title_signup_as">Daftar Baru Sebagai</string>
     <string name="title_signin">Masuk</string>
@@ -50,6 +47,8 @@
 
     <string name="notification_message_signup_complete">Pendaftaran anda telah di verifikasi, silahkan menggunakan aplikasi dan membantu sesama</string>
     <string name="notification_message_found_people_helper">Menemukan sesorang yang bersedia membantu</string>
+    <string name="notification_message_need_help">%1$s meminta bantuan karena %2$s miliknya %3$s, dengan jarak %4$s dari anda</string>
+    <string name="notification_message_request_finish">Pembeerian bantuan anda telah dianggap selesai, badge baru sedang diproses</string>
     <string name="title_activity_testing">TestingActivity</string>
     <string name="title_select_location">Pilih Lokasi</string>
     <string name="message_failed_signout">Gagal keluar dari aplikasi</string>
@@ -57,5 +56,16 @@
 
     <string name="help_setting_description_on">Anda akan membantu orang lain yang meminta bantuan ini</string>
     <string name="help_setting_description_off">Anda akan mengabaikan orang lain yang meminta bantuan ini</string>
+    <string name="message_need_location_enable">Lokasi harus dinyalakan untuk dapat menjalankan aplikasi. Silahkan menyalakan lokasi anda terlebih dahulu dan menekan tombol berikut jika sudah menyala</string>
 
+    <string name="badge_share_desc">Anda sudah berhasil %1$d kali menolong kendaraan orang.\nBagikan ke teman teman anda agar teman anda tertarik untuk membantu.</string>
+    <string name="badge_share_text">Saya sekarang bergelar %1$s di Todong Ban #TodongBan %2$s</string>
+
+
+    <string name="history_date">Waktu: %1$s</string>
+    <string name="history_response">Respon: %1$s</string>
+    <string name="history_status">Status: %1$s</string>
+
+    <string name="garage_setting_force_close_on">Bengkel dipaksa tutup tanpa memperhatikan jadwal operasional. (Berguna saat hendak tutup mendadak/libur/lainnya)</string>
+    <string name="garage_setting_force_close_off">Bengkel buka sesuai dengan jadwal operasional bengkel</string>
 </resources>

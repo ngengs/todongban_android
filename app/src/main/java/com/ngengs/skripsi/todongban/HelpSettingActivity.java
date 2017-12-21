@@ -68,6 +68,7 @@ public class HelpSettingActivity extends AppCompatActivity {
                 .title("Memprosess")
                 .content("Mohon Tunggu")
                 .progress(true, 0)
+                .canceledOnTouchOutside(false)
                 .build();
         mDialog.show();
         mApi = NetworkHelpers.provideAPI(this);

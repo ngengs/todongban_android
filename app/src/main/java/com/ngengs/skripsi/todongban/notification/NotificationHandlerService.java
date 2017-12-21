@@ -23,7 +23,9 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.ngengs.skripsi.todongban.data.enumerations.Values;
 import com.ngengs.skripsi.todongban.utils.notifications.NotificationBuilder;
-import com.ngengs.skripsi.todongban.utils.notifications.handler.PeopleHelpNotificationHandler;
+import com.ngengs.skripsi.todongban.utils.notifications.handler.RequestFinishedNotificationHandler;
+import com.ngengs.skripsi.todongban.utils.notifications.handler.RequestSearchNotificationHandler;
+import com.ngengs.skripsi.todongban.utils.notifications.handler.ResponsePeopleHelpNotificationHandler;
 import com.ngengs.skripsi.todongban.utils.notifications.handler.SignupNotificationHandler;
 
 import java.util.Map;
@@ -51,31 +53,20 @@ public class NotificationHandlerService extends FirebaseMessagingService {
             Map<String, String> payload = remoteMessage.getData();
             if (payload.containsKey(Values.NOTIFICATION_DATA_GLOBAL_CODE)) {
                 int code = Integer.parseInt(payload.get(Values.NOTIFICATION_DATA_GLOBAL_CODE));
-                if (code == Values.NOTIFICATION_CODE_RESPONSE_PEOPLE_HELP) {
-                    PeopleHelpNotificationHandler.handle(this, payload);
-//                    Log.d(TAG, "onMessageReceived: send broadcast");
-//                    String helpId = payload.get(Values.NOTIFICATION_DATA_PEOPLE_HELP_ID);
-//                    String name = payload.get(Values.NOTIFICATION_DATA_PEOPLE_HELP_NAME);
-//                    int badge = Integer.parseInt(
-//                            payload.get(Values.NOTIFICATION_DATA_PEOPLE_HELP_BADGE));
-//                    int userType = Integer.parseInt(
-//                            payload.get(Values.NOTIFICATION_DATA_PEOPLE_HELP_USER_TYPE));
-//                    double distance = Double.parseDouble(
-//                            payload.get(Values.NOTIFICATION_DATA_PEOPLE_HELP_DISTANCE));
-//                    PeopleHelp peopleHelp = new PeopleHelp(helpId, name, badge, userType, distance);
-//                    Intent intent = new Intent();
-//                    intent.setAction(MainActivityPersonal.ARGS_BROADCAST_FILTER);
-//                    intent.putExtra(MainActivityPersonal.ARGS_BROADCAST_DATA, peopleHelp);
-//
-//                    NotificationBuilder.sendNotification(this, Values.NOTIFICATION_ID_PEOPLE_HELP,
-//                                                         Values.NOTIFICATION_TAG_PEOPLE_HELP,
-//                                                         getString(R.string.project_id),
-//                                                         getString(R.string.project_id),
-//                                                         NotificationBuilder.buildPendingIntentDefault(
-//                                                                 this), null);
-//                    sendBroadcast(intent);
-                } else if (code == Values.NOTIFICATION_CODE_SIGNUP_SUCCESS) {
-                    SignupNotificationHandler.handle(this, payload);
+                switch (code) {
+                    case Values.NOTIFICATION_CODE_REQUEST_PEOPLE_HELP:
+                        RequestSearchNotificationHandler.handle(this, payload);
+                        break;
+                    case Values.NOTIFICATION_CODE_RESPONSE_PEOPLE_HELP:
+                    case Values.NOTIFICATION_CODE_RESPONSE_ACCEPTED:
+                        ResponsePeopleHelpNotificationHandler.handle(this, payload);
+                        break;
+                    case Values.NOTIFICATION_CODE_SIGNUP_SUCCESS:
+                        SignupNotificationHandler.handle(this, payload);
+                        break;
+                    case Values.NOTIFICATION_CODE_REQUEST_FINISHED:
+                        RequestFinishedNotificationHandler.handle(this);
+                        break;
                 }
             }
 

@@ -43,11 +43,11 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_margin="0dp"
-        app:srcCompat="@drawable/ic_vehicle_car"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_vehicle_car"/>
 
     <ImageView
         android:id="@+id/process_waiting_type_indicator"
@@ -56,9 +56,9 @@
         android:layout_marginLeft="132dp"
         android:layout_marginStart="132dp"
         android:layout_marginTop="132dp"
-        app:srcCompat="@drawable/ic_help_no_fuel"
         app:layout_constraintStart_toStartOf="@+id/process_waiting_vehicle_indicator"
-        app:layout_constraintTop_toTopOf="@+id/process_waiting_vehicle_indicator"/>
+        app:layout_constraintTop_toTopOf="@+id/process_waiting_vehicle_indicator"
+        app:srcCompat="@drawable/ic_help_no_fuel"/>
 
     <TextView
         android:id="@+id/process_waiting_text"
@@ -101,69 +101,96 @@
         app:layout_constraintTop_toBottomOf="@+id/process_waiting_text"
         app:srcCompat="@drawable/ic_cancel"/>
 
-    <android.support.v4.widget.NestedScrollView
+    <android.support.design.widget.CoordinatorLayout
         android:id="@+id/people_help_data_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="0dp"
-        android:fillViewport="true"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:background="@color/colorPrimary"
+        android:visibility="gone">
 
-        <LinearLayout
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:layout_margin="0dp"
+            android:fillViewport="true">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar_people_help"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?colorPrimary"
-                app:title="Daftar Pemberi Bantuan"
-                app:titleTextColor="#FFF"/>
-
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/margin_padding_default"
-                android:text="Pengguna Biasa"
-                android:textColor="#FFF"/>
+                android:orientation="vertical">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_personal_helper"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar_people_help"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="?colorPrimary"
+                    app:title="Daftar Pemberi Bantuan"
+                    app:titleTextColor="#FFF"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/margin_padding_default"
-                android:text="Bengkel"
-                android:textColor="#FFF"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/margin_padding_default"
+                    android:text="Pengguna Biasa"
+                    android:textColor="#FFF"/>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_garage_helper"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_personal_helper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
-            <Button
-                android:id="@+id/button_cancel_process"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="@dimen/margin_padding_default"
-                android:text="Batal"
-                android:theme="@style/AppTheme.ButtonAccent"/>
-        </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/margin_padding_default"
+                    android:text="Bengkel"
+                    android:textColor="#FFF"/>
 
-    </android.support.v4.widget.NestedScrollView>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_garage_helper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <!--<Button-->
+                <!--android:visibility="gone"-->
+                <!--android:id="@+id/button_cancel_process"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginBottom="8dp"-->
+                <!--android:layout_marginEnd="4dp"-->
+                <!--android:layout_marginLeft="4dp"-->
+                <!--android:layout_marginRight="4dp"-->
+                <!--android:layout_marginStart="4dp"-->
+                <!--android:layout_marginTop="@dimen/margin_padding_default"-->
+                <!--android:text="Batal"-->
+                <!--android:theme="@style/AppTheme.ButtonAccent"/>-->
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+
+        <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+            android:id="@+id/process_waiting_progress_cancel_second"
+            style="@style/Widget.MaterialProgressBar.ProgressBar"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:indeterminate="false"
+            android:progress="0"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="14dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/button_cancel_process"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="@dimen/margin_padding_default"
+            android:layout_gravity="bottom|end"
+            app:srcCompat="@drawable/ic_cancel"/>
+
+    </android.support.design.widget.CoordinatorLayout>
 
 </android.support.constraint.ConstraintLayout>

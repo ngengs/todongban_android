@@ -67,9 +67,7 @@ public class SignoutActivity extends AppCompatActivity {
 
     private void signoutSuccess(Response<SingleStringData> response) {
         Timber.d("signoutSuccess() called with: response = [ %s ]", response);
-        mSharedPreferences.edit()
-                          .putString(Values.SHARED_PREFERENCES_KEY_TOKEN, null)
-                          .apply();
+        mSharedPreferences.edit().clear().apply();
 
         FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
         dispatcher.cancelAll();

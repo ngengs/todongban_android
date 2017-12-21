@@ -17,9 +17,32 @@
   ===========================================================================-->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group>
+        <item
+            android:id="@+id/menu_home"
+            android:title="Beranda"/>
+        <item
+            android:id="@+id/menu_badge"
+            android:title="Lihat Gelar"/>
+    </group>
+    <item android:title="Riwayat">
+        <menu>
+            <group>
+                <item
+                    android:id="@+id/menu_history_response_help"
+                    android:title="Pemberian Bantuan"/>
+                <item
+                    android:id="@+id/menu_history_request_help"
+                    android:title="Permintaan Bantuan"/>
+            </group>
+        </menu>
+    </item>
     <item android:title="Pengaturan">
         <menu>
             <group>
+                <item
+                    android:id="@+id/menu_config_profile"
+                    android:title="Profil"/>
                 <item
                     android:id="@+id/menu_config_help"
                     android:title="Jenis Bantuan"/>
@@ -29,6 +52,6 @@
     <group>
         <item
             android:id="@+id/menu_signout"
-            android:title="Signout"/>
+            android:title="Keluar"/>
     </group>
 </menu>

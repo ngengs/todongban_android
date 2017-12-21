@@ -86,4 +86,13 @@ public class BaseData implements Parcelable {
         parcel.writeInt(statusCode);
         parcel.writeString(statusMessage);
     }
+
+    @Override
+    public String toString() {
+        return "BaseData{" +
+               "status='" + status + '\'' +
+               ", statusCode=" + statusCode +
+               ", statusMessage='" + statusMessage + '\'' +
+               '}';
+    }
 }

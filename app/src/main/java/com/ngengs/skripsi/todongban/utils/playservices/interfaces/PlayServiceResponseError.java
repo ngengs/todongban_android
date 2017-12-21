@@ -15,14 +15,8 @@
  limitations under the License.
  =============================================================================*/
 
-package com.ngengs.skripsi.todongban.utils.playservices;
+package com.ngengs.skripsi.todongban.utils.playservices.interfaces;
 
-/**
- * Created by ngengs on 10/26/2017.
- */
-
-public interface PlayServicesAvailableResponse {
-    void onSuccess();
-
+public interface PlayServiceResponseError {
     void onError(int resultCode);
 }

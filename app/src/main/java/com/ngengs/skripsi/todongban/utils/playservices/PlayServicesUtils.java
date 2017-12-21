@@ -17,42 +17,45 @@
 
 package com.ngengs.skripsi.todongban.utils.playservices;
 
-import com.google.android.gms.common.ConnectionResult;
+import android.support.annotation.NonNull;
 
-/**
- * Created by ngengs on 10/26/2017.
- */
+import com.google.android.gms.common.ConnectionResult;
+import com.ngengs.skripsi.todongban.utils.playservices.interfaces.PlayServiceResponseError;
+import com.ngengs.skripsi.todongban.utils.playservices.interfaces.PlayServiceResponseSuccess;
+
 
 public final class PlayServicesUtils {
 
-    public static void checkStatus(int playServiceStatus, PlayServicesAvailableResponse callback) {
+    public static void checkStatus(int playServiceStatus,
+                                   @NonNull PlayServiceResponseSuccess success,
+                                   @NonNull PlayServiceResponseError error) {
         switch (playServiceStatus) {
             case ConnectionResult.API_UNAVAILABLE:
-                callback.onError(playServiceStatus);
+                error.onError(playServiceStatus);
                 //API is not available
                 break;
             case ConnectionResult.NETWORK_ERROR:
-                callback.onError(playServiceStatus);
+                error.onError(playServiceStatus);
                 //Network error while connection
                 break;
             case ConnectionResult.SERVICE_MISSING:
-                callback.onError(playServiceStatus);
+                error.onError(playServiceStatus);
                 //service is missing
                 break;
             case ConnectionResult.RESTRICTED_PROFILE:
-                callback.onError(playServiceStatus);
+                error.onError(playServiceStatus);
                 //Profile is restricted by google so can not be used for play services
                 break;
             case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED:
-                callback.onError(playServiceStatus);
+                error.onError(playServiceStatus);
 //                mTextProcess.setText("Butuh update dari Google Play Sarvice");
                 break;
             case ConnectionResult.SIGN_IN_REQUIRED:
-                callback.onError(playServiceStatus);
+                error.onError(playServiceStatus);
                 //service available but user not signed in
                 break;
             case ConnectionResult.SUCCESS:
-                callback.onSuccess();
+                success.onSuccess();
                 break;
         }
     }

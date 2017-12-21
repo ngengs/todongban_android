@@ -37,13 +37,25 @@ public class PeopleHelp implements Parcelable {
     private int badgeType;
     private int userType;
     private double distance;
+    private boolean accept;
 
-    public PeopleHelp(String id, String name, int badgeType, int userType, double distance) {
+    public PeopleHelp(String id) {
+        this.id = id;
+        this.name = null;
+        this.badgeType = 0;
+        this.userType = 0;
+        this.distance = 0;
+        this.accept = false;
+    }
+
+    public PeopleHelp(String id, String name, int badgeType, int userType, double distance,
+                      boolean accept) {
         this.id = id;
         this.name = name;
         this.badgeType = badgeType;
         this.userType = userType;
         this.distance = distance;
+        this.accept = accept;
     }
 
     protected PeopleHelp(Parcel in) {
@@ -52,6 +64,7 @@ public class PeopleHelp implements Parcelable {
         badgeType = in.readInt();
         userType = in.readInt();
         distance = in.readDouble();
+        accept = in.readByte() != 0;
     }
 
     public String getId() {
@@ -94,6 +107,14 @@ public class PeopleHelp implements Parcelable {
         this.distance = distance;
     }
 
+    public boolean isAccept() {
+        return accept;
+    }
+
+    public void setAccept(boolean accept) {
+        this.accept = accept;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -106,6 +127,7 @@ public class PeopleHelp implements Parcelable {
         dest.writeInt(badgeType);
         dest.writeInt(userType);
         dest.writeDouble(distance);
+        dest.writeByte((byte) (accept ? 1 : 0));
     }
 
     @Override
@@ -116,6 +138,7 @@ public class PeopleHelp implements Parcelable {
                ", badgeType=" + badgeType +
                ", userType=" + userType +
                ", distance=" + distance +
+               ", accept=" + accept +
                '}';
     }
 }

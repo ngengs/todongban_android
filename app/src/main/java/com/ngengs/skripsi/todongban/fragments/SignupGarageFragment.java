@@ -297,7 +297,7 @@ public class SignupGarageFragment extends Fragment {
         TimePickerDialog timePicker = TimePickerDialog.newInstance(
                 (v, hourOfDay, minute, second) -> {
                     Calendar calendar = Calendar.getInstance();
-                    calendar.set(Calendar.HOUR, hourOfDay);
+                    calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                     calendar.set(Calendar.MINUTE, minute);
                     calendar.getTimeInMillis();
                     Timber.d("showTimePicker: Calendar: %s", calendar.getTime());

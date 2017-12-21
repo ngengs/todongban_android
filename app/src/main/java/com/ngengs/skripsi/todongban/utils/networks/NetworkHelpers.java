@@ -36,7 +36,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Cache;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -73,7 +72,7 @@ public class NetworkHelpers {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        Cache cache = new Cache(context.getCacheDir(), CACHE_SIZE);
+//        Cache cache = new Cache(context.getCacheDir(), CACHE_SIZE);
 
         return new OkHttpClient.Builder()
                 .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
@@ -91,7 +90,7 @@ public class NetworkHelpers {
                 })
                 .readTimeout(TIMEOUT, TimeUnit.SECONDS)
                 .addInterceptor(loggingInterceptor)
-                .cache(cache)
+//                .cache(cache)
                 .build();
     }
 
@@ -100,14 +99,14 @@ public class NetworkHelpers {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        Cache cache = new Cache(context.getCacheDir(), CACHE_SIZE);
+//        Cache cache = new Cache(context.getCacheDir(), CACHE_SIZE);
 
         return new OkHttpClient.Builder()
                 .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
                 .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(TIMEOUT, TimeUnit.SECONDS)
                 .addInterceptor(loggingInterceptor)
-                .cache(cache)
+//                .cache(cache)
                 .build();
     }
 

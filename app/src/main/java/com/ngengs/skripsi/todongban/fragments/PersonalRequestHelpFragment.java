@@ -149,6 +149,22 @@ public class PersonalRequestHelpFragment extends Fragment
         mSelectedVehicle = 0;
 //        locationChangeMarker();
         showBottomSheet(false);
+        int paddingVertical = getResources().getDimensionPixelSize(
+                R.dimen.bottom_sheet_vehicle_collapse);
+        int paddingHorizontal = getResources().getDimensionPixelSize(
+                R.dimen.margin_padding_default);
+        mMap = MapFragment.newInstance(paddingVertical, paddingHorizontal);
+        if (getChildFragmentManager().findFragmentById(R.id.fragment_map_wrapper) == null) {
+            Timber.d("onCreateView: %s", "Attach map: Add");
+            getChildFragmentManager().beginTransaction()
+                                     .add(R.id.fragment_map_wrapper, mMap)
+                                     .commit();
+        } else {
+            Timber.d("onCreateView: %s", "Attach map: Replace");
+            getChildFragmentManager().beginTransaction()
+                                     .replace(R.id.fragment_map_wrapper, mMap)
+                                     .commit();
+        }
         return view;
     }
 
@@ -173,14 +189,6 @@ public class PersonalRequestHelpFragment extends Fragment
             mDrawerToggle.syncState();
         }
 
-        int paddingVertical = getResources().getDimensionPixelSize(
-                R.dimen.bottom_sheet_vehicle_collapse);
-        int paddingHorizontal = getResources().getDimensionPixelSize(
-                R.dimen.margin_padding_default);
-        mMap = MapFragment.newInstance(paddingVertical, paddingHorizontal);
-        getChildFragmentManager().beginTransaction()
-                                 .add(R.id.fragment_map_wrapper, mMap)
-                                 .commit();
     }
 
     @Override
@@ -358,6 +366,9 @@ public class PersonalRequestHelpFragment extends Fragment
         if (mMyLocationFab.getVisibility() == View.GONE) {
             mMyLocationFab.setVisibility(View.VISIBLE);
         }
+        if (mListener != null) {
+            mListener.pushUpdateLocation(mMap.getLatitude(), mMap.getLongitude());
+        }
     }
 
     @Override
@@ -386,6 +397,8 @@ public class PersonalRequestHelpFragment extends Fragment
      */
     public interface OnFragmentInteractionListener {
         void onHelpRequested(RequestHelp requestHelp);
+
+        void pushUpdateLocation(double latitude, double longitude);
 
         DrawerLayout prepareDrawerLayoutForHelpRequest();
 

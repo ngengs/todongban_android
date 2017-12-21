@@ -288,6 +288,14 @@ public class MainActivityPersonal extends AppCompatActivity
     }
 
     @Override
+    public void pushUpdateLocation(double latitude, double longitude) {
+        Timber.d("pushUpdateLocation() called with: latitude = [ %s ], longitude = [ %s ]",
+                 latitude, longitude);
+        mApi.updateLocation(latitude, longitude)
+            .enqueue(new ApiResponse<>());
+    }
+
+    @Override
     public DrawerLayout prepareDrawerLayoutForHelpRequest() {
         return mDrawer;
     }

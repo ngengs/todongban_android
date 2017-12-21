@@ -171,13 +171,13 @@
         <me.zhanghai.android.materialprogressbar.MaterialProgressBar
             android:id="@+id/process_waiting_progress_cancel_second"
             style="@style/Widget.MaterialProgressBar.ProgressBar"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
             android:indeterminate="false"
             android:progress="0"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="14dp"
-            android:visibility="visible"
+            android:layout_gravity="top|center"
+            android:visibility="gone"
+            app:mpb_progressStyle="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -185,8 +185,8 @@
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/button_cancel_process"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:layout_margin="@dimen/margin_padding_default"
             android:layout_gravity="bottom|end"
             app:srcCompat="@drawable/ic_cancel"/>

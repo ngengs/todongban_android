@@ -237,7 +237,7 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
             for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
                 addressLine.add(address.getAddressLine(i));
             }
-            stringAddress = TextUtils.join(System.getProperty("line.separator"), addressLine);
+            stringAddress = TextUtils.join(", ", addressLine);
         }
         return stringAddress;
     }
@@ -278,6 +278,10 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
 
     private void initMaps() {
         Timber.d("initMaps() called");
+        if (!isAdded()) {
+            changeLocationOnMap();
+            return;
+        }
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this::onMapReady);

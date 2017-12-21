@@ -193,6 +193,8 @@ public class PersonalProcessHelpFragment extends Fragment {
         mProcessWaitingText = view.findViewById(R.id.process_waiting_text);
         mProcessWaitingProgress = view.findViewById(R.id.process_waiting_progress);
         mProcessWaitingProgressCancel = view.findViewById(R.id.process_waiting_progress_cancel);
+        mProcessWaitingProgressCancelSecond = view.findViewById(
+                R.id.process_waiting_progress_cancel_second);
 
         mRecyclerPersonalHelper = view.findViewById(R.id.recycler_personal_helper);
         mRecyclerGarageHelper = view.findViewById(R.id.recycler_garage_helper);
@@ -241,9 +243,7 @@ public class PersonalProcessHelpFragment extends Fragment {
         });
 
         mButtonCancelProcess.setOnClickListener(v -> {
-            if (mListener != null && !TextUtils.isEmpty(mRequestId)) {
-                mListener.onProcessCancel(mRequestId);
-            }
+
         });
         mButtonCancelProcess.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
@@ -251,7 +251,7 @@ public class PersonalProcessHelpFragment extends Fragment {
                     Timber.d("onCreateView: down");
                     v.performClick();
                     mProcessWaitingProgressCancelSecond.setVisibility(View.VISIBLE);
-                    mHandlerSecond.postDelayed(mRunnable, 1000);
+                    mHandlerSecond.postDelayed(mRunnableSecond, 1000);
                     return true;
                 case MotionEvent.ACTION_UP:
                     Timber.d("onCreateView: cancel");
@@ -296,23 +296,29 @@ public class PersonalProcessHelpFragment extends Fragment {
     }
 
     public void setHelpRequestId(String helpRequestId) {
+        Timber.d("setHelpRequestId() called with: helpRequestId = [ %s ]", helpRequestId);
         mRequestId = helpRequestId;
-        mProcessWaitingCancel.setVisibility(View.VISIBLE);
+        if (mAdapterGarage.getItemCount() <= 0 && mAdapterPersonal.getItemCount() <= 0) {
+            mProcessWaitingCancel.setVisibility(View.VISIBLE);
+        }
         resetProgressCancel();
     }
 
     public void resetProgressCancel() {
+        Timber.d("resetProgressCancel() called");
         mProcessWaitingProgress.setVisibility(View.GONE);
         mProcessWaitingProgressCancel.setVisibility(View.GONE);
         mProcessWaitingProgressCancel.setProgress(0);
     }
 
     public void resetProgressCancelSecond() {
+        Timber.d("resetProgressCancelSecond() called");
         mProcessWaitingProgressCancelSecond.setVisibility(View.GONE);
         mProcessWaitingProgressCancelSecond.setProgress(0);
     }
 
     private void toggleViewPeopleHelper() {
+        Timber.d("toggleViewPeopleHelper() called");
         int showPeopleHelper;
         int showWaiting;
         if (mAdapterPersonal.getItemCount() > 0 || mAdapterGarage.getItemCount() > 0) {
@@ -335,12 +341,13 @@ public class PersonalProcessHelpFragment extends Fragment {
         mProcessWaitingProgress.setVisibility(showWaiting);
         mProcessWaitingProgressCancel.setVisibility(showWaiting);
 
-        if (!TextUtils.isEmpty(mRequestId)) {
+//        if (!TextUtils.isEmpty(mRequestId)) {
             mProcessWaitingCancel.setVisibility(showWaiting);
-        }
+//        }
     }
 
     public void addData(PeopleHelp data) {
+        Timber.d("addData() called with: data = [ %s ]", data);
         if (data.getUserType() == User.TYPE_PERSONAL) {
             mAdapterPersonal.addData(data);
         } else {
@@ -359,6 +366,7 @@ public class PersonalProcessHelpFragment extends Fragment {
     }
 
     private void addData(List<PeopleHelp> data) {
+        Timber.d("addData() called with: data = [ %s ]", data);
         for (PeopleHelp item : data) {
             if (item.getUserType() == User.TYPE_PERSONAL) {
                 mAdapterPersonal.addData(item);
@@ -370,6 +378,7 @@ public class PersonalProcessHelpFragment extends Fragment {
     }
 
     private void loadDataFromLocal() {
+        Timber.d("loadDataFromLocal() called");
         Gson gson = GsonUtils.provideGson();
         String existPeopleHelpString = mSharedPreferences.getString(
                 Values.SHARED_PREFERENCES_KEY_PEOPLE_HELP, null);
@@ -381,19 +390,6 @@ public class PersonalProcessHelpFragment extends Fragment {
         }
         addData(existPeopleHelp);
     }
-
-//    private void saveDataToLocal(PeopleHelp data) {
-//        Gson gson = new Gson();
-//        List<PeopleHelp> saveData = new ArrayList<>();
-//        saveData.addAll(mAdapterPersonal.getData());
-//        saveData.addAll(mAdapterGarage.getData());
-//        saveData.add(data);
-//        mSharedPreferences.edit()
-//                          .putString(Values.SHARED_PREFERENCES_KEY_PEOPLE_HELP,
-//                                     gson.toJson(saveData))
-//                          .apply();
-//    }
-
 
     /**
      * This interface must be implemented by activities that contain this

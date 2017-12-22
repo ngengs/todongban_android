@@ -19,18 +19,23 @@ package com.ngengs.skripsi.todongban.utils.notifications.handler;
 
 import android.content.Context;
 
+import com.ngengs.skripsi.todongban.BadgeActivity;
 import com.ngengs.skripsi.todongban.R;
 import com.ngengs.skripsi.todongban.data.enumerations.Values;
 import com.ngengs.skripsi.todongban.utils.notifications.NotificationBuilder;
 
 public class RequestFinishedNotificationHandler {
     public static void handle(Context context) {
-        NotificationBuilder.sendNotification(context, Values.NOTIFICATION_ID_REQUEST_FINISH,
-                                             Values.NOTIFICATION_TAG_REQUEST_SEARCH,
-                                             context.getString(R.string.appName),
-                                             context.getString(
-                                                     R.string.notification_message_request_finish),
-                                             NotificationBuilder.buildPendingIntentDefault(context),
-                                             null);
+        NotificationBuilder
+                .sendNotification(context, Values.NOTIFICATION_ID_REQUEST_FINISH,
+                                  Values.NOTIFICATION_TAG_REQUEST_SEARCH,
+                                  context.getString(R.string.appName),
+                                  context.getString(
+                                          R.string.notification_message_request_finish),
+                                  NotificationBuilder
+                                          .buildPendingIntent(context,
+                                                              BadgeActivity.class,
+                                                              NotificationBuilder.REQUEST_CODE_DEFAULT),
+                                  null);
     }
 }

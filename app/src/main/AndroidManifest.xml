@@ -41,6 +41,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".SplashActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Splash">
             <intent-filter>
@@ -51,16 +52,19 @@
         </activity>
         <activity
             android:name=".SignupActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".SigninActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".WaitVerificationActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.WaitVerification">
         </activity>
@@ -112,11 +116,13 @@
 
         <activity
             android:name=".MainActivityPersonal"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullMap">
         </activity>
         <activity
             android:name=".MainActivityGarage"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
@@ -138,43 +144,52 @@
 
         <activity
             android:name=".SelectLocationMapActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".SignoutActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.BackgroundFullPrimary">
         </activity>
         <activity
             android:name=".HelpSettingActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".ResponseActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".ResponseActionActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoDisplay">
         </activity>
         <activity
             android:name=".EditProfileActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="Pengaturan Profil"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".EditGarageActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="Pengaturan Bengkel"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".BadgeActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".HistoryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait">
         </activity>
     </application>

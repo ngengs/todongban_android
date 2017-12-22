@@ -19,21 +19,12 @@ package com.ngengs.skripsi.todongban;
 
 import android.app.Application;
 
-import com.crashlytics.android.Crashlytics;
-import com.ngengs.skripsi.todongban.utils.loggers.CrashlyticsTree;
-
-import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 
 public class TodongBanApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree());
-        } else {
-            Fabric.with(this, new Crashlytics());
-            Timber.plant(new CrashlyticsTree());
-        }
+        Timber.plant(new Timber.DebugTree());
     }
 }

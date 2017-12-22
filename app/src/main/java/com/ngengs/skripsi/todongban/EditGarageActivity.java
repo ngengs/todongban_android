@@ -110,6 +110,8 @@ public class EditGarageActivity extends AppCompatActivity {
     private void garageLoadFailed(Throwable t) {
         Timber.e(t, "garageLoadFailed: ");
         mDialog.dismiss();
+        Snackbar.make(mParentItemGarageForceClose, "Terjadi kesalahan pada server",
+                      Snackbar.LENGTH_SHORT).show();
     }
 
     private String timeFromDate(Date date) {

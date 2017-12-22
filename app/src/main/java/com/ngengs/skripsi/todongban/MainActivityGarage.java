@@ -136,6 +136,8 @@ public class MainActivityGarage extends AppCompatActivity {
     private void getUserFailure(Throwable t) {
         Timber.e(t, "getUserFailure: ");
         mDialog.dismiss();
+        Snackbar.make(mToolbarMainGarage, "Terjadi kesalahan pada server", Snackbar.LENGTH_SHORT)
+                .show();
     }
 
     private void getStatistic() {

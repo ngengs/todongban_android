@@ -369,6 +369,7 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Timber.d("onConnectionFailed() called with: connectionResult = [ %s ]",
                  connectionResult.getErrorCode());
+        Toast.makeText(mContext, "Terjadi kesalahan pada play services", Toast.LENGTH_SHORT).show();
     }
 
     @SuppressLint("MissingPermission")

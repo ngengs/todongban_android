@@ -181,6 +181,7 @@ public class ResponseActivity extends AppCompatActivity {
     private void getDataFailure(Throwable throwable) {
         Timber.e(throwable, "getDataFailure: ");
         if (mDialog != null) mDialog.dismiss();
+        Toast.makeText(this, "Terjadi kesalahan pada server", Toast.LENGTH_SHORT).show();
     }
 
     private void rejectHelp() {

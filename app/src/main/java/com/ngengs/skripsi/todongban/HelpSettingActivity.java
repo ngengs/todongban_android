@@ -27,6 +27,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.ngengs.skripsi.todongban.adapters.HelpSettingAdapter;
@@ -101,6 +102,7 @@ public class HelpSettingActivity extends AppCompatActivity {
     private void getDataFailure(Throwable t) {
         Timber.e(t, "getDataFailure: ");
         mDialog.dismiss();
+        Toast.makeText(this, "Terjadi kesalahan pada server", Toast.LENGTH_SHORT).show();
     }
 
     private void updateDataSuccess(Response<HelpConfig> response) {
@@ -111,6 +113,7 @@ public class HelpSettingActivity extends AppCompatActivity {
     private void updateDataFailure(Throwable t) {
         Timber.e(t, "updateDataFailure: ");
         mDialog.dismiss();
+        Toast.makeText(this, "Terjadi kesalahan pada server", Toast.LENGTH_SHORT).show();
     }
 
     @Override

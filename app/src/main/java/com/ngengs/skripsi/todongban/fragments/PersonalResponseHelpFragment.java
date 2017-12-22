@@ -181,6 +181,7 @@ public class PersonalResponseHelpFragment extends Fragment {
 
     private void getDetailFailure(Throwable t) {
         Timber.e(t, "getDetailFailure: ");
+        Toast.makeText(mContext, "Terjadi kesalahan pada server", Toast.LENGTH_SHORT).show();
     }
 
     private void initMaps() {

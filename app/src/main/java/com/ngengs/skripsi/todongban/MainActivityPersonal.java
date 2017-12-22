@@ -366,6 +366,7 @@ public class MainActivityPersonal extends AppCompatActivity
     private void getUserFailure(Throwable t) {
         Timber.e(t, "getUserFailure: ");
         mDialog.dismiss();
+        Toast.makeText(this, "Terjadi kesalahan pada server", Toast.LENGTH_SHORT).show();
     }
 
     private void helpRequestSuccess(Response<SingleStringData> response) {
@@ -386,6 +387,17 @@ public class MainActivityPersonal extends AppCompatActivity
 
     private void helpRequestFailure(Throwable t) {
         Timber.e(t, "helpRequestFailure: ");
+        Toast.makeText(this, "Terjadi kesalahan pada server", Toast.LENGTH_SHORT).show();
+        mHelpProcess = false;
+        mHelpProcessId = null;
+        unregisterReceiver(mBroadcastReceiver);
+        mSharedPreferences.edit()
+                          .putBoolean(Values.SHARED_PREFERENCES_KEY_IN_HELP_PROCESS, mHelpProcess)
+                          .putString(Values.SHARED_PREFERENCES_KEY_ID_HELP_PROCESS, null)
+                          .putString(Values.SHARED_PREFERENCES_KEY_TYPE_HELP_PROCESS, null)
+                          .remove(Values.SHARED_PREFERENCES_KEY_PEOPLE_HELP)
+                          .apply();
+        goToPageRequestHelp();
     }
 
     private void helpCancelSuccess(Response<SingleStringData> response) {
@@ -395,6 +407,7 @@ public class MainActivityPersonal extends AppCompatActivity
 
     private void helpCancelFailure(Throwable t) {
         Timber.e(t, "helpCancelFailure: ");
+        Toast.makeText(this, "Terjadi kesalahan pada server", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -422,6 +435,7 @@ public class MainActivityPersonal extends AppCompatActivity
 
     private void finishHelpFailure(Throwable t) {
         Timber.e(t, "finishHelpFailure: ");
+        Toast.makeText(this, "Terjadi kesalahan pada server", Toast.LENGTH_SHORT).show();
         mDialog.dismiss();
     }
 

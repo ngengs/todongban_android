@@ -23,6 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.ngengs.skripsi.todongban.adapters.HistoryAdapter;
@@ -119,5 +120,6 @@ public class HistoryActivity extends AppCompatActivity {
     private void historyLoadFailed(Throwable t) {
         Timber.e(t, "historyLoadFailed: ");
         mDialog.dismiss();
+        Toast.makeText(this, "Terjadi kesalahan pada server", Toast.LENGTH_SHORT).show();
     }
 }

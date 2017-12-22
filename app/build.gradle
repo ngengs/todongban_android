@@ -111,7 +111,7 @@ android {
 }
 
 static def getBuildDate() {
-    def date = new Date().format('yyyyMMdd')
+    def date = new Date().format('yyyyMMddhhmmss')
     return date
 }
 

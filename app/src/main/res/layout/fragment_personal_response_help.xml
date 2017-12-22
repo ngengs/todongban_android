@@ -165,12 +165,21 @@
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
-    <Button
-        android:id="@+id/response_detail_button_finish"
+    <LinearLayout
+        style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:text="Akhiri Bantuan"
-        android:theme="@style/AppTheme.ButtonAccent"/>
+        android:layout_gravity="bottom">
+
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:id="@+id/response_detail_button_finish"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="Akhiri Bantuan"
+            android:textColor="#000"
+            android:background="@color/colorAccent"/>
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -31,6 +31,7 @@ import com.ngengs.skripsi.todongban.data.local.Badge;
 import com.ngengs.skripsi.todongban.data.local.PeopleHelp;
 import com.ngengs.skripsi.todongban.data.local.User;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,14 +59,15 @@ public class PeopleHelpAdapter extends RecyclerView.Adapter<PeopleHelpAdapter.Vi
         holder.mPeopleHelpBadge.setText(badge.getBadgeName(mContext, data.getUserType()));
         holder.mPeopleHelpName.setText(data.getName());
         String distance;
+        DecimalFormat precision = new DecimalFormat("0.00");
         if (data.getDistance() >= 1) {
-            distance = data.getDistance() + " Km";
+            distance = precision.format(data.getDistance()) + " Km";
         } else {
             double meters = data.getDistance() * 1000;
             if (meters < 50) {
                 distance = "Dekat dari anda";
             } else {
-                distance = meters + " Meter";
+                distance = precision.format(meters) + " Meter";
             }
         }
         if (data.getUserType() == User.TYPE_GARAGE) {

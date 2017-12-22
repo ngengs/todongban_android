@@ -136,33 +136,46 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".SelectLocationMapActivity">
+        <activity
+            android:name=".SelectLocationMapActivity"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".SignoutActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.BackgroundFullPrimary">
         </activity>
-        <activity android:name=".HelpSettingActivity">
+        <activity
+            android:name=".HelpSettingActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".ResponseActivity">
+        <activity
+            android:name=".ResponseActivity"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".ResponseActionActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoDisplay">
         </activity>
         <activity
             android:name=".EditProfileActivity"
-            android:label="Pengaturan Profil">
+            android:label="Pengaturan Profil"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".EditGarageActivity"
-            android:label="Pengaturan Bengkel">
+            android:label="Pengaturan Bengkel"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".BadgeActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".HistoryActivity">
+        <activity
+            android:name=".HistoryActivity"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

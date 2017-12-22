@@ -430,6 +430,7 @@ public class MainActivityPersonal extends AppCompatActivity
                           .putBoolean(Values.SHARED_PREFERENCES_KEY_IN_HELP_PROCESS, mHelpProcess)
                           .putBoolean(Values.SHARED_PREFERENCES_KEY_SELECTED_RESPONE, mHelpResponse)
                           .apply();
+        mDialog.dismiss();
         initFragment();
     }
 

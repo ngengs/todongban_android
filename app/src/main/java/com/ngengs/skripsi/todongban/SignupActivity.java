@@ -66,9 +66,6 @@ public class SignupActivity extends AppCompatActivity implements
     private MaterialDialog mDialog;
     private SharedPreferences mSharedPreferences;
 
-
-    //    private User mUser;
-//    private Garage mGarage;
     private APIUnSecure mApi;
 
     @Override
@@ -88,7 +85,6 @@ public class SignupActivity extends AppCompatActivity implements
             mFragmentManager = getSupportFragmentManager();
         }
         goToPageBasic();
-//        goToPageGarage(null);
     }
 
     private void initView() {
@@ -110,16 +106,8 @@ public class SignupActivity extends AppCompatActivity implements
     public void onButtonBasicNextClicked(User userData) {
         Timber.d("onButtonBasicNextClicked() called with: userData = [ %s ]", userData);
         goToPageType(userData);
-//        mUser = userData;
-//        if (mUser.getType() != User.TYPE_PERSONAL && mUser.getType() != User.TYPE_GARAGE) {
-//            goToPageType(userData);
-//        } else {
-//            if (mUser.getType() == User.TYPE_PERSONAL) submitNewAccountPersonal();
-//            else if (mUser.getType() == User.TYPE_GARAGE) goToPageGarage();
-//        }
     }
 
-    @SuppressWarnings("unused")
     private void goToPageBasic() {
         Timber.d("goToPageBasic() called");
         mFragmentManager.beginTransaction()
@@ -187,16 +175,6 @@ public class SignupActivity extends AppCompatActivity implements
         user = prepareUserToken(user);
         List<MultipartBody.Part> partImages = new ArrayList<>(
                 prepareSignupImage(user.getAvatarUri(), user.getIdentityUri()));
-//        mApi.signupPersonal(NetworkHelpers.prepareStringPart(user.getUsername()),
-//                            NetworkHelpers.prepareStringPart(user.getEmail()),
-//                            NetworkHelpers.prepareStringPart(user.getPasswordClean()),
-//                            NetworkHelpers.prepareStringPart(user.getFullName()),
-//                            NetworkHelpers.prepareStringPart(user.getPhone()),
-//                            NetworkHelpers.prepareStringPart(user.getGender()),
-//                            NetworkHelpers.prepareStringPart(user.getAddress()),
-//                            NetworkHelpers.prepareStringPart(user.getIdentityNumber()),
-//                            NetworkHelpers.prepareStringPart(user.getDeviceId()),
-//                            NetworkHelpers.prepareStringPart(user.getType()), partImages)
         Map<String, RequestBody> signupData = new HashMap<>(
                 NetworkHelpers.prepareMapPart(user));
         mApi.signup(signupData, partImages)
@@ -210,24 +188,6 @@ public class SignupActivity extends AppCompatActivity implements
         User user = prepareUserToken(garage.getUser());
         List<MultipartBody.Part> partImages = new ArrayList<>(
                 prepareSignupImage(user.getAvatarUri(), user.getIdentityUri()));
-//        mApi.signupGarage(NetworkHelpers.prepareStringPart(user.getUsername()),
-//                          NetworkHelpers.prepareStringPart(user.getEmail()),
-//                          NetworkHelpers.prepareStringPart(user.getPasswordClean()),
-//                          NetworkHelpers.prepareStringPart(user.getFullName()),
-//                          NetworkHelpers.prepareStringPart(user.getPhone()),
-//                          NetworkHelpers.prepareStringPart(user.getGender()),
-//                          NetworkHelpers.prepareStringPart(user.getAddress()),
-//                          NetworkHelpers.prepareStringPart(user.getIdentityNumber()),
-//                          NetworkHelpers.prepareStringPart(user.getDeviceId()),
-//                          NetworkHelpers.prepareStringPart(user.getType()),
-//                          NetworkHelpers.prepareStringPart(garage.getName()),
-//                          NetworkHelpers.prepareStringPart(garage.getOpenHour()),
-//                          NetworkHelpers.prepareStringPart(garage.getCloseHour()),
-//                          NetworkHelpers.prepareStringPart(garage.getAddress()),
-//                          NetworkHelpers.prepareStringPart(garage.getLatitude()),
-//                          NetworkHelpers.prepareStringPart(garage.getLongitude()),
-//                          partImages
-//        )
         garage.setUser(null);
         Map<String, RequestBody> signupData = new HashMap<>(NetworkHelpers.prepareMapPart(garage));
         signupData.putAll(NetworkHelpers.prepareMapPart(user));
@@ -280,14 +240,6 @@ public class SignupActivity extends AppCompatActivity implements
     @Override
     public void onButtonGarageSubmitClicked(Garage garage) {
         Timber.d("onButtonGarageSubmitClicked() called with: garage = [ %s ]", garage);
-//        Gson gson = new Gson();
-//        String json = gson.toJson(garage);
-//        Timber.d("onButtonGarageSubmitClicked: JSON: %s", json);
-//        LinkedHashTreeMap map = gson.fromJson(json, LinkedHashTreeMap.class);
-//        Timber.d("onButtonGarageSubmitClicked: MAP: %s", map);
-//        Map<String, RequestBody> mapBody = NetworkHelpers.prepareMapPart(garage);
-//        Timber.d("onButtonGarageSubmitClicked: MAP PART: %s", mapBody);
-//        mGarage = garage;
         submitNewAccountGarage(garage);
     }
 }

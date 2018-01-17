@@ -357,7 +357,6 @@ public class MainActivityPersonal extends AppCompatActivity
             mUser = responseBody.getData();
             initNavHeader();
             initFragment();
-//            initMaps();
         } else {
             getUserFailure(new Throwable("Empty Response Data"));
         }
@@ -422,6 +421,7 @@ public class MainActivityPersonal extends AppCompatActivity
 
     private void finishHelpSuccess(Response<SingleStringData> response) {
         Timber.d("finishHelpSuccess() called with: response = [ %s ]", response);
+        Toast.makeText(this, "Pencarian bantuan telah selesai", Toast.LENGTH_SHORT).show();
         mHelpProcessId = null;
         mHelpProcess = false;
         mHelpResponse = false;

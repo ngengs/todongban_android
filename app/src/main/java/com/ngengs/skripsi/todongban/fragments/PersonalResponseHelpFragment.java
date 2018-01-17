@@ -245,6 +245,12 @@ public class PersonalResponseHelpFragment extends Fragment {
         startActivity(Intent.createChooser(emailIntent, "Kirim Email dengan..."));
     }
 
+    private void submit(int rating){
+        if (mListener != null) {
+            mListener.onFinishHelpProcess(mRequestId, rating);
+        }
+    }
+
     @SuppressWarnings("ConstantConditions")
     private void initView(View view, View sheetView) {
         mResponseDetailAvatar = view.findViewById(R.id.response_detail_avatar);
@@ -273,9 +279,7 @@ public class PersonalResponseHelpFragment extends Fragment {
             }
             mResponseDetailRating.setRating(0);
             mRatingDialog.dismiss();
-            if (mListener != null) {
-                mListener.onFinishHelpProcess(mRequestId, rating);
-            }
+            submit(rating);
         });
     }
 

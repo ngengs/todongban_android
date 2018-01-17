@@ -126,7 +126,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         return mData.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         ImageView mHistoryHelpTypeImage;
         ImageView mHistoryVehicleImage;
         TextView mHistoryTime;

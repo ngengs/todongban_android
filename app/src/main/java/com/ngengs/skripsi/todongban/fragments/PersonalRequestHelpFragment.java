@@ -58,15 +58,8 @@ import timber.log.Timber;
 public class PersonalRequestHelpFragment extends Fragment
         implements MapFragment.OnFragmentCompleteInteractionListener {
 
-    //    private GoogleMap mGoogleMap;
-//    private GoogleApiClient mGoogleApiClient;
-//    private Location mLocationNow;
     private TextView mLocationName;
-    //    private Marker mMarker;
     private FloatingActionButton mMyLocationFab;
-    //    private View mMarkerChangeLocationRoot;
-//    private View mMarkerChangeLocationImage;
-//    private View mMarkerChangeLocationIndicator;
     private MapFragment mMap;
     private Toolbar mToolbar;
     @SuppressWarnings("FieldCanBeLocal")
@@ -78,7 +71,6 @@ public class PersonalRequestHelpFragment extends Fragment
     private RecyclerView mRecyclerView;
     private HelpTypeAdapter mAdapter;
     private boolean mEditLocation;
-    //    private boolean mProcessMovingCamera;
     private int mSelectedVehicle;
     private RequestHelp mRequestHelp;
     private Context mContext;
@@ -144,10 +136,8 @@ public class PersonalRequestHelpFragment extends Fragment
 
         grayScaleVehicleImage();
 
-//        mProcessMovingCamera = false;
         mEditLocation = false;
         mSelectedVehicle = 0;
-//        locationChangeMarker();
         showBottomSheet(false);
         int paddingVertical = getResources().getDimensionPixelSize(
                 R.dimen.bottom_sheet_vehicle_collapse);
@@ -179,13 +169,6 @@ public class PersonalRequestHelpFragment extends Fragment
                                                                             R.string.navigation_drawer_open,
                                                                             R.string.navigation_drawer_close);
             mListener.syncDrawerLayoutForHelpRequest(mDrawerToggle);
-//            mDrawerToggle.setToolbarNavigationClickListener(view -> {
-//                if(mDrawerLayout.isDrawerOpen(GravityCompat.START)){
-//                    mDrawerLayout.closeDrawer(GravityCompat.START);
-//                } else {
-//                    mDrawerLayout.openDrawer(GravityCompat.START);
-//                }
-//            });
             mDrawerToggle.syncState();
         }
 
